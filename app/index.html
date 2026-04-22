@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <title>SAE2.03 APP</title>
@@ -10,10 +10,19 @@
   <body>
     <header id="header"></header>
 
-    <section id="content"></section>
+    <section id="content">
+      <div class="movie">
+        <div id="movie-list" class="movie__list">
+          <!-- Les cartes de films movie-card -->
+        </div>
+      </div>
+    </section>
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
+
+      import { Movie } from "./component/Movie/script.js";
+      import { DataMovie } from "./data/dataMovie.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -22,12 +31,18 @@
 
       C.handlerAbout = function () {
         alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !"
+          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
+      };
+
+      C.handlerMovies = async function () {
+        let films = await DataMovie.requestMovies();
+        V.renderMovies(films);
       };
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
+        C.handlerMovies(); // Affiche les films au chargement
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -43,6 +58,11 @@
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
         header.innerHTML = NavBar.format(hAbout);
+      };
+
+      V.renderMovies = function (films) {
+        let movieList = document.querySelector("#movie-list");
+        movieList.innerHTML = Movie.format(films);
       };
 
       C.start(); // Démarre l'application

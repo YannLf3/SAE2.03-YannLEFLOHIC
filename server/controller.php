@@ -23,5 +23,9 @@ require("model.php");
 
 function readMoviesController(){
     $movies = getAllMovies();
+
+    if ($movies === false || $movies === null) {
+        return false; // Indique une erreur dans le traitement de la requête
+    }
     return $movies;
 }

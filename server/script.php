@@ -1,5 +1,7 @@
 <?php
-/** ARCHITECTURE PHP SERVEUR : Rôle du fichier script.php
+/** 
+ * 
+ * ARCHITECTURE PHP SERVEUR : Rôle du fichier script.php
  * 
  * Ce fichier est celui à qui on adresse toutes les requêtes HTTP.
  * Pour être valide, on décide que chaque requête doit contenir un paramètre 'todo'.
@@ -16,6 +18,8 @@
  * 
  */
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /**
  * Inclusion du fichier controller.php.
  * 
