@@ -16,12 +16,14 @@
           <!-- Les cartes de films movie-card -->
         </div>
       </div>
+      <div id="movie-detail" class="movie__detail"></div>
     </section>
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
 
       import { Movie } from "./component/Movie/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
       import { DataMovie } from "./data/dataMovie.js";
 
       // Controleur
@@ -29,15 +31,19 @@
       // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
 
-      C.handlerAbout = function () {
-        alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
-        );
+      C.handlerAbout = async function () {
+        await C.handlerMovies();
       };
 
       C.handlerMovies = async function () {
         let films = await DataMovie.requestMovies();
         V.renderMovies(films);
+        V.clearMovieDetail();
+      };
+
+      C.handlerMovieDetail = async function (id) {
+        let film = await DataMovie.requestMovieDetail(id);
+        V.renderMovieDetail(film);
       };
 
       C.start = function () {
@@ -63,6 +69,16 @@
       V.renderMovies = function (films) {
         let movieList = document.querySelector("#movie-list");
         movieList.innerHTML = Movie.format(films);
+      };
+
+      V.renderMovieDetail = function (movie) {
+        let movieDetail = document.querySelector("#movie-detail");
+        movieDetail.innerHTML = MovieDetail.format(movie);
+      };
+
+      V.clearMovieDetail = function () {
+        let movieDetail = document.querySelector("#movie-detail");
+        movieDetail.innerHTML = "";
       };
 
       C.start(); // Démarre l'application

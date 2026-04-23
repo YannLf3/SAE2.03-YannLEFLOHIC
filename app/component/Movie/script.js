@@ -26,6 +26,7 @@ Movie.format = function (films) {
   for (let i = 0; i < films.length; i++) {
     let card = Movie.template;
     // On remplace les placeholders par les vraies valeurs
+    card = card.replace("{{id}}", films[i].id);
     card = card.replace("{{titre}}", films[i].titre);
     card = card.replace("{{image}}", films[i].image);
     card = card.replace("{{name}}", films[i].name); // pour le alt de l'image

@@ -26,6 +26,15 @@ DataMovie.requestMovieDetail = async function (id) {
     HOST_URL + "/server/script.php?todo=readmoviedetail&id=" + id,
   );
   let data = await answer.json();
+
+  if (data && data.image) {
+    data.image = HOST_URL + "/server/images/" + data.image;
+  }
+
+  data.titre = data.name;
+  data.category = data.category ?? data.id_category ?? "Non renseigné";
+
+  return data;
 };
 
 export { DataMovie };

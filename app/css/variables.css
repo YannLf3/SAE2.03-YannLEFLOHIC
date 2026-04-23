@@ -7,11 +7,19 @@
   --color-gray-light: hsl(0, 0%, 80%);
   --color-gray: hsl(0, 0%, 50%);
   --color-gray-dark: hsl(0, 0%, 20%);
+  --color-surface: hsl(0, 0%, 97%);
+  --color-surface-elevated: hsl(0, 0%, 100%);
+  --color-overlay: hsla(253, 69%, 8%, 0.72);
+  --color-accent: hsl(214, 100%, 60%);
   --ff-sans: "DM sans", sans-serif;
   --space-15: 1.5rem;
   --space-075: 0.75rem;
   --font-size-1: 1rem;
   --font-weight-700: 700;
+  --radius-m: 0.75rem;
+  --radius-l: 1.5rem;
+  --shadow-elevated: 0 1.5rem 3rem hsla(253, 69%, 8%, 0.32);
+  --z-index-modal: 20;
 
   /* Sementic Tokens */
   --color-fg: var(--color-white);

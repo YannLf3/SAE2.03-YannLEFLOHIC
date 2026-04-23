@@ -1,18 +1,28 @@
-<div class="cardMovie">
-  <div class="cardMovie__image">
-    <img src="{{movie.image}}" alt="Poster de {{movie.name}}" />
+<div class="movie-detail">
+  <div class="movie-detail__media">
+    <img
+      class="movie-detail__poster"
+      src="{{image}}"
+      alt="Poster de {{name}}"
+    />
   </div>
-  <div class="cardMovie__details">
-    <h2 class="cardMovie__details-title">{{movie.name}}</h2>
-    <p class="cardMovie__text">Genre: {{movie.category}}</p>
-    <p class="cardMovie__text">Director: {{movie.director}}</p>
-    <p class="cardMovie__text">Release Year: {{movie.releaseYear}}</p>
-    <p class="cardMovie__text">Description: {{movie.description}}</p>
-    <p class="cardMovie__text">Âge minimal: {{movie.min_age}}</p>
-    <iframe
-      src="{{movie.trailer}}"
-      title="Trailer de {{movie.name}}"
-      allowfullscreen
-    ></iframe>
+  <div class="movie-detail__content">
+    <p class="movie-detail__eyebrow">Fiche film</p>
+    <h2 class="movie-detail__title">{{name}}</h2>
+    <p class="movie-detail__meta movie-detail__meta--accent">
+      Genre: {{category}}
+    </p>
+    <p class="movie-detail__meta">Réalisateur: {{director}}</p>
+    <p class="movie-detail__meta">Année de sortie: {{releaseYear}}</p>
+    <p class="movie-detail__description">{{description}}</p>
+    <p class="movie-detail__meta">Âge minimal: {{min_age}}</p>
+    <div class="movie-detail__trailer">
+      <iframe
+        class="movie-detail__video"
+        src="{{trailer}}"
+        title="Trailer de {{name}}"
+        allowfullscreen
+      ></iframe>
+    </div>
   </div>
 </div>
