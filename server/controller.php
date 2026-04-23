@@ -50,7 +50,7 @@ function addMovieController(){
         $trailer === null || $trailer === '' ||
         $min_age === null || $min_age === '' ||
         $length === null || $length === '') {
-        return false; // Indique que des paramètres requis sont manquants
+        return "Des paramètres requis sont manquants."; // Indique que des paramètres requis sont manquants
     }
 
     $ok = addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length);
@@ -58,6 +58,20 @@ function addMovieController(){
     if ($ok !=0){
         return "Le film $name a été ajouté avec succès !";
     } else {
-        return false; // Indique une erreur lors de l'ajout du film
+        return "Une erreur est survenue lors de l'ajout du film."; // Indique une erreur lors de l'ajout du film
     }
+}
+
+function readMovieDetailController(){
+    //lit l'identifiant du film dans $_REQUEST et vérifie qu'il est présent et valide
+    $id = $_REQUEST['id'] ?? null;
+    //appelle getMovieDetails($id) et retourne false si le film n'existe pas ou si une erreur est survenue, sinon retourne les détails du film
+    if ($id === null || $id === '') {
+        return false; // Indique que l'identifiant du film est manquant ou invalide
+    }
+    $movie = getMovieDetails($id);
+    if ($movie === false || $movie === null) {
+        return false; // Indique que le film n'existe pas ou qu'une erreur est survenue
+    }
+    return $movie; // Retourne les détails du film
 }

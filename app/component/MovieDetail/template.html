@@ -1,0 +1,18 @@
+<div class="cardMovie">
+  <div class="cardMovie__image">
+    <img src="{{movie.image}}" alt="Poster de {{movie.name}}" />
+  </div>
+  <div class="cardMovie__details">
+    <h2 class="cardMovie__details-title">{{movie.name}}</h2>
+    <p class="cardMovie__text">Genre: {{movie.category}}</p>
+    <p class="cardMovie__text">Director: {{movie.director}}</p>
+    <p class="cardMovie__text">Release Year: {{movie.releaseYear}}</p>
+    <p class="cardMovie__text">Description: {{movie.description}}</p>
+    <p class="cardMovie__text">Âge minimal: {{movie.min_age}}</p>
+    <iframe
+      src="{{movie.trailer}}"
+      title="Trailer de {{movie.name}}"
+      allowfullscreen
+    ></iframe>
+  </div>
+</div>

@@ -54,3 +54,19 @@ function addMovie($name, $image, $year, $description, $director, $trailer, $min_
     // Exécute la requête SQL
     return $stmt->execute(); // Retourne true si l'insertion a réussi, sinon false
 }
+
+function getMovieDetails($id){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    // Requête SQL pour récupérer les détails d'un film avec un paramètre
+    $sql = "SELECT * FROM SAE203_Movie WHERE id = :id";
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+    // Lie le paramètre à la requête SQL
+    $stmt->bindParam(':id', $id);
+    // Exécute la requête SQL
+    $stmt->execute();
+    // Récupère les résultats de la requête sous forme d'objets
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res; // Retourne les détails du film
+}
