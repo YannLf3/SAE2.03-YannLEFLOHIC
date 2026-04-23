@@ -5,3 +5,15 @@
 .font-mono {
   font-family: Courier, monospace;
 }
+
+.fs-size-13 label {
+  font-size: var(--fs-size-13);
+}
+
+.fs-size-095 label {
+  font-size: var(--fs-size-095);
+}
+
+.fw-bold {
+  font-weight: var(--font-weight-bold);
+}

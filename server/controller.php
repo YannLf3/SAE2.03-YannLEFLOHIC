@@ -31,18 +31,27 @@ function readMoviesController(){
 }
 
 function addMovieController(){
-    if (!isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['year']) || !isset($_REQUEST['description']) || !isset($_REQUEST['director']) || !isset($_REQUEST['trailer']) || !isset($_REQUEST['min_age']) || !isset($_REQUEST['length'])) {
+    // Le front admin envoie "title" et "release_year".
+    // On garde aussi "name" et "year" pour compatibilite eventuelle.
+    $name = $_REQUEST['name'] ?? $_REQUEST['title'] ?? null;
+    $image = $_REQUEST['image'] ?? null;
+    $year = $_REQUEST['year'] ?? $_REQUEST['release_year'] ?? null;
+    $description = $_REQUEST['description'] ?? null;
+    $director = $_REQUEST['director'] ?? null;
+    $trailer = $_REQUEST['trailer'] ?? null;
+    $min_age = $_REQUEST['min_age'] ?? null;
+    $length = $_REQUEST['length'] ?? null;
+
+    if ($name === null || $name === '' ||
+        $image === null || $image === '' ||
+        $year === null || $year === '' ||
+        $description === null || $description === '' ||
+        $director === null || $director === '' ||
+        $trailer === null || $trailer === '' ||
+        $min_age === null || $min_age === '' ||
+        $length === null || $length === '') {
         return false; // Indique que des paramètres requis sont manquants
     }
-
-    $name = $_REQUEST['name'];
-    $image = $_REQUEST['image'];
-    $year = $_REQUEST['year'];
-    $description = $_REQUEST['description'];
-    $director = $_REQUEST['director'];
-    $trailer = $_REQUEST['trailer'];
-    $min_age = $_REQUEST['min_age'];
-    $length = $_REQUEST['length'];
 
     $ok = addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length);
 
