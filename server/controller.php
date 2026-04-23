@@ -29,3 +29,26 @@ function readMoviesController(){
     }
     return $movies;
 }
+
+function addMovieController(){
+    if (!isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['year']) || !isset($_REQUEST['description']) || !isset($_REQUEST['director']) || !isset($_REQUEST['trailer']) || !isset($_REQUEST['min_age']) || !isset($_REQUEST['length'])) {
+        return false; // Indique que des paramètres requis sont manquants
+    }
+
+    $name = $_REQUEST['name'];
+    $image = $_REQUEST['image'];
+    $year = $_REQUEST['year'];
+    $description = $_REQUEST['description'];
+    $director = $_REQUEST['director'];
+    $trailer = $_REQUEST['trailer'];
+    $min_age = $_REQUEST['min_age'];
+    $length = $_REQUEST['length'];
+
+    $ok = addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length);
+
+    if ($ok !=0){
+        return "Le film $name a été ajouté avec succès !";
+    } else {
+        return false; // Indique une erreur lors de l'ajout du film
+    }
+}

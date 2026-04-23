@@ -1,0 +1,19 @@
+.grid-context {
+  display: grid;
+}
+
+.gap-m {
+  gap: var(--space-m);
+}
+
+.flex-context {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.gap-xs {
+  gap: var(--space-xs);
+}

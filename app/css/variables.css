@@ -8,9 +8,17 @@
   --color-gray: hsl(0, 0%, 50%);
   --color-gray-dark: hsl(0, 0%, 20%);
   --ff-sans: "DM sans", sans-serif;
+  --space-15: 1.5rem;
+  --space-075: 0.75rem;
+  --font-size-1: 1rem;
+  --font-weight-700: 700;
 
   /* Sementic Tokens */
   --color-fg: var(--color-white);
   --color-bg: var(--color-gray-dark);
   --color-title: var(--color-gray-dark);
+  --space-m: var(--space-15);
+  --space-xs: var(--space-075);
+  --font-size-base: var(--font-size-1);
+  --font-weight-bold: var(--font-weight-700);
 }
