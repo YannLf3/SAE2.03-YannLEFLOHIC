@@ -88,3 +88,12 @@ function readMovieDetailController(){
     }
     return $movie; // Retourne les détails du film
 }
+
+function readMoviesGroupedByCategoryController(){
+    $movies = getMoviesGroupedByCategory();
+
+    if ($movies === false || $movies === null) {
+        return false; // Indique une erreur dans le traitement de la requête
+    }
+    return $movies;
+}

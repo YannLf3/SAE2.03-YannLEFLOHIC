@@ -20,6 +20,9 @@
   --radius-l: 1.5rem;
   --shadow-elevated: 0 1.5rem 3rem hsla(253, 69%, 8%, 0.32);
   --z-index-modal: 20;
+  --space-l: 2rem;
+  --space-s: 1rem;
+  --space-xs: 0.5rem;
 
   /* Sementic Tokens */
   --color-fg: var(--color-white);

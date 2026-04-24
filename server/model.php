@@ -83,3 +83,45 @@ function getMovieDetails($id){
     $res = $stmt->fetch(PDO::FETCH_OBJ);
     return $res; // Retourne les détails du film avec le nom de la catégorie
 }
+
+function getMoviesGroupedByCategory(){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+
+    // On récupère chaque film avec le nom de sa catégorie
+    $sql = "SELECT m.id, m.name, m.image, c.name AS category_name 
+            FROM SAE203_Movie m
+            JOIN SAE203_Category c ON m.id_category = c.id
+            ORDER BY c.name, m.name";
+    
+    // Préparation puis exécution de la requête SQL
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+
+    // Résultat sous forme d'objets PHP (un objet par ligne)
+    $movies = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+    // Tableau final : ["NomCategorie" => [film1, film2, ...]]
+    $grouped = [];
+
+    // On parcourt tous les films pour les ranger par catégorie
+    foreach ($movies as $movie) {
+        // Nom de la catégorie du film courant
+        $cat = $movie->category_name;
+
+        // Si la catégorie n'existe pas encore, on l'initialise avec un tableau vide
+        if (!isset($grouped[$cat])) {
+            $grouped[$cat] = [];
+        }
+
+        // On ajoute le film dans le tableau de sa catégorie
+        $grouped[$cat][] = [
+            'id'    => $movie->id,
+            'name'  => $movie->name,
+            'image' => $movie->image
+        ];
+    }
+
+    // On renvoie la structure regroupée par catégorie
+    return $grouped;
+}

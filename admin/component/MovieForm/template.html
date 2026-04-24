@@ -11,7 +11,13 @@
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="release_year">Année de sortie</label>
-      <input type="number" id="release_year" name="release_year" required />
+      <input
+        type="number"
+        step="1"
+        id="release_year"
+        name="release_year"
+        required
+      />
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="image">Image</label>
@@ -19,7 +25,17 @@
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="description">Description</label>
-      <input type="text" id="description" name="description" required />
+      <textarea
+        type="text"
+        id="description"
+        name="description"
+        fieldsizing="content"
+        rows="5"
+        cols="61"
+        resize="none"
+        overflow="auto"
+        required
+      ></textarea>
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="trailer">Trailer</label>
@@ -27,15 +43,28 @@
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="min_age">Âge minimum</label>
-      <input type="number" id="min_age" name="min_age" required />
+      <input
+        type="number"
+        min="0"
+        max="18"
+        step="1"
+        id="min_age"
+        name="min_age"
+        required
+      />
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="length">Durée (en minutes)</label>
-      <input type="number" id="length" name="length" required />
+      <input type="number" min="0" id="length" name="length" required />
     </div>
     <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
       <label for="id_category">Catégorie</label>
-      <select id="id_category" name="id_category" required>
+      <select
+        id="id_category"
+        name="id_category"
+        class="addFilm__form-group--categ"
+        required
+      >
         {{options}}
       </select>
     </div>

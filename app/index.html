@@ -25,7 +25,8 @@
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
 
-      import { Movie } from "./component/Movie/script.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
+
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { DataMovie } from "./data/dataMovie.js";
 
@@ -39,8 +40,9 @@
       };
 
       C.handlerMovies = async function () {
-        let films = await DataMovie.requestMovies();
-        V.renderMovies(films);
+        let filmsParCategorie =
+          await DataMovie.requestMoviesGroupedByCategory();
+        V.renderMovies(filmsParCategorie);
         V.clearMovieDetail();
       };
 
@@ -75,9 +77,9 @@
         header.innerHTML = NavBar.format(hAbout);
       };
 
-      V.renderMovies = function (films) {
+      V.renderMovies = function (filmsParCategorie) {
         let movieList = document.querySelector("#movie-list");
-        movieList.innerHTML = Movie.format(films);
+        movieList.innerHTML = MovieCategory.format(filmsParCategorie);
       };
 
       V.renderMovieDetail = function (movie) {

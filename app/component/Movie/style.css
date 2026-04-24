@@ -5,7 +5,7 @@
 .movie__list {
   width: min(100%, 75rem);
   margin: 0 auto;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .movie__card {
