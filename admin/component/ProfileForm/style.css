@@ -1,0 +1,5 @@
+.profileForm {
+  border: 0.05rem solid var(--color-border);
+  padding: var(--space-lg);
+  margin: var(--space-xl) auto;
+}

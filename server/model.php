@@ -105,7 +105,10 @@ function getMoviesGroupedByCategory(){
     $grouped = [];
 
     // On parcourt tous les films pour les ranger par catégorie
-    foreach ($movies as $movie) {
+    $i = 0;
+    $moviesCount = count($movies);
+    while ($i < $moviesCount) {
+        $movie = $movies[$i];
         // Nom de la catégorie du film courant
         $cat = $movie->category_name;
 
@@ -120,8 +123,30 @@ function getMoviesGroupedByCategory(){
             'name'  => $movie->name,
             'image' => $movie->image
         ];
+
+        $i++;
     }
 
     // On renvoie la structure regroupée par catégorie
     return $grouped;
+}
+
+function addProfile($name, $avatar, $min_age){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+
+    // Requête SQL pour insérer un nouveau profil
+    $sql = "INSERT INTO SAE203_Profile (name, avatar, min_age)
+            VALUES (:name, :avatar, :min_age)";
+
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+
+    // Lie les paramètres à la requête SQL
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':avatar', $avatar);
+    $stmt->bindParam(':min_age', $min_age);
+
+    // Exécute la requête SQL
+    return $stmt->execute();
 }

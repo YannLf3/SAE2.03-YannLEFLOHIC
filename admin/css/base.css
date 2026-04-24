@@ -7,6 +7,7 @@
 
 @import "../component/Log/style.css" layer(components);
 @import "../component/MovieForm/style.css" layer(components);
+@import "../component/ProfileForm/style.css" layer(components);
 
 /* Style appliqué si l'utilisateur tape un nombre négatif */
 input[type="number"]:invalid {

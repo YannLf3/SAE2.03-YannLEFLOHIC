@@ -97,3 +97,23 @@ function readMoviesGroupedByCategoryController(){
     }
     return $movies;
 }
+
+function addProfileController(){
+    $name    = $_REQUEST['name'] ?? null;
+    $avatar  = $_REQUEST['avatar'] ?? ''; // facultatif
+    $min_age = $_REQUEST['min_age'] ?? null;
+
+    // Validation : seuls name et min_age sont obligatoires
+    if ($name === null || $name === '' ||
+        $min_age === null || $min_age === '') {
+        return false;
+    }
+
+    $ok = addProfile($name, $avatar, $min_age);
+
+    if ($ok) {
+        return "Le profil \"$name\" a été ajouté avec succès !";
+    } else {
+        return "Une erreur est survenue lors de l'ajout du profil.";
+    }
+}
