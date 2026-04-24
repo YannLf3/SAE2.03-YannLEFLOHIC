@@ -117,10 +117,15 @@ function getMoviesGroupedByCategory(){
             $grouped[$cat] = [];
         }
 
-        // On ajoute le film dans le tableau de sa catégorie
+        //version simplifiee du film, prête à être envoyée
+        // au front : uniquement les informations utiles pour l'affichage en liste.
+        // Chaque entrée : une carte film dans une catégorie.
         $grouped[$cat][] = [
+            // Identifiant unique du film, pr ouvrir fiche pop up.
             'id'    => $movie->id,
+            // Titre affiché sur la carte ou dans la liste.
             'name'  => $movie->name,
+            // Nom/chemin de l'image d'illustration du film.
             'image' => $movie->image
         ];
 

@@ -6,7 +6,6 @@ let DataMovie = {};
 /**
  * Ajoute un nouveau film via une requête POST au serveur
  * @param {FormData} formData - Les données du formulaire à envoyer
- * @returns {Promise<Object>} La réponse du serveur
  */
 DataMovie.add = async function (formData) {
   // Envoi des données en POST au serveur

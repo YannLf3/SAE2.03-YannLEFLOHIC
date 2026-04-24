@@ -92,7 +92,7 @@
         document.getElementById("movie-list").classList.add("hidden");
         document.documentElement.style.setProperty(
           "--navbar-height",
-          `${navbarHeight}px`,
+          `${navbarHeight}px`, //re vérifier avec prof de css si c'est bien ça qu'il m'avait dit de faire
         );
         navbar?.classList.add("navbar--fixed");
 
@@ -104,6 +104,7 @@
         document
           .getElementById("movie-detail")
           .addEventListener("click", function (e) {
+            //pareil vérifier avec le prof de css voir si c'est qu'il voulait dire
             if (e.target.id === "movie-detail") {
               V.clearMovieDetail();
             }

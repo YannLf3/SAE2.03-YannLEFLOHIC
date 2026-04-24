@@ -19,17 +19,13 @@
 
 .addFilm__form-group input {
   width: 100%;
+  margin-bottom: 0.8rem;
   padding: var(--space-sm) var(--space-md);
   font: inherit;
   border: 0.06rem solid var(--color-border);
   border-radius: var(--radius-sm);
   background-color: var(--color-surface);
   color: var(--color-surface-fg);
-}
-
-.addFilm__form-group input:focus {
-  outline: none;
-  border-color: var(--color-gray);
 }
 
 .addFilm__form-group--categ {
@@ -41,11 +37,6 @@
   background-color: var(--color-surface);
   color: var(--color-surface-fg);
   cursor: pointer;
-}
-
-.addFilm__form-group--categ:focus {
-  outline: none;
-  border-color: var(--color-gray);
 }
 
 .addFilm__submit {

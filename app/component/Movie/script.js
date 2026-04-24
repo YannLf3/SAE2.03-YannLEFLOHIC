@@ -17,6 +17,7 @@ Movie.template = template;
 Movie.format = function (films) {
   // Cas où aucun film n'est disponible
   if (films.length === 0) {
+    // demander au prof si on a le droit de faire ça
     return `<p class="movie__empty font-sans fs-size-base">Aucun film disponible pour le moment.</p>`;
   }
 

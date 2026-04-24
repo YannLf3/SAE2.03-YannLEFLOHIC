@@ -99,7 +99,7 @@ function readMoviesGroupedByCategoryController(){
 }
 
 function addProfileController(){
-    $name    = $_REQUEST['name'] ?? null;
+    $name    = $_REQUEST['name'] ?? null; // les deux ? c'est : prend valeur de gauche si c'est pas nul et si existe sinon valeur de droite : raccourci du isset et $_GET
     $avatar  = $_REQUEST['avatar'] ?? ''; // facultatif
     $min_age = $_REQUEST['min_age'] ?? null;
 
@@ -112,7 +112,7 @@ function addProfileController(){
     $ok = addProfile($name, $avatar, $min_age);
 
     if ($ok) {
-        return "Le profil \"$name\" a été ajouté avec succès !";
+        return "Le profil $name a été ajouté avec succès !";
     } else {
         return "Une erreur est survenue lors de l'ajout du profil.";
     }
