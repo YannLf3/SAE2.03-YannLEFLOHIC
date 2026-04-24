@@ -21,20 +21,42 @@ DataMovie.requestMovies = async function () {
   return data;
 };
 
-DataMovie.requestMovieDetail = async function (id) {
-  let answer = await fetch(
-    HOST_URL + "/server/script.php?todo=readmoviedetail&id=" + id,
-  );
+DataMovie.requestCategories = async function () {
+  let answer = await fetch(HOST_URL + "/server/script.php?todo=readcategories");
   let data = await answer.json();
 
-  if (data && data.image) {
-    data.image = HOST_URL + "/server/images/" + data.image;
-  }
-
-  data.titre = data.name;
-  data.category = data.category ?? data.id_category ?? "Non renseigné";
-
   return data;
+};
+
+DataMovie.requestMovieDetail = async function (id) {
+  try {
+    let answer = await fetch(
+      HOST_URL + "/server/script.php?todo=readmoviedetail&id=" + id,
+    );
+
+    // Si le serveur répond autre chose que 200, on considère que c'est une erreur
+    if (!answer.ok) {
+      return null;
+    }
+
+    let data = await answer.json();
+
+    if (!data || data === false) {
+      return null;
+    }
+
+    if (data.image) {
+      data.image = HOST_URL + "/server/images/" + data.image;
+    }
+
+    data.titre = data.name;
+    data.category = data.category ?? data.id_category ?? "Non renseigné";
+
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du film :", error);
+    return null;
+  }
 };
 
 export { DataMovie };

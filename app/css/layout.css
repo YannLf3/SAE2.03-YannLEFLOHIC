@@ -17,3 +17,20 @@
 .gap-xs {
   gap: var(--space-xs);
 }
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* Masquer la liste quand la classe hidden est présente */
+.movie__list.hidden {
+  display: none;
+}

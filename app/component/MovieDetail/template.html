@@ -1,24 +1,25 @@
-<div class="movie-detail">
-  <div class="movie-detail__media">
+<div class="movie__detail">
+  <button class="movie__detail__close" aria-label="Fermer">&times;</button>
+  <div class="movie__detail__media">
     <img
-      class="movie-detail__poster"
+      class="movie__detail__poster"
       src="{{image}}"
       alt="Poster de {{name}}"
     />
   </div>
-  <div class="movie-detail__content">
-    <p class="movie-detail__eyebrow">Fiche film</p>
-    <h2 class="movie-detail__title">{{name}}</h2>
-    <p class="movie-detail__meta movie-detail__meta--accent">
+  <div class="movie__detail__content">
+    <p class="movie__detail__eyebrow">Fiche film</p>
+    <h2 class="movie__detail__title">{{name}}</h2>
+    <p class="movie__detail__meta movie__detail__meta--accent">
       Genre: {{category}}
     </p>
-    <p class="movie-detail__meta">Réalisateur: {{director}}</p>
-    <p class="movie-detail__meta">Année de sortie: {{releaseYear}}</p>
-    <p class="movie-detail__description">{{description}}</p>
-    <p class="movie-detail__meta">Âge minimal: {{min_age}}</p>
-    <div class="movie-detail__trailer">
+    <p class="movie__detail__meta">Réalisateur: {{director}}</p>
+    <p class="movie__detail__meta">Année de sortie: {{releaseYear}}</p>
+    <p class="movie__detail__description">{{description}}</p>
+    <p class="movie__detail__meta">Âge minimal: {{min_age}}</p>
+    <div class="movie__detail__trailer">
       <iframe
-        class="movie-detail__video"
+        class="movie__detail__video"
         src="{{trailer}}"
         title="Trailer de {{name}}"
         allowfullscreen

@@ -1,4 +1,4 @@
-@layer reset, variables, utilities, layout, components;
+@layer reset, variables, components, utilities, layout;
 
 @import "./reset.css" layer(reset);
 @import "./variables.css" layer(variables);
@@ -9,6 +9,6 @@
 @import "../component/Movie/style.css" layer(components);
 @import "../component/MovieDetail/style.css" layer(components);
 
-#content {
+body {
   position: relative;
 }

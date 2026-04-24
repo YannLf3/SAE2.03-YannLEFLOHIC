@@ -5,15 +5,22 @@ let MovieDetail = {};
 MovieDetail.template = template;
 
 MovieDetail.format = function (movie) {
+  if (!movie) {
+    return `<p class="movie__empty font-sans fs-size-base">Film introuvable.</p>`;
+  }
+
   let html = MovieDetail.template;
-  html = html.replace("{{name}}", movie.name);
-  html = html.replace("{{image}}", movie.image);
-  html = html.replace("{{description}}", movie.description);
-  html = html.replace("{{category}}", movie.category);
-  html = html.replace("{{director}}", movie.director);
-  html = html.replace("{{releaseYear}}", movie.releaseYear ?? movie.year ?? "");
-  html = html.replace("{{min_age}}", movie.min_age);
-  html = html.replace("{{trailer}}", movie.trailer);
+  html = html.replaceAll("{{name}}", movie.name);
+  html = html.replaceAll("{{image}}", movie.image);
+  html = html.replaceAll("{{description}}", movie.description);
+  html = html.replaceAll("{{category}}", movie.category);
+  html = html.replaceAll("{{director}}", movie.director);
+  html = html.replaceAll(
+    "{{releaseYear}}",
+    movie.releaseYear ?? movie.year ?? "",
+  );
+  html = html.replaceAll("{{min_age}}", movie.min_age);
+  html = html.replaceAll("{{trailer}}", movie.trailer);
   return html;
 };
 

@@ -30,6 +30,14 @@ function readMoviesController(){
     return $movies;
 }
 
+function readCategoriesController(){
+    $categories = getAllCategories();
+    if ($categories === false || $categories === null) {
+        return false; // Indique une erreur dans le traitement de la requête
+    }
+    return $categories;
+}
+
 function addMovieController(){
     // Le front admin envoie "title" et "release_year".
     // On garde aussi "name" et "year" pour compatibilite eventuelle.
@@ -41,6 +49,8 @@ function addMovieController(){
     $trailer = $_REQUEST['trailer'] ?? null;
     $min_age = $_REQUEST['min_age'] ?? null;
     $length = $_REQUEST['length'] ?? null;
+    $id_category = $_REQUEST['id_category'] ?? null;
+
 
     if ($name === null || $name === '' ||
         $image === null || $image === '' ||
@@ -49,11 +59,14 @@ function addMovieController(){
         $director === null || $director === '' ||
         $trailer === null || $trailer === '' ||
         $min_age === null || $min_age === '' ||
-        $length === null || $length === '') {
-        return "Des paramètres requis sont manquants."; // Indique que des paramètres requis sont manquants
+        $length === null || $length === '' ||
+        $id_category === null || $id_category === '') {
+            // Retourne deux choses : False pour indiquer une erreur, et un message d'erreur pour expliquer ce qui s'est mal passé
+            return false; // Indique que les paramètres sont manquants ou invalides
+            return "Tous les champs sont obligatoires et doivent être valides."; // Message d'erreur pour expliquer que les paramètres sont manquants ou invalides
     }
 
-    $ok = addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length);
+    $ok = addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length, $id_category);
 
     if ($ok !=0){
         return "Le film $name a été ajouté avec succès !";

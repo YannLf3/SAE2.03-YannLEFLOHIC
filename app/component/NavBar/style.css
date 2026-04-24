@@ -1,5 +1,7 @@
 .navbar {
   display: flex;
+  width: 100%;
+  box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 3rem;
@@ -18,4 +20,11 @@
       --_offset: 0.5rem;
     }
   }
+}
+
+.navbar.navbar--fixed {
+  z-index: 25;
+  position: fixed;
+  top: 0;
+  left: 0;
 }

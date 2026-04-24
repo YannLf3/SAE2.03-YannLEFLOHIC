@@ -33,11 +33,25 @@ function getAllMovies(){
     return $res; // Retourne les résultats
 }
 
-function addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length){
+function getAllCategories(){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    // Requête SQL pour récupérer le menu avec des paramètres
+    $sql = "select id, name from SAE203_Category";
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+    // Exécute la requête SQL
+    $stmt->execute();
+    // Récupère les résultats de la requête sous forme d'objets
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $res; // Retourne les résultats
+}
+
+function addMovie($name, $image, $year, $description, $director, $trailer, $min_age, $length, $id_category){
     // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     // Requête SQL pour insérer un nouveau film avec des paramètres
-    $sql = "INSERT INTO SAE203_Movie (name, image, year, description, director, trailer, min_age, length) VALUES (:name, :image, :year, :description, :director, :trailer, :min_age, :length)";
+    $sql = "INSERT INTO SAE203_Movie (name, image, year, description, director, trailer, min_age, length, id_category) VALUES (:name, :image, :year, :description, :director, :trailer, :min_age, :length, :id_category)";
     // Prépare la requête SQL
     $stmt = $cnx->prepare($sql);
     // Lie les paramètres à la requête SQL
@@ -49,8 +63,7 @@ function addMovie($name, $image, $year, $description, $director, $trailer, $min_
     $stmt->bindParam(':trailer', $trailer);
     $stmt->bindParam(':min_age', $min_age);
     $stmt->bindParam(':length', $length);
-    // Récupère le nombre de lignes affectées par l'insertion
-    $affectedRows = $stmt->rowCount();
+    $stmt->bindParam(':id_category', $id_category);
     // Exécute la requête SQL
     return $stmt->execute(); // Retourne true si l'insertion a réussi, sinon false
 }
@@ -58,8 +71,8 @@ function addMovie($name, $image, $year, $description, $director, $trailer, $min_
 function getMovieDetails($id){
     // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    // Requête SQL pour récupérer les détails d'un film avec un paramètre
-    $sql = "SELECT * FROM SAE203_Movie WHERE id = :id";
+    // Requête SQL pour récupérer les détails d'un film avec un JOIN pour obtenir le nom de la catégorie
+    $sql = "SELECT SAE203_Movie.*, SAE203_Category.name as category FROM SAE203_Movie LEFT JOIN SAE203_Category ON SAE203_Movie.id_category = SAE203_Category.id WHERE SAE203_Movie.id = :id";
     // Prépare la requête SQL
     $stmt = $cnx->prepare($sql);
     // Lie le paramètre à la requête SQL
@@ -68,5 +81,5 @@ function getMovieDetails($id){
     $stmt->execute();
     // Récupère les résultats de la requête sous forme d'objets
     $res = $stmt->fetch(PDO::FETCH_OBJ);
-    return $res; // Retourne les détails du film
+    return $res; // Retourne les détails du film avec le nom de la catégorie
 }

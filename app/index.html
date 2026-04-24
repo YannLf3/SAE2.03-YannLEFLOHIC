@@ -16,7 +16,10 @@
           <!-- Les cartes de films movie-card -->
         </div>
       </div>
-      <div id="movie-detail" class="movie__detail"></div>
+      <div
+        id="movie-detail"
+        class="movie__cards-detail flex-context flex-column align-center gap-m"
+      ></div>
     </section>
 
     <script type="module">
@@ -43,6 +46,12 @@
 
       C.handlerMovieDetail = async function (id) {
         let film = await DataMovie.requestMovieDetail(id);
+
+        if (!film) {
+          V.renderLog("Erreur lors de la récupération des détails du film.");
+          return;
+        }
+
         V.renderMovieDetail(film);
       };
 
@@ -74,11 +83,40 @@
       V.renderMovieDetail = function (movie) {
         let movieDetail = document.querySelector("#movie-detail");
         movieDetail.innerHTML = MovieDetail.format(movie);
+        let navbar = document.querySelector(".navbar");
+        let navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+        document.getElementById("movie-detail").classList.add("active");
+        document.getElementById("movie-list").classList.add("hidden");
+        document.documentElement.style.setProperty(
+          "--navbar-height",
+          `${navbarHeight}px`,
+        );
+        navbar?.classList.add("navbar--fixed");
+
+        // Bouton fermer
+        let closeBtn = document.querySelector(".movie__detail__close");
+        closeBtn.addEventListener("click", V.clearMovieDetail);
+
+        // Fermer en cliquant en dehors de la popup (sur le backdrop)
+        document
+          .getElementById("movie-detail")
+          .addEventListener("click", function (e) {
+            if (e.target.id === "movie-detail") {
+              V.clearMovieDetail();
+            }
+          });
       };
 
       V.clearMovieDetail = function () {
         let movieDetail = document.querySelector("#movie-detail");
         movieDetail.innerHTML = "";
+        let navbar = document.querySelector(".navbar");
+
+        document.getElementById("movie-detail").classList.remove("active");
+        document.getElementById("movie-list").classList.remove("hidden");
+        document.documentElement.style.setProperty("--navbar-height", "0px");
+        navbar?.classList.remove("navbar--fixed");
       };
 
       C.start(); // Démarre l'application

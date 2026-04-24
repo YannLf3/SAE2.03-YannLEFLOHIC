@@ -5,7 +5,7 @@ let NavBar = {};
 
 NavBar.format = function (hAbout, hHome) {
   let html = template;
-  html = html.replace("{{hAbout}}", hAbout);
+  html = html.replaceAll("{{hAbout}}", hAbout);
   return html;
 };
 
