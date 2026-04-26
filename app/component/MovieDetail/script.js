@@ -6,7 +6,7 @@ MovieDetail.template = template;
 
 MovieDetail.format = function (movie) {
   if (!movie) {
-    return `<p class="movie__empty font-sans fs-size-base">Film introuvable.</p>`;
+    return "";
   }
 
   let html = MovieDetail.template;

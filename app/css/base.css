@@ -9,6 +9,7 @@
 @import "../component/Movie/style.css" layer(components);
 @import "../component/MovieDetail/style.css" layer(components);
 @import "../component/MovieCategory/style.css" layer(components);
+@import "../component/Error/style.css" layer(components);
 
 body {
   position: relative;

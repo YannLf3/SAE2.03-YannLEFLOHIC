@@ -117,3 +117,12 @@ function addProfileController(){
         return "Une erreur est survenue lors de l'ajout du profil.";
     }
 }
+
+function readProfilesController(){
+    $profiles = getAllProfiles();
+
+    if ($profiles === false || $profiles === null) {
+        return false; // Indique une erreur dans le traitement de la requête
+    }
+    return $profiles;
+}

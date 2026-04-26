@@ -29,6 +29,8 @@
 
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { DataMovie } from "./data/dataMovie.js";
+      import { Notif } from "./component/Error/script.js";
+      import { ProfileSelector } from "./component/ProfileSelector/script.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -42,6 +44,10 @@
       C.handlerMovies = async function () {
         let filmsParCategorie =
           await DataMovie.requestMoviesGroupedByCategory();
+        let isEmpty = Object.keys(filmsParCategorie).length === 0;
+        if (isEmpty) {
+          Notif.show("Aucun film disponible pour le moment.");
+        }
         V.renderMovies(filmsParCategorie);
         V.clearMovieDetail();
       };
@@ -50,7 +56,7 @@
         let film = await DataMovie.requestMovieDetail(id);
 
         if (!film) {
-          V.renderLog("Erreur lors de la récupération des détails du film.");
+          Notif.show("Impossible de charger les détails de ce film.");
           return;
         }
 
