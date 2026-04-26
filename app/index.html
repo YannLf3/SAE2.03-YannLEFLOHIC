@@ -8,6 +8,7 @@
   </head>
 
   <body>
+    <div id="profile-selector"></div>
     <header id="header"></header>
 
     <section id="content">
@@ -31,11 +32,15 @@
       import { DataMovie } from "./data/dataMovie.js";
       import { Notif } from "./component/Error/script.js";
       import { ProfileSelector } from "./component/ProfileSelector/script.js";
+      import { DataProfile } from "./data/dataProfile.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
+
+      C.activeProfileId = null;
+      C.activeProfileName = null;
 
       C.handlerAbout = async function () {
         await C.handlerMovies();
@@ -63,9 +68,27 @@
         V.renderMovieDetail(film);
       };
 
-      C.start = function () {
-        V.renderNavBar("C.handlerAbout()");
-        C.handlerMovies(); // Affiche les films au chargement
+      C.handlerSelectProfile = function (id, name) {
+        C.activeProfileId = id;
+        C.activeProfileName = name;
+
+        V.hideProfileSelector(); // on cache l'overlay
+        V.renderNavBar("C.handlerAbout()", name); // navbar avec le nom du profil
+        C.handlerMovies(); // on charge les films
+      };
+
+      // Appelé quand on clique sur "Changer" dans la navbar
+      C.handlerSwitchProfile = async function () {
+        C.activeProfileId = null;
+        C.activeProfileName = null;
+
+        let profiles = await DataProfile.read();
+        V.renderProfileSelector(profiles); // on réaffiche l'overlay
+      };
+
+      C.start = async function () {
+        let profiles = await DataProfile.read();
+        V.renderProfileSelector(profiles);
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -80,12 +103,22 @@
        */
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout);
+        header.innerHTML = NavBar.format(hAbout, C.activeProfileName);
       };
 
       V.renderMovies = function (filmsParCategorie) {
         let movieList = document.querySelector("#movie-list");
         movieList.innerHTML = MovieCategory.format(filmsParCategorie);
+      };
+
+      V.renderProfileSelector = function (profiles) {
+        let overlay = document.querySelector("#profile-selector");
+        overlay.innerHTML = ProfileSelector.format(profiles);
+      };
+
+      V.hideProfileSelector = function () {
+        let overlay = document.querySelector("#profile-selector");
+        overlay.innerHTML = "";
       };
 
       V.renderMovieDetail = function (movie) {
@@ -106,12 +139,12 @@
         let closeBtn = document.querySelector(".movie__detail__close");
         closeBtn.addEventListener("click", V.clearMovieDetail);
 
-        // Fermer en cliquant en dehors de la popup (sur le backdrop)
+        // Fermer en cliquant en dehors de la popup
         document
           .getElementById("movie-detail")
-          .addEventListener("click", function (e) {
+          .addEventListener("click", function (truc) {
             //pareil vérifier avec le prof de css voir si c'est qu'il voulait dire
-            if (e.target.id === "movie-detail") {
+            if (truc.target.id === "movie-detail") {
               V.clearMovieDetail();
             }
           });

@@ -23,6 +23,16 @@
   --space-l: 2rem;
   --space-s: 1rem;
   --space-xs: 0.5rem;
+  --space-2xs: 0.5rem;
+  --font-size-title: 2rem;
+  --font-size-profile-name: 0.9rem;
+  --font-size-profile-switch: 0.75rem;
+  --color-profile-overlay: hsla(0, 0%, 0%, 0.9);
+  --color-profile-card-muted: hsl(0, 0%, 67%);
+  --color-profile-avatar-bg: hsl(0, 0%, 27%);
+  --color-border-light: hsla(0, 0%, 100%, 0.4);
+  --color-transparent: transparent;
+  --z-index-profile-overlay: 100;
 
   /* Sementic Tokens */
   --color-fg: var(--color-white);

@@ -1,0 +1,13 @@
+<!-- TEMPLATE_CARD -->
+<div
+  class="profile-card"
+  data-id="{{id}}"
+  data-name="{{name}}"
+  onclick="C.handlerSelectProfile(this)"
+>
+  <div class="profile-card__avatar">{{avatar}}</div>
+  <p class="profile-card__name">{{name}}</p>
+</div>
+
+<!-- les data- sont là pour éviter le problème avec les guillemets, j'ai pas réussi autrement
+ voir avec prof (pour le moment gemini m'a recommandé ce système : implique une légère modif dans le handler du index)-->

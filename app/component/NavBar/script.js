@@ -3,9 +3,11 @@ let template = await templateFile.text();
 
 let NavBar = {};
 
-NavBar.format = function (hAbout, hHome) {
+// On ajoute activeProfileName en deuxième paramètre
+NavBar.format = function (hAbout, activeProfileName) {
   let html = template;
   html = html.replaceAll("{{hAbout}}", hAbout);
+  html = html.replaceAll("{{activeProfileName}}", activeProfileName);
   return html;
 };
 
