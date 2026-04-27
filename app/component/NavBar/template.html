@@ -2,7 +2,10 @@
   <ul class="navbar__list">
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
   </ul>
-  <div class="navbar__active-profile" onclick="C.handlerSwitchProfile()">
+  <div
+    class="navbar__active-profile flex-context align-center"
+    onclick="C.handlerSwitchProfile()"
+  >
     <span class="navbar__active-profile-name">{{activeProfileName}}</span>
     <span class="navbar__active-profile-switch">Changer</span>
   </div>

@@ -1,12 +1,16 @@
 <!-- TEMPLATE_CARD -->
 <div
-  class="profile-card"
+  class="profile-card flex-context flex-column align-center"
   data-id="{{id}}"
   data-name="{{name}}"
-  onclick="C.handlerSelectProfile(this)"
+  onclick="C.handlerSelectProfile(`{{id}}`, `{{name}}`)"
 >
-  <div class="profile-card__avatar">{{avatar}}</div>
-  <p class="profile-card__name">{{name}}</p>
+  <div
+    class="profile-card__avatar flex-context align-center justify-center font-size-title"
+  >
+    {{avatar}}
+  </div>
+  <p class="profile-card__name font-sans font-size-name">{{name}}</p>
 </div>
 
 <!-- les data- sont là pour éviter le problème avec les guillemets, j'ai pas réussi autrement

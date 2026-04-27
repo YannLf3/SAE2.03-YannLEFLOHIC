@@ -9,3 +9,11 @@
 .font-weight-bold {
   font-weight: var(--font-weight-bold);
 }
+
+.font-size-title {
+  font-size: var(--font-size-title);
+}
+
+.font-size-name {
+  font-size: var(--font-size-profile-name);
+}

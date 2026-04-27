@@ -87,7 +87,7 @@
       };
 
       C.start = async function () {
-        let profiles = await DataProfile.read();
+        let profiles = await DataProfile.read(); // obligé de mettre async pour pouvoir mettre await sinon problème, ça ne lit pas et rien ne s'affiche
         V.renderProfileSelector(profiles);
       };
 
