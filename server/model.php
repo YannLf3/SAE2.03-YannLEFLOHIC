@@ -196,3 +196,32 @@ function modifyProfile($id, $name, $avatar, $min_age){
     // Exécute la requête SQL
     return $stmt->execute();
 }
+
+function addFavorite($id_profile, $id_movie){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+
+    $sql = "INSERT INTO SAE203_Favorite (id_profile, id_movie)
+            VALUES (:id_profile, :id_movie)";
+
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_profile', $id_profile, PDO::PARAM_INT);
+    $stmt->bindParam(':id_movie', $id_movie, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
+
+function getFavoritesByProfile($id_profile){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+
+    $sql = "SELECT m.id, m.name, m.image
+            FROM SAE203_Favorite f
+            JOIN SAE203_Movie m ON f.id_movie = m.id
+            WHERE f.id_profile = :id_profile
+            ORDER BY m.name";
+
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_profile', $id_profile, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}

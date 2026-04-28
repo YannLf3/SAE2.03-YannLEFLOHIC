@@ -152,4 +152,56 @@ function modifyProfileController(){
         return "Une erreur est survenue lors de la modification du profil.";
     }
 }
+
+function addFavoriteController(){
+    $id_profile = $_REQUEST['id_profile'] ?? null;
+    $id_movie = $_REQUEST['id_movie'] ?? null;
+
+    if ($id_profile === null || $id_profile === '' ||
+        $id_movie === null || $id_movie === '') {
+        return false;
+    }
+
+    // Empêche les doublons en vérifiant si le film est déjà favori.
+    $favorites = getFavoritesByProfile($id_profile);
+    $alreadyFavorite = false;
+
+    $i = 0;
+    $count = count($favorites);
+    while ($i < $count) {
+        if ((string) $favorites[$i]->id === (string) $id_movie) {
+            $alreadyFavorite = true;
+            break;
+        }
+        $i++;
+    }
+
+    if ($alreadyFavorite) {
+        return "Ce film est déjà dans les favoris.";
+    }
+
+    $ok = addFavorite($id_profile, $id_movie);
+
+    if ($ok) {
+        return "Le film a été ajouté à vos favoris.";
+    }
+
+    return "Une erreur est survenue lors de l'ajout aux favoris.";
+}
+
+function readFavoritesController(){
+    $id_profile = $_REQUEST['id_profile'] ?? null;
+
+    if ($id_profile === null || $id_profile === '') {
+        return false;
+    }
+
+    $favorites = getFavoritesByProfile($id_profile);
+
+    if ($favorites === false || $favorites === null) {
+        return false;
+    }
+
+    return $favorites;
+}
 ?>
