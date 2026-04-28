@@ -10,6 +10,7 @@
     <section id="log"></section>
     <section id="movieForm"></section>
     <section id="profileForm"></section>
+    <section id="modifyProfileForm"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
@@ -18,14 +19,17 @@
       import { ProfileForm } from "./component/ProfileForm/script.js";
       import { DataMovie } from "./data/dataMovie.js";
       import { DataProfile } from "./data/dataProfile.js";
+      import { ModifyProfileForm } from "./component/ModifyProfileForm/script.js";
 
       window.C = {};
 
       C.handlerAddMovie = async function () {
         let form = document.querySelector(".addFilm__form");
-        let fd = new FormData(form);
-        let res = await DataMovie.add(fd);
-        V.renderLog(res);
+        if (form.reportValidity() == true) {
+          let fd = new FormData(form);
+          let res = await DataMovie.add(fd);
+          V.renderLog(res);
+        }
       };
 
       C.handlerAddProfile = async function () {
@@ -35,11 +39,20 @@
         V.renderLog(res);
       };
 
+      C.handlerModifyProfile = async function () {
+        let form = document.querySelector(".modifyProfile__form");
+        let fd = new FormData(form);
+        let res = await DataProfile.modify(fd);
+        V.renderLog(res);
+      };
+
       C.start = async function () {
         V.renderLog("Démarrage de l'application");
         let categories = await DataMovie.requestCategories();
+        let profiles = await DataProfile.read();
         V.renderMovieForm("C.handlerAddMovie()", categories);
         V.renderProfileForm("C.handlerAddProfile()");
+        V.renderModifyProfileForm("C.handlerModifyProfile()", profiles);
       };
 
       window.V = {};
@@ -57,6 +70,11 @@
       V.renderProfileForm = function (handler) {
         let content = document.querySelector("#profileForm");
         content.innerHTML = ProfileForm.format(handler);
+      };
+
+      V.renderModifyProfileForm = function (handler, profiles) {
+        let content = document.querySelector("#modifyProfileForm");
+        content.innerHTML = ModifyProfileForm.format(handler, profiles);
       };
 
       C.start();

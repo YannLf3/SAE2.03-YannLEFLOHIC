@@ -7,10 +7,8 @@ Notif.show = function (message) {
   let content = document.querySelector("#error");
   content.innerHTML = template.replaceAll("{{message}}", message);
 
-  let closeBtn = content.querySelector(".error-popup__close");
-  closeBtn.addEventListener("click", Notif.hide);
-
-  setTimeout(Notif.hide, 4000);
+  let popup = content.querySelector(".error-popup");
+  popup.classList.add("error-popup--visible");
 };
 
 Notif.hide = function () {

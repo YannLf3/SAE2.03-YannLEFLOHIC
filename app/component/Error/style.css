@@ -1,14 +1,11 @@
 /* Le conteneur invisible qui positionne la popup */
 .error-popup-container {
   position: fixed; /* Reste à l'écran même en scrollant */
-  bottom: var(--space-m); /* Collé en bas */
-  left: 50%;
-  transform: translateX(-50%); /* Centré horizontalement */
   z-index: calc(
     var(--z-index-modal) + 10
   ); /* Au-dessus de tout, même des z index modal */
   width: min(90vw, 26rem); /* 90% de l'écran mobile */
-  pointer-events: none; /* Le conteneur lui-même n'intercepte pas les clics */
+  pointer-events: none;
 }
 
 /* La popup visible */
@@ -21,14 +18,7 @@
   color: var(--color-white);
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-elevated);
-  pointer-events: all; /* La popup elle, intercepte les clics (contrairement au conteneur) */
-
-  /* État : invisible et légèrement en bas */
-  opacity: 0;
-  transform: translateY(1rem);
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease; /* Animation douce */
+  pointer-events: all;
 }
 
 /* Quand on ajoute cette classe via JS → la popup apparaît */

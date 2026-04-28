@@ -77,6 +77,8 @@ function addMovieController(){
 
 function readMovieDetailController(){
     //lit l'identifiant du film dans $_REQUEST et vérifie qu'il est présent et valide
+    // Si 'id' n'est pas envoyé dans la requête, on met null à la place.
+    // Équivalent à : isset($_REQUEST['id']) ? $_REQUEST['id'] : null
     $id = $_REQUEST['id'] ?? null;
     //appelle getMovieDetails($id) et retourne false si le film n'existe pas ou si une erreur est survenue, sinon retourne les détails du film
     if ($id === null || $id === '') {
@@ -100,9 +102,10 @@ function readMoviesGroupedByCategoryController(){
 }
 
 function addProfileController(){
-    $name    = $_REQUEST['name'] ?? null; // les deux ? c'est : prend valeur de gauche si c'est pas nul et si existe sinon valeur de droite : raccourci du isset et $_GET
-    $avatar  = $_REQUEST['avatar'] ?? ''; // facultatif
-    $min_age = $_REQUEST['min_age'] ?? null;
+    // '??' signifie : prends la valeur de gauche si elle existe, sinon celle de droite.
+    $name    = $_REQUEST['name'] ?? null; // champ obligatoire
+    $avatar  = $_REQUEST['avatar'] ?? '';  // champ facultatif
+    $min_age = $_REQUEST['min_age'] ?? null; // champ obligatoire
 
     // Validation : seuls name et min_age sont obligatoires
     if ($name === null || $name === '' ||
@@ -127,3 +130,26 @@ function readProfilesController(){
     }
     return $profiles;
 }
+
+function modifyProfileController(){
+    // On récupère les champs envoyés par le client ; si un champ manque, on met null.
+    $id = $_REQUEST['id'] ?? null;
+    $name = $_REQUEST['name'] ?? null;
+    $avatar = $_REQUEST['avatar'] ?? null;
+    $min_age = $_REQUEST['min_age'] ?? null;
+
+    if ($id === null || $id === '' ||
+        $name === null || $name === '' ||
+        $min_age === null || $min_age === '') {
+        return false; // Indique que les paramètres sont manquants ou invalides
+    }
+
+    $ok = modifyProfile($id, $name, $avatar, $min_age);
+
+    if ($ok) {
+        return "Le profil a été modifié avec succès !";
+    } else {
+        return "Une erreur est survenue lors de la modification du profil.";
+    }
+}
+?>

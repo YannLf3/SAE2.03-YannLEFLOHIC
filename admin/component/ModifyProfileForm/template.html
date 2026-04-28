@@ -1,0 +1,46 @@
+<div class="modifyProfile">
+  <h2 class="modifyProfile__title fs-size-13">Modifier un profil</h2>
+  <form class="modifyProfile__form flex-context flex-col gap-md">
+    <div
+      class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+    >
+      <label for="id">Profil</label>
+      <select id="id" name="id" class="modifyProfile_form-group--id" required>
+        {{options}}
+      </select>
+      <div
+        class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+      >
+        <label for="name">Nom du profil</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div
+        class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+      >
+        <label for="min_age">Âge minimum</label>
+        <input
+          type="number"
+          min="0"
+          max="18"
+          step="1"
+          id="min_age"
+          name="min_age"
+          required
+        />
+      </div>
+      <div
+        class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+      >
+        <label for="avatar">Avatar</label>
+        <input type="text" id="avatar" name="avatar" />
+      </div>
+    </div>
+    <input
+      onclick="{{handler}}"
+      type="button"
+      value="Modify"
+      name="todo"
+      class="modifyProfile__submit fw-bold"
+    />
+  </form>
+</div>

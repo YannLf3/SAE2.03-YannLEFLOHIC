@@ -175,3 +175,24 @@ function getAllProfiles(){
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
     return $res; // Retourne les profils
 }
+
+function modifyProfile($id, $name, $avatar, $min_age){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+
+    // Requête SQL pour modifier un profil existant
+    $sql = "REPLACE INTO SAE203_Profile (id, name, avatar, min_age)
+            VALUES (:id, :name, :avatar, :min_age)";
+
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+
+    // Lie les paramètres à la requête SQL
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':avatar', $avatar);
+    $stmt->bindParam(':min_age', $min_age);
+
+    // Exécute la requête SQL
+    return $stmt->execute();
+}

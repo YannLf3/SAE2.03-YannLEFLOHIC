@@ -28,6 +28,8 @@ ProfileSelector.format = function (profiles) {
     card = card.replaceAll("{{id}}", p.id);
     card = card.replaceAll("{{name}}", p.name);
     card = card.replaceAll("{{avatar}}", avatarContent);
+    card = card.replaceAll("{{min_age}}", p.min_age);
+
     profilesHTML += card;
   }
 

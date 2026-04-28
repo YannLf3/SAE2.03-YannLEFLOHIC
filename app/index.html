@@ -12,6 +12,7 @@
     <header id="header"></header>
 
     <section id="content">
+      <div id="error"></div>
       <div class="movie">
         <div id="movie-list" class="movie__list grid-context gap-m">
           <!-- Les cartes de films movie-card -->
@@ -47,10 +48,15 @@
       };
 
       C.handlerMovies = async function () {
+        let age = Number(C.activeProfileMinAge) || 0; // Utilise l'âge minimum du profil actif ou 0 si aucun profil n'est actif, Number() sinon le site ne le détecte pas comme un nombre et ça foire pour les films
         let filmsParCategorie =
-          await DataMovie.requestMoviesGroupedByCategory();
+          await DataMovie.requestMoviesGroupedByCategory(age);
+        console.log("Age du profil:", age); //console log pour comprendre pourquoi le mess d'erreur pas affiché
+        console.log("Films par catégorie:", filmsParCategorie);
         let isEmpty = Object.keys(filmsParCategorie).length === 0;
+        console.log("Aucun film ?", isEmpty);
         if (isEmpty) {
+          console.log("Affichage message d'absence de film");
           Notif.show("Aucun film disponible pour le moment.");
         }
         V.renderMovies(filmsParCategorie);
@@ -68,12 +74,14 @@
         V.renderMovieDetail(film);
       };
 
-      C.handlerSelectProfile = function (id, name) {
-        C.activeProfileId = id;
-        C.activeProfileName = name;
+      C.handlerSelectProfile = function (element) {
+        // `element` est la carte cliquée, reçue via `this` depuis le template.
+        C.activeProfileId = element.dataset.id;
+        C.activeProfileName = element.dataset.name;
+        C.activeProfileMinAge = element.dataset.minAge; // Initialisation de l'âge minimum du profil actif
 
         V.hideProfileSelector(); // on cache l'overlay
-        V.renderNavBar("C.handlerAbout()", name); // navbar avec le nom du profil
+        V.renderNavBar("C.handlerAbout()", C.activeProfileName); // navbar avec le nom du profil
         C.handlerMovies(); // on charge les films
       };
 
@@ -81,6 +89,7 @@
       C.handlerSwitchProfile = async function () {
         C.activeProfileId = null;
         C.activeProfileName = null;
+        C.activeProfileMinAge = null; // Réinitialisation de l'âge minimum du profil actif
 
         let profiles = await DataProfile.read();
         V.renderProfileSelector(profiles); // on réaffiche l'overlay

@@ -6,7 +6,7 @@
   font-family: Courier, monospace;
 }
 
-.fs-size-13 label {
+.fs-size-13 {
   font-size: var(--fs-size-13);
 }
 

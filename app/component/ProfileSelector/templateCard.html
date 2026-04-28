@@ -1,9 +1,11 @@
 <!-- TEMPLATE_CARD -->
+<!-- `this` désigne ici la carte cliquée, donc l'élément <div> courant. obligé car pb des guillemets -->
 <div
   class="profile-card flex-context flex-column align-center"
   data-id="{{id}}"
   data-name="{{name}}"
-  onclick="C.handlerSelectProfile(`{{id}}`, `{{name}}`)"
+  data-min-age="{{min_age}}"
+  onclick="C.handlerSelectProfile(this)"
 >
   <div
     class="profile-card__avatar flex-context align-center justify-center font-size-title"
@@ -14,4 +16,4 @@
 </div>
 
 <!-- les data- sont là pour éviter le problème avec les guillemets, j'ai pas réussi autrement
- voir avec prof (pour le moment gemini m'a recommandé ce système : implique une légère modif dans le handler du index)-->
+ voir avec prof (pour le moment gemini m'a recommandé ce système : implique une légère modif dans le handler du index) avec le this-->
