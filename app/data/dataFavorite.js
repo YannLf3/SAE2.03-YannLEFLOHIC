@@ -40,4 +40,4 @@ DataFavorite.remove = async function (id_profile, id_movie) {
   return data;
 };
 
-export { DataFavorite };
+export { DataFavorite, HOST_URL };

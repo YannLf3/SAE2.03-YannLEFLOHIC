@@ -214,11 +214,12 @@ function addFavorite($id_profile, $id_movie){
 function getFavoritesByProfile($id_profile){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
 
-    $sql = "SELECT m.id, m.name, m.image
+    $sql = "SELECT m.id, m.name, m.image, c.name as category
             FROM SAE203_Favorite f
             JOIN SAE203_Movie m ON f.id_movie = m.id
+            LEFT JOIN SAE203_Category c ON m.id_category = c.id
             WHERE f.id_profile = :id_profile
-            ORDER BY m.name";
+            ORDER BY c.name, m.name";
 
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id_profile', $id_profile, PDO::PARAM_INT);
