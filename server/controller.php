@@ -139,8 +139,7 @@ function modifyProfileController(){
     $min_age = $_REQUEST['min_age'] ?? null;
 
     if ($id === null || $id === '' ||
-        $name === null || $name === '' ||
-        $min_age === null || $min_age === '') {
+        $name === null || $name === '' ) {
         return false; // Indique que les paramètres sont manquants ou invalides
     }
 
@@ -201,7 +200,7 @@ function readFavoritesController(){
     if ($favorites === false || $favorites === null) {
         return false;
     }
-
+    
     return $favorites;
 }
 

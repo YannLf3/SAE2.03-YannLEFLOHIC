@@ -6,9 +6,13 @@
     </h2>
   </div>
   <label class="movie__card-check">
+    <!-- ID unique pour chaque checkbox (favorite-123, favorite-456...)
+         Permet au handler de retrouver facilement la checkbox correspondant au film
+          -->
     <input
       type="checkbox"
       class="movie__card-favorite"
+      id="favorite-{{id}}"
       onclick="C.handlerAddFavorite('{{id}}')"
       {{checkedAttr}}
     />

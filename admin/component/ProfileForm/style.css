@@ -1,11 +1,11 @@
 .addProfile {
-  max-width: 30rem;
+  width: 100%;
   border: 0.05rem solid var(--color-border);
   padding: var(--space-lg);
-  margin: var(--space-xl) auto;
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   color: var(--color-surface-fg);
+  box-sizing: border-box;
 }
 
 .addProfile__title {

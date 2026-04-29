@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="./css/base.css" />
   </head>
   <body>
-    <section id="log"></section>
-    <section id="movieForm"></section>
-    <section id="profileForm"></section>
-    <section id="modifyProfileForm"></section>
+    <section id="log" class="admin-log"></section>
+    <section id="movieForm" class="admin-form"></section>
+    <section id="profileForm" class="admin-form"></section>
+    <section id="modifyProfileForm" class="admin-form"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
@@ -41,9 +41,14 @@
 
       C.handlerModifyProfile = async function () {
         let form = document.querySelector(".modifyProfile__form");
-        let fd = new FormData(form);
-        let res = await DataProfile.modify(fd);
-        V.renderLog(res);
+        if (form.reportValidity() == true) {
+          let id = form.querySelector("[name='id']").value;
+          let name = form.querySelector("[name='name']").value;
+          let avatar = form.querySelector("[name='avatar']").value;
+          let min_age = form.querySelector("[name='min_age']").value; // obligé de faire ce long bloc sinon erreur 500 sql qui recevait un formdata entierrr
+          let res = await DataProfile.modify(id, name, avatar, min_age);
+          V.renderLog(res);
+        }
       };
 
       C.start = async function () {

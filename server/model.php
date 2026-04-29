@@ -181,8 +181,9 @@ function modifyProfile($id, $name, $avatar, $min_age){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
 
     // Requête SQL pour modifier un profil existant
-    $sql = "REPLACE INTO SAE203_Profile (id, name, avatar, min_age)
-            VALUES (:id, :name, :avatar, :min_age)";
+    $sql = "UPDATE SAE203_Profile 
+            SET name = :name, avatar = :avatar, min_age = :min_age
+            WHERE id = :id";
 
     // Prépare la requête SQL
     $stmt = $cnx->prepare($sql);

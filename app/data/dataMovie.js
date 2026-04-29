@@ -16,6 +16,9 @@ DataMovie.requestMovies = async function () {
   for (let i = 0; i < data.length; i++) {
     data[i].titre = data[i].name;
     data[i].image = HOST_URL + "/server/images/" + data[i].image;
+    // Ajout du traitement de la catégorie pour que les favoris s'affichent bien par catégories
+    data[i].category =
+      data[i].category ?? data[i].id_category ?? "Sans catégorie";
   }
   // Enfin, on retourne ces données.
   return data;

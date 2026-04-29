@@ -1,11 +1,11 @@
 .addFilm {
-  max-width: 35rem;
-  margin: var(--space-xl) auto;
+  width: 100%;
   padding: var(--space-lg);
   border: 0.05rem solid var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   color: var(--color-surface-fg);
+  box-sizing: border-box;
 }
 
 .addFilm__title {
@@ -26,6 +26,19 @@
   border-radius: var(--radius-sm);
   background-color: var(--color-surface);
   color: var(--color-surface-fg);
+}
+
+.addFilm__form-group textarea {
+  width: 100%;
+  min-height: 8rem;
+  padding: var(--space-sm) var(--space-md);
+  font: inherit;
+  border: 0.06rem solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-surface-fg);
+  resize: vertical;
+  box-sizing: border-box;
 }
 
 .addFilm__form-group--categ {

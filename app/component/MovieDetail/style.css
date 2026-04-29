@@ -27,7 +27,7 @@
   box-shadow: var(--shadow-elevated);
 
   width: 100%;
-  max-width: 70vw;
+  max-width: 90vw;
   max-height: 90vh;
 
   overflow-y: auto;
@@ -38,9 +38,8 @@
 
   position: relative;
 
-  display: grid;
-  grid-template-columns: 18.75rem 1fr;
-  grid-template-rows: auto auto;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-m);
 }
 
@@ -49,16 +48,13 @@
   height: 0;
 }
 
-/* Image (poster) - colonne 1 */
+/* Image (poster) */
 .movie__detail__media {
   flex-shrink: 0;
   width: 100%;
-  height: 25rem;
+  height: 15rem;
   border-radius: var(--radius-m);
   overflow: hidden;
-
-  grid-column: 1;
-  grid-row: 1;
 }
 
 .movie__detail__poster {
@@ -67,16 +63,12 @@
   object-fit: cover;
 }
 
-/* Contenu texte - colonne 2 */
+/* Contenu texte */
 .movie__detail__content {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-
-  grid-column: 2;
-  grid-row: 1;
-
-  padding-right: var(--space-m);
+  padding-right: 0;
 }
 
 /* Eyebrow (petit titre) */
@@ -90,7 +82,7 @@
 
 /* Titre principal */
 .movie__detail__title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-title);
   margin: 0;
@@ -117,15 +109,12 @@
   margin: 0;
 }
 
-/* Trailer - full width en bas */
+/* Trailer */
 .movie__detail__trailer {
   width: 100%;
-  height: 25rem;
+  height: 15rem;
   border-radius: var(--radius-m);
   overflow: hidden;
-
-  grid-column: 1 / -1;
-  grid-row: 2;
 }
 
 .movie__detail__video {
@@ -157,6 +146,42 @@
 
   transition: background-color 0.2s ease;
   z-index: 10;
+}
+
+.movie__detail__close:hover {
+  background-color: var(--color-gray-light);
+}
+
+/* Desktop layout - 2 colonnes côte à côte */
+@media (min-width: 48em) {
+  .movie__detail {
+    max-width: 70vw;
+    display: grid;
+    grid-template-columns: 18.75rem 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .movie__detail__media {
+    height: 25rem;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .movie__detail__content {
+    padding-right: var(--space-m);
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .movie__detail__title {
+    font-size: 2rem;
+  }
+
+  .movie__detail__trailer {
+    height: 25rem;
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
 }
 
 .movie__detail__close:hover {

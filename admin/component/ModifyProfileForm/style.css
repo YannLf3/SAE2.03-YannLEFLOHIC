@@ -1,11 +1,11 @@
 .modifyProfile {
-  max-width: 35rem;
-  margin: var(--space-xl) auto;
+  width: 100%;
   padding: var(--space-lg);
   border: 0.05rem solid var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   color: var(--color-surface-fg);
+  box-sizing: border-box;
 }
 
 .modifyProfile__title {

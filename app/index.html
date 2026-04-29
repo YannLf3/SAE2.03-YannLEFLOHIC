@@ -108,8 +108,10 @@
 
       // Gère l'ajout/suppression d'un film aux favoris
       C.handlerAddFavorite = async function (id_movie) {
-        // Récupère la checkbox correspondant au film (via son attribut value)
-        let checkbox = document.querySelector('[value="' + id_movie + '"]');
+        // Récupère la checkbox correspondant au film via son ID
+        // Note: On utilise des IDs uniques (favorite-123, favorite-456...) pour retrouver facilement chaque checkbox
+        // sinon erreur  cannot read property 'checked' of null car il ne trouve pas la checkbox à cocher ou décocher
+        let checkbox = document.getElementById("favorite-" + id_movie);
 
         // Si la checkbox est cochée, le film est ajouté aux favoris
         if (checkbox.checked) {
@@ -207,6 +209,11 @@
           let catCount = moviesByCategory[category].length;
           // On ajoute le film actuel à la catégorie
           moviesByCategory[category][catCount] = favoriteMovies[i];
+        }
+
+        // S'il n'y a aucun favori, créer un objet vide pour éviter les erreurs
+        if (Object.keys(moviesByCategory).length === 0) {
+          moviesByCategory = {};
         }
 
         // et on affiche les favoris sur la page
