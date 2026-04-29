@@ -19,6 +19,8 @@
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-elevated);
   pointer-events: all;
+
+  opacity: 0; /* Invisible par défaut */
 }
 
 /* Quand on ajoute cette classe via JS → la popup apparaît */

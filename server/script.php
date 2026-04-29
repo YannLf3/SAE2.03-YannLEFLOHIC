@@ -24,16 +24,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 
-// Autorise les appels depuis l'app et l'admin hébergés sur un autre domaine.
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-// Répond correctement aux requêtes de pré-vol CORS.
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  http_response_code(204);
-  exit();
-}
 /**
  * Inclusion du fichier controller.php.
  * 

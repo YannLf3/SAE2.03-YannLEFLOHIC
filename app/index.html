@@ -101,6 +101,12 @@
         Notif.show(res);
       };
 
+      C.handlerFavorites = async function () {
+        let favorites = await DataFavorite.read(C.activeProfileId);
+        // pour test (prb lié à lire les favoris que j'ai eu mardi soir)
+        console.log(favorites);
+      };
+
       C.start = async function () {
         let profiles = await DataProfile.read(); // obligé de mettre async pour pouvoir mettre await sinon problème, ça ne lit pas et rien ne s'affiche
         V.renderProfileSelector(profiles);
@@ -118,7 +124,11 @@
        */
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, C.activeProfileName);
+        header.innerHTML = NavBar.format(
+          hAbout,
+          "C.handlerFavorites()",
+          C.activeProfileName,
+        );
       };
 
       V.renderMovies = function (filmsParCategorie) {
