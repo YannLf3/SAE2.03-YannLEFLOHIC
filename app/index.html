@@ -112,9 +112,85 @@
       };
 
       C.handlerFavorites = async function () {
+        // ducoup d'abord je récupère les IDs des films favoris pour le profil actuellement sélectionné
+        // DataFavorite.read() demande au serveur les favoris associés à C.activeProfileId
+        // Retourne un tableau d'objets contenant l'ID de chaque film favori
         let favorites = await DataFavorite.read(C.activeProfileId);
-        // pour test (prb lié à lire les favoris que j'ai eu mardi soir)
-        console.log(favorites);
+        console.log("Favoris récupérés:", favorites);
+
+        // apres récupère la liste complète de tous les films dispos
+        let allMovies = await DataMovie.requestMovies();
+
+        // puis je crée un tableau contenant uniquement les IDs des films favoris
+        // On crée un nouveau tableau "favoriteIds" pour stocker juste les IDs
+        // On utilise un compteur "countFav" pour ajouter les IDs un par un dans le tableau
+        let favoriteIds = [];
+        let countFav = 0;
+        for (let i = 0; i < favorites.length; i++) {
+          // Pour chaque film favori récupéré, on ajoute son ID au tableau favoriteIds
+          // String() convertit l'ID en texte
+          favoriteIds[countFav] = String(favorites[i].id);
+          // On augmente le compteur pour ajouter l'élément suivant à la bonne position
+          countFav = countFav + 1;
+        }
+
+        // filtre la liste de tous les films pour garder que les favoris
+        // On parcourt chaque film de la liste complète (allMovies)
+        // Pour chaque film, on vérifie s'il figure dans la liste des IDs favoris
+        let favoriteMovies = [];
+        let countFilm = 0;
+        for (let i = 0; i < allMovies.length; i++) {
+          // Pour chaque film de la liste complète, oon suppose au départ qu'il est pas dans les favori
+          let found = false;
+
+          // On parcourt tous les IDs des films favoris pour voir si le film actuel est dedans et si oui on le marque en true avec le found
+          for (let j = 0; j < favoriteIds.length; j++) {
+            if (favoriteIds[j] == allMovies[i].id) {
+              found = true;
+            }
+          }
+
+          // Si le film a été trouvé dans la liste des favoris, on l'ajoute au tableau favoriteMovies
+          if (found) {
+            favoriteMovies[countFilm] = allMovies[i];
+            countFilm = countFilm + 1;
+          }
+        }
+
+        console.log("Films favoris filtrés:", favoriteMovies);
+
+        // au finak on remet les films favoris par catégorie
+        // Le composant MovieCategory attend les films organisés par catégorie
+        // On crée un objet "moviesByCategory" où chaque clé est une catégorie et la valeur est un tableau de films comme le tri au départ fait pr
+        // tous les films, mais cette fois juste avec les films favoris
+        let moviesByCategory = {};
+        for (let i = 0; i < favoriteMovies.length; i++) {
+          // On récupère la catégorie du film actuel
+          let category = favoriteMovies[i].category;
+
+          // Si le film n'a pas de catégorie, on utilise "Sans catégorie" par défaut pour éviter un souci mais normalement tous les films ont des categ
+          if (!category) {
+            category = "Sans catégorie";
+          }
+
+          // On initialise le tableau de la catégorie s'il n'existe pas ce qui permet d'éviter l'erreur que j'ai eu :
+          // "Cannot read properties of undefined (reading 'length')" qui se produisait quand j'essayais d'ajouter un film à
+          // une catégorie qui n'avait pas encore de film dans le tableau, du coup pas encore de tableau créé pour cette catégorie
+          if (!moviesByCategory[category]) {
+            moviesByCategory[category] = [];
+          }
+
+          // On récupère le nombre de films déjà dans cette catégorie pr ajouter le film actuel à la fin du tableau de cette catégorie
+          let catCount = moviesByCategory[category].length;
+          // On ajoute le film actuel à la catégorie
+          moviesByCategory[category][catCount] = favoriteMovies[i];
+        }
+
+        // et on affiche les favoris sur la page
+        // V.renderMovies() affiche les films avec leur catégorie et coche les checkboxes des favoris
+        V.renderMovies(moviesByCategory, favoriteIds);
+        // V.clearMovieDetail() cache la modale de détail du film (au cas où une était ouverte)
+        V.clearMovieDetail();
       };
 
       C.start = async function () {
