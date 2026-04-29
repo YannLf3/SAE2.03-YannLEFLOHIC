@@ -9,6 +9,11 @@ Notif.show = function (message) {
 
   let popup = content.querySelector(".error-popup");
   popup.classList.add("error-popup--visible");
+
+  let closeButton = content.querySelector(".error-popup__close");
+  closeButton.addEventListener("click", () => {
+    popup.classList.remove("error-popup--visible");
+  });
 };
 
 Notif.hide = function () {

@@ -26,3 +26,11 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.error-popup__close {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: var(--font-size-s);
+  cursor: pointer;
+}

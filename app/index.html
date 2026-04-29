@@ -34,6 +34,7 @@
       import { Notif } from "./component/Error/script.js";
       import { ProfileSelector } from "./component/ProfileSelector/script.js";
       import { DataProfile } from "./data/dataProfile.js";
+      import { DataFavorite } from "./data/dataFavorite.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -93,6 +94,11 @@
 
         let profiles = await DataProfile.read();
         V.renderProfileSelector(profiles); // on réaffiche l'overlay
+      };
+
+      C.handlerAddFavorite = async function (id_movie) {
+        let res = await DataFavorite.add(C.activeProfileId, id_movie);
+        Notif.show(res);
       };
 
       C.start = async function () {

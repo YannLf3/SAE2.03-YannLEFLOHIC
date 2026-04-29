@@ -1,9 +1,11 @@
-<div
-  class="movie__card flex-context flex-column gap-xs"
-  onclick="C.handlerMovieDetail('{{id}}')"
->
-  <img class="movie__card-image" src="{{image}}" alt="Affiche de {{name}}" />
-  <h2 class="movie__card-title fs-size-base font-sans font-weight-bold">
-    {{titre}}
-  </h2>
+<div class="movie__card flex-context flex-column gap-xs">
+  <div onclick="C.handlerMovieDetail('{{id}}')">
+    <img class="movie__card-image" src="{{image}}" alt="Affiche de {{name}}" />
+    <h2 class="movie__card-title fs-size-base font-sans font-weight-bold">
+      {{titre}}
+    </h2>
+  </div>
+  <button class="movie__card-favorite" onclick="C.handlerAddFavorite('{{id}}')">
+    ♡ Favoris
+  </button>
 </div>
