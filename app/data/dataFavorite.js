@@ -22,4 +22,22 @@ DataFavorite.read = async function (id_profile) {
   return data;
 };
 
+DataFavorite.remove = async function (id_profile, id_movie) {
+  // Construction de l'URL avec les paramètres de requête
+  // to do=removefavorite : action serveur pour supprimer un favori
+  let answer = await fetch(
+    HOST_URL +
+      "/server/script.php?todo=removefavorite&id_profile=" +
+      id_profile +
+      "&id_movie=" +
+      id_movie,
+  );
+
+  // Conversion de la réponse du serveur en objet JSON
+  let data = await answer.json();
+
+  // Retour des données (généralement une confirmation de suppression)
+  return data;
+};
+
 export { DataFavorite };

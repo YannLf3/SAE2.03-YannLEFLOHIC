@@ -204,4 +204,22 @@ function readFavoritesController(){
 
     return $favorites;
 }
+
+function removeFavoriteController(){
+    $id_profile = $_REQUEST['id_profile'] ?? null;
+    $id_movie = $_REQUEST['id_movie'] ?? null;
+
+    if ($id_profile === null || $id_profile === '' ||
+        $id_movie === null || $id_movie === '') {
+        return false;
+    }
+
+    $ok = removeFavorite($id_profile, $id_movie);
+
+    if ($ok) {
+        return "Le film a été retiré de vos favoris.";
+    }
+
+    return "Une erreur est survenue lors de la suppression des favoris.";
+}
 ?>

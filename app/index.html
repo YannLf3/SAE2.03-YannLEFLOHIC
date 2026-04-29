@@ -106,9 +106,25 @@
         V.renderProfileSelector(profiles); // on réaffiche l'overlay
       };
 
+      // Gère l'ajout/suppression d'un film aux favoris
       C.handlerAddFavorite = async function (id_movie) {
-        let res = await DataFavorite.add(C.activeProfileId, id_movie);
-        Notif.show(res);
+        // Récupère la checkbox correspondant au film (via son attribut value)
+        let checkbox = document.querySelector('[value="' + id_movie + '"]');
+
+        // Si la checkbox est cochée, le film est ajouté aux favoris
+        if (checkbox.checked) {
+          let res = await DataFavorite.add(C.activeProfileId, id_movie);
+          // Affiche le message de confirmation
+          Notif.show(res);
+        }
+        // Sinon, le film est supprimé des favoris
+        else {
+          let res = await DataFavorite.remove(C.activeProfileId, id_movie);
+          // Affiche le message de confirmation
+          Notif.show(res);
+          // Recharge la liste des films favoris pour mettre à jour l'affichage
+          C.handlerFavorites();
+        }
       };
 
       C.handlerFavorites = async function () {
@@ -117,6 +133,13 @@
         // Retourne un tableau d'objets contenant l'ID de chaque film favori
         let favorites = await DataFavorite.read(C.activeProfileId);
         console.log("Favoris récupérés:", favorites);
+
+        //si aucun favori, on affiche un message
+        if (favorites.length == 0) {
+          V.renderMovies({}, []);
+          Notif.show("Votre liste de favoris est vide.");
+          return;
+        }
 
         // apres récupère la liste complète de tous les films dispos
         let allMovies = await DataMovie.requestMovies();

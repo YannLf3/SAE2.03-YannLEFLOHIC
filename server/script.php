@@ -101,6 +101,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = readFavoritesController();
       break;
 
+    case 'removefavorite':
+      $data = removeFavoriteController();
+      break;
+
 
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée
