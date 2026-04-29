@@ -5,10 +5,13 @@
       {{titre}}
     </h2>
   </div>
-  <button
-    class="movie__card-favorite {{favoriteClass}}"
-    onclick="C.handlerAddFavorite('{{id}}')"
-  >
-    ♡ Favoris
-  </button>
+  <label class="movie__card-check">
+    <input
+      type="checkbox"
+      class="movie__card-favorite"
+      onclick="C.handlerAddFavorite('{{id}}')"
+      {{checkedAttr}}
+    />
+    Favoris
+  </label>
 </div>

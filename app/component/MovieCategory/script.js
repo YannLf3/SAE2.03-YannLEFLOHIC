@@ -6,14 +6,17 @@ let template = await templateFile.text();
 let MovieCategory = {};
 MovieCategory.template = template;
 
-MovieCategory.format = function (groupedMovies) {
+MovieCategory.format = function (groupedMovies, favoriteIds) {
   let html = "";
 
   for (let categoryName in groupedMovies) {
     let films = groupedMovies[categoryName];
     let section = MovieCategory.template;
     section = section.replace("{{categoryName}}", categoryName);
-    section = section.replaceAll("{{movies}}", Movie.format(films));
+    section = section.replaceAll(
+      "{{movies}}",
+      Movie.format(films, favoriteIds),
+    );
     html += section;
   }
 

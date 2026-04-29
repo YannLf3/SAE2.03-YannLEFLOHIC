@@ -60,7 +60,17 @@
           console.log("Affichage message d'absence de film");
           Notif.show("Aucun film disponible pour le moment.");
         }
-        V.renderMovies(filmsParCategorie);
+
+        let favorites = [];
+        if (C.activeProfileId) {
+          favorites = await DataFavorite.read(C.activeProfileId);
+        }
+        let favoriteIds = [];
+        for (let i = 0; i < favorites.length; i++) {
+          favoriteIds[i] = String(favorites[i].id);
+        }
+
+        V.renderMovies(filmsParCategorie, favoriteIds);
         V.clearMovieDetail();
       };
 
@@ -131,9 +141,12 @@
         );
       };
 
-      V.renderMovies = function (filmsParCategorie) {
+      V.renderMovies = function (filmsParCategorie, favoriteIds) {
         let movieList = document.querySelector("#movie-list");
-        movieList.innerHTML = MovieCategory.format(filmsParCategorie);
+        movieList.innerHTML = MovieCategory.format(
+          filmsParCategorie,
+          favoriteIds,
+        );
       };
 
       V.renderProfileSelector = function (profiles) {

@@ -14,24 +14,29 @@ Movie.template = template;
  * @param {Array} films - Tableau d'objets films { id, titre, affiche }
  * @returns {string} HTML prêt à être injecté dans le DOM
  */
-Movie.format = function (films) {
-  // Cas où aucun film n'est disponible
+Movie.format = function (films, favoriteIds) {
   if (films.length === 0) {
-    // demander au prof si on a le droit de faire ça
     return "";
   }
 
-  // On construit le HTML final en accumulant les cartes une par une
   let html = "";
 
   for (let i = 0; i < films.length; i++) {
     let card = Movie.template;
-    // On remplace les placeholders par les vraies valeurs
     card = card.replaceAll("{{id}}", films[i].id);
     card = card.replaceAll("{{titre}}", films[i].titre);
     card = card.replaceAll("{{image}}", films[i].image);
-    card = card.replaceAll("{{name}}", films[i].name); // pour le alt de l'image
-    // On ajoute la carte au HTML final
+    card = card.replaceAll("{{name}}", films[i].name);
+
+    // ← ajouter ces deux lignes
+    let isFavorite = false;
+    for (let j = 0; j < favoriteIds.length; j++) {
+      if (favoriteIds[j] == films[i].id) {
+        isFavorite = true;
+      }
+    }
+    card = card.replaceAll("{{checkedAttr}}", isFavorite ? "checked" : "");
+
     html = html + card;
   }
 

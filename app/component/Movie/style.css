@@ -15,6 +15,7 @@
   transition:
     transform 0.2s ease,
     border-color 0.2s ease;
+  justify-content: space-between;
 }
 
 .movie__card:hover {
@@ -34,6 +35,13 @@
   color: var(--color-title);
 }
 
+.movie__card-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
 .movie__empty {
   width: min(100%, 75rem);
   margin: 1.5rem auto;
@@ -42,4 +50,47 @@
   border-radius: 0.5rem;
   text-align: center;
   color: var(--color-title);
+}
+
+.movie__card-favorite {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.movie__card-favorite:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.movie__card-favorite:checked {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+  color: white;
+}
+
+.movie__card-favorite:checked:hover {
+  background: linear-gradient(135deg, #ff5252 0%, #ff3838 100%);
+  transform: scale(1.15);
+}
+
+.movie__card-favorite--active {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+  color: white;
+}
+
+.movie__card-favorite--active:hover {
+  background: linear-gradient(135deg, #ff5252 0%, #ff3838 100%);
+  transform: scale(1.15);
 }
