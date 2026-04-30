@@ -11,6 +11,7 @@
 @import "../component/MovieCategory/style.css" layer(components);
 @import "../component/Error/style.css" layer(components);
 @import "../component/ProfileSelector/style.css" layer(components);
+@import "../component/FeaturedMovies/style.css" layer(components);
 
 body {
   position: relative;

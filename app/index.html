@@ -13,6 +13,7 @@
 
     <section id="content">
       <div id="error"></div>
+      <div id="featured-movies"></div>
       <div class="movie">
         <div id="movie-list" class="movie__list grid-context gap-m">
           <!-- Les cartes de films movie-card -->
@@ -35,6 +36,7 @@
       import { ProfileSelector } from "./component/ProfileSelector/script.js";
       import { DataProfile } from "./data/dataProfile.js";
       import { DataFavorite, HOST_URL } from "./data/dataFavorite.js";
+      import { FeaturedMovies } from "./component/FeaturedMovies/script.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -52,6 +54,11 @@
         let age = Number(C.activeProfileMinAge) || 0; // Utilise l'âge minimum du profil actif ou 0 si aucun profil n'est actif, Number() sinon le site ne le détecte pas comme un nombre et ça foire pour les films
         let filmsParCategorie =
           await DataMovie.requestMoviesGroupedByCategory(age);
+        let featuredMovies = await DataMovie.requestFeaturedMovies(); // Récupère les films mis en avant
+        if (featuredMovies === false) {
+          Notif.show("Pas de films mis en avant disponibles pour le moment.");
+          return;
+        }
         console.log("Age du profil:", age); //console log pour comprendre pourquoi le mess d'erreur pas affiché
         console.log("Films par catégorie:", filmsParCategorie);
         let isEmpty = Object.keys(filmsParCategorie).length === 0;
@@ -72,6 +79,7 @@
 
         V.renderMovies(filmsParCategorie, favoriteIds);
         V.clearMovieDetail();
+        V.renderFeaturedMovies(featuredMovies, favoriteIds); // Affiche les films mis en avant avec leurs états favoris
       };
 
       C.handlerMovieDetail = async function (id) {
@@ -258,6 +266,12 @@
         document.getElementById("movie-list").classList.remove("hidden");
         document.documentElement.style.setProperty("--navbar-height", "0px");
         navbar?.classList.remove("navbar--fixed");
+      };
+
+      V.renderFeaturedMovies = function (movies, favoriteIds = []) {
+        if (!movies || movies.length === 0) return; // ← rien à afficher
+        let container = document.querySelector("#featured-movies");
+        container.innerHTML = FeaturedMovies.format(movies, favoriteIds);
       };
 
       C.start(); // Démarre l'application

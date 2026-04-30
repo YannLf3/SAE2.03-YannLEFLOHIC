@@ -107,4 +107,17 @@ DataMovie.requestMoviesGroupedByCategory = async function (age) {
   return data;
 };
 
+DataMovie.requestFeaturedMovies = async function () {
+  let answer = await fetch(
+    HOST_URL + "/server/script.php?todo=readfeaturedmovies",
+  );
+  let data = await answer.json();
+
+  for (let i = 0; i < data.length; i++) {
+    data[i].titre = data[i].name;
+    data[i].image = HOST_URL + "/server/images/" + data[i].image;
+  }
+  return data;
+};
+
 export { DataMovie };

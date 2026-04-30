@@ -240,3 +240,17 @@ function removeFavorite($id_profile, $id_movie){
 
     return $stmt->execute();
 }
+
+function getFeaturedMovies(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+
+    $sql = "SELECT id, name, image, description
+            FROM SAE203_Movie
+            WHERE mis_en_avant = 1
+            ORDER BY name";
+    
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}

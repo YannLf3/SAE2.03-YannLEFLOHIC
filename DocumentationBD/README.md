@@ -38,7 +38,7 @@ Tableaux : SAE203_Category, SAE203_Movie, SAE203_Profile, SAE203_Favorite
 
 ### 2. Nouvelle table : SAE203_Profile
 
-**Raison :** Gestion de plusieurs profils d'utilisateurs avec des paramètres de contrôle parental
+**Raison :** Gestion de plusieurs profils d'utilisateurs avec des paramètres de contrôle parental (les min age)
 
 **Structure :**
 
@@ -48,7 +48,7 @@ CREATE TABLE `SAE203_Profile` (
   `name` varchar(255) NOT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `min_age` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 ```
 
 **Justifications des choix :**
@@ -62,7 +62,7 @@ CREATE TABLE `SAE203_Profile` (
 
 - **Insertion :** `INSERT INTO SAE203_Profile (name, avatar, min_age) VALUES (:name, :avatar, :min_age)`
 - **Récupération :** `SELECT id, name, avatar, min_age FROM SAE203_Profile`
-- **Modification :** `UPDATE SAE203_Profile SET name = :name, avatar = :avatar, min_age = :min_age WHERE id = :id`
+- **Modification :** `UPDATE SAE203_Profile SET name = :name, avatar = :avatar, min_age = :min_age WHERE id = :id` j'ai mis un update alors du replace into mis avant qui posait des problèmes si le profil avait des favoris : ça bloquait
 
 ---
 
@@ -80,7 +80,7 @@ CREATE TABLE `SAE203_Favorite` (
   PRIMARY KEY (`id_profile`, `id_movie`),
   FOREIGN KEY (`id_profile`) REFERENCES `SAE203_Profile`(`id`),
   FOREIGN KEY (`id_movie`) REFERENCES `SAE203_Movie`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 ```
 
 **Justifications des choix :**
@@ -88,7 +88,6 @@ CREATE TABLE `SAE203_Favorite` (
 - **Clé primaire composée (id_profile, id_movie)** : Garantit qu'un profil ne peut pas ajouter deux fois le même film en favoris
 - **created_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP)** : Date/heure d'ajout en favoris, utile pour trier les favoris par date
 - **Clés étrangères** : Intégrité référentielle - impossible d'ajouter un film ou profil inexistant
-- **Charset utf8mb4** : Support complet Unicode (emojis, accents, etc.)
 
 **Requêtes SQL utilisées :**
 
@@ -140,7 +139,7 @@ CREATE TABLE `SAE203_Movie` (
 CREATE TABLE `SAE203_Category` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+);
 ```
 
 **Justifications :**
@@ -294,12 +293,6 @@ SAE203_Profile
 
 - **le-flohic4.sql** : Contient la structure complète et les données initiales
 - **SAE2_03.sql** : Archivé à titre de référence historique
-
-Pour initialiser une nouvelle instance :
-
-```bash
-mysql -u utilisateur -p base_de_donnees < le-flohic4.sql
-```
 
 ---
 

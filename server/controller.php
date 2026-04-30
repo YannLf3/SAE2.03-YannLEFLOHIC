@@ -221,4 +221,12 @@ function removeFavoriteController(){
 
     return "Une erreur est survenue lors de la suppression des favoris.";
 }
-?>
+
+function readFeaturedMoviesController(){
+    $movies = getFeaturedMovies();
+
+    if ($movies === false || $movies === null) {
+        return false; // Indique une erreur dans le traitement de la requête
+    }
+    return $movies;
+}
