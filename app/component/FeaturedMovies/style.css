@@ -48,8 +48,12 @@
 
       /* Styles pour les cartes Movie dans le carrousel */
       .movie__card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         flex: 0 0 auto;
         width: 12rem;
+        min-height: 16rem;
         padding: var(--space-xs);
         gap: var(--space-xs);
         scroll-snap-align: start;
@@ -76,6 +80,7 @@
         align-items: center;
         gap: 0.5rem;
         cursor: pointer;
+        margin-top: auto;
 
         .movie__card-favorite {
           background: rgba(255, 255, 255, 0.9);
@@ -118,6 +123,7 @@
 
       .movie__card {
         width: 15rem;
+        min-height: 20rem;
       }
 
       .movie__card-image {
@@ -135,12 +141,15 @@
       font-size: 2rem;
     }
 
-    .carousel__inner .movie__card {
-      width: 16rem;
-    }
+    .carousel__inner {
+      .movie__card {
+        width: 16rem;
+        min-height: 22rem;
+      }
 
-    .carousel__inner .movie__card-image {
-      height: 12rem;
+      .movie__card-image {
+        height: 12rem;
+      }
     }
   }
 }
