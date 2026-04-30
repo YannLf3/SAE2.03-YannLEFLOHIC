@@ -3,107 +3,144 @@
 .featured {
   padding: var(--space-s);
   margin: var(--space-s) 0;
-}
-
-.featured__title {
-  margin-bottom: var(--space-m);
-  font-size: 1.5rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-title);
-}
-
-.carousel {
-  max-width: min-content;
-  margin: 0 auto;
-  overflow-x: auto;
-  position: relative;
-}
-
-.carousel__inner {
-  display: flex;
-  width: 100%;
-  gap: var(--space-s);
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding: var(--space-xs) var(--space-s) 0.5rem var(--space-s);
-}
-
-/* Personnaliser la scrollbar - Pseudo-éléments webkit */
-/* Ces pseudo-éléments ::-webkit-* permettent de styliser la scrollbar */
-/* dans les navigateurs basés sur Webkit (Chrome, Safari, Edge) */
-
-/* ::-webkit-scrollbar = la scrollbar entière (le conteneur) */
-.carousel__inner::-webkit-scrollbar {
-  height: 0.3rem; /* Hauteur/épaisseur de la scrollbar horizontale */
-}
-
-/* ::-webkit-scrollbar-track = le fond/piste de la scrollbar (la zone où glisse le curseur) */
-.carousel__inner::-webkit-scrollbar-track {
-  background: transparent; /* Fond transparent pour ne pas voir la piste */
-}
-
-/* ::-webkit-scrollbar-thumb = le curseur/slider de la scrollbar (la partie qu'on peut attraper) */
-.carousel__inner::-webkit-scrollbar-thumb {
-  background: var(--color-gray); /* Couleur du curseur */
-  border-radius: var(--radius-m); /* Coins arrondis du curseur */
-}
-
-/* Styles pour les cartes Movie dans le carrousel */
-.carousel__inner .movie__card {
-  flex: 0 0 auto;
-  width: 12rem;
-  padding: var(--space-xs);
-  gap: var(--space-xs);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-.carousel__inner .movie__card-image {
-  height: 9rem;
-}
-
-/* === DESKTOP === */
-@media (width >40rem) {
-  .featured {
-    padding: var(--space-l);
-    margin: var(--space-l) 0;
-  }
 
   .featured__title {
     margin-bottom: var(--space-m);
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-title);
   }
 
-  .carousel__inner {
-    gap: var(--space-m);
+  .carousel {
+    max-width: min-content;
+    margin: 0 auto;
+    overflow-x: auto;
+    position: relative;
+
+    .carousel__inner {
+      display: flex;
+      width: 100%;
+      gap: var(--space-s);
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: var(--space-xs) var(--space-s) 0.5rem var(--space-s);
+
+      /* Personnaliser la scrollbar - Pseudo-éléments webkit */
+      /* Ces pseudo-éléments ::-webkit-* permettent de styliser la scrollbar */
+      /* dans les navigateurs basés sur Webkit (Chrome, Safari, Edge) */
+
+      /* ::-webkit-scrollbar = la scrollbar entière (le conteneur) */
+      &::-webkit-scrollbar {
+        height: 0.3rem; /* Hauteur/épaisseur de la scrollbar horizontale */
+      }
+
+      /* ::-webkit-scrollbar-track = le fond/piste de la scrollbar (la zone où glisse le curseur) */
+      &::-webkit-scrollbar-track {
+        background: transparent; /* Fond transparent pour ne pas voir la piste */
+      }
+
+      /* ::-webkit-scrollbar-thumb = le curseur/slider de la scrollbar (la partie qu'on peut attraper) */
+      &::-webkit-scrollbar-thumb {
+        background: var(--color-gray); /* Couleur du curseur */
+        border-radius: var(--radius-m); /* Coins arrondis du curseur */
+      }
+
+      /* Styles pour les cartes Movie dans le carrousel */
+      .movie__card {
+        flex: 0 0 auto;
+        width: 12rem;
+        padding: var(--space-xs);
+        gap: var(--space-xs);
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        border: 0.06rem solid var(--color-gray-light);
+        border-radius: 0.75rem;
+        background-color: var(--color-surface);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-0.5rem) scale(1.05);
+          border-color: var(--color-accent);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        }
+      }
+
+      .movie__card-image {
+        height: 9rem;
+      }
+
+      .movie__card-check {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+
+        .movie__card-favorite {
+          background: rgba(255, 255, 255, 0.9);
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition:
+            transform 0.2s ease,
+            background-color 0.2s ease,
+            box-shadow 0.2s ease;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+          &:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+          }
+        }
+      }
+    }
   }
 
-  .carousel__inner .movie__card {
-    width: 15rem;
+  /* === DESKTOP === */
+  @media (width >40rem) {
+    padding: var(--space-l);
+    margin: var(--space-l) 0;
+
+    .featured__title {
+      margin-bottom: var(--space-m);
+      font-size: 1.75rem;
+    }
+
+    .carousel__inner {
+      gap: var(--space-m);
+
+      .movie__card {
+        width: 15rem;
+      }
+
+      .movie__card-image {
+        height: 11.25rem;
+      }
+    }
   }
 
-  .carousel__inner .movie__card-image {
-    height: 11.25rem;
-  }
-}
-
-@media (width >60rem) {
-  .featured {
+  @media (width >60rem) {
     padding: var(--space-l);
     margin: var(--space-l) auto;
     max-width: 90rem;
-  }
 
-  .featured__title {
-    font-size: 2rem;
-  }
+    .featured__title {
+      font-size: 2rem;
+    }
 
-  .carousel__inner .movie__card {
-    width: 16rem;
-  }
+    .carousel__inner .movie__card {
+      width: 16rem;
+    }
 
-  .carousel__inner .movie__card-image {
-    height: 12rem;
+    .carousel__inner .movie__card-image {
+      height: 12rem;
+    }
   }
 }
