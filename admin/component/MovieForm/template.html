@@ -1,15 +1,15 @@
 <div class="addFilm">
-  <h2 class="addFilm__title fs-size-13">Ajouter un film</h2>
-  <form class="addFilm__form flex-context flex-col gap-md">
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+  <h2 class="addFilm__title u-font-size-lg">Ajouter un film</h2>
+  <form class="addFilm__form u-flex u-flex-column u-gap-md">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="title">Titre</label>
       <input type="text" id="title" name="title" required />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="director">Réalisateur</label>
       <input type="text" id="director" name="director" required />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="release_year">Année de sortie</label>
       <input
         type="number"
@@ -19,19 +19,19 @@
         required
       />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="image">Image</label>
       <input type="text" id="image" name="image" required />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="description">Description</label>
       <textarea id="description" name="description" required></textarea>
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="trailer">Trailer</label>
       <input type="text" id="trailer" name="trailer" required />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="min_age">Âge minimum</label>
       <input
         type="number"
@@ -43,16 +43,16 @@
         required
       />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="length">Durée (en minutes)</label>
       <input type="number" min="0" id="length" name="length" required />
     </div>
-    <div class="addFilm__form-group flex-context flex-col gap-2xs fs-size-095">
+    <div class="addFilm__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm">
       <label for="id_category">Catégorie</label>
       <select
         id="id_category"
         name="id_category"
-        class="addFilm__form-group--categ"
+        class="addFilm__form-group--category"
         required
       >
         {{options}}
@@ -63,7 +63,7 @@
       type="button"
       value="Add"
       name="todo"
-      class="addFilm__submit fw-bold"
+      class="addFilm__submit u-font-weight-bold"
     />
   </form>
 </div>

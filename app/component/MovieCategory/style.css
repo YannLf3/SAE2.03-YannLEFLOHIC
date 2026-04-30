@@ -1,13 +1,13 @@
 .category__section {
   margin-bottom: var(--space-l);
-}
 
-.category__section-title {
-  border-bottom: 2px solid var(--color-title);
-  margin-bottom: var(--space-s);
-  padding-bottom: var(--space-xs);
-}
+  .category__section__title {
+    border-bottom: 2px solid var(--color-title);
+    margin-bottom: var(--space-s);
+    padding-bottom: var(--space-xs);
+  }
 
-.category__section-movies {
-  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  .category__section__movies {
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  }
 }

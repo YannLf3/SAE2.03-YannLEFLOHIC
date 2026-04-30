@@ -7,31 +7,29 @@
   padding: 1rem;
   color: var(--color-fg);
   background-color: var(--color-bg);
+
+  .navbar__item {
+    --_offset: 0.2rem;
+    padding: 0.5rem 1rem;
+    text-decoration: underline;
+    text-decoration-thickness: 0.1rem;
+    text-underline-offset: var(--_offset);
+    cursor: pointer;
+    transition: text-underline-offset 0.2s ease-in-out;
+
+    &:hover {
+      --_offset: 0.5rem;
+    }
+  }
+
+  @media (min-width: 48em) {
+    padding: 1rem 3rem;
+  }
 }
 
-.navbar__item {
-  --_offset: 0.2rem;
-  padding: 0.5rem 1rem;
-  text-decoration: underline;
-  text-decoration-thickness: 0.1rem;
-  text-underline-offset: var(--_offset);
-  cursor: pointer;
-  transition: text-underline-offset 0.2s ease-in-out;
-}
-
-.navbar__item:hover {
-  --_offset: 0.5rem;
-}
-
-.navbar.navbar--fixed {
+.navbar--fixed {
   z-index: 25;
   position: fixed;
   top: 0;
   left: 0;
-}
-
-@media (min-width: 48em) {
-  .navbar {
-    padding: 1rem 3rem;
-  }
 }

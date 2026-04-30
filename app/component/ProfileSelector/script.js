@@ -18,7 +18,7 @@ ProfileSelector.format = function (profiles) {
 
     if (p.avatar) {
       // Le profil a une image → on affiche l'image
-      avatarContent = `<img src="${p.avatar}" alt="${p.name}" />`;
+      avatarContent = `<img src="${p.avatar}" alt="${p.name}" class="profile-card__avatar-image" />`;
     } else {
       // Pas d'image → on affiche la 1ère lettre du nom à la place de l'image (fonction js charAt)
       avatarContent = p.name.charAt(0);

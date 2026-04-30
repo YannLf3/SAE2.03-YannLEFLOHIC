@@ -1,19 +1,20 @@
-.font-sans {
+/* Utilities avec un u pr suivre BEM*/
+.u-font-sans {
   font-family: var(--ff-sans);
 }
 
-.fs-size-base {
+.u-font-size-base {
   font-size: var(--font-size-base);
 }
 
-.font-weight-bold {
+.u-font-weight-bold {
   font-weight: var(--font-weight-bold);
 }
 
-.font-size-title {
+.u-font-size-title {
   font-size: var(--font-size-title);
 }
 
-.font-size-name {
+.u-font-size-profile-name {
   font-size: var(--font-size-profile-name);
 }

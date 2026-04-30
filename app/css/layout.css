@@ -1,40 +1,45 @@
-.grid-context {
+/* Layout utilities with u- namespace following BEM philosophy */
+.u-grid {
   display: grid;
 }
 
-.gap-m {
+.u-gap-md {
   gap: var(--space-m);
 }
 
-.flex-context {
-  display: flex;
+.u-gap-2xs {
+  gap: var(--space-2xs);
 }
 
-.flex-column {
-  flex-direction: column;
-}
-
-.gap-xs {
+.u-gap-xs {
   gap: var(--space-xs);
 }
 
-.align-center {
+.u-flex {
+  display: flex;
+}
+
+.u-flex-column {
+  flex-direction: column;
+}
+
+.u-align-center {
   align-items: center;
 }
 
-.justify-center {
+.u-justify-center {
   justify-content: center;
 }
 
-.justify-between {
+.u-justify-between {
   justify-content: space-between;
 }
 
-/* Masquer la liste quand la classe hidden est présente */
-.movie__list.hidden {
+/* cacher movie list quand modifier est actif */
+.movie__list--hidden {
   display: none;
 }
 
-.text-center {
+.u-text-center {
   text-align: center;
 }

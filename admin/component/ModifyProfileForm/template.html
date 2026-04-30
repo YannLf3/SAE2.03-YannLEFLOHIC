@@ -1,21 +1,21 @@
 <div class="modifyProfile">
-  <h2 class="modifyProfile__title fs-size-13">Modifier un profil</h2>
-  <form class="modifyProfile__form flex-context flex-col gap-md">
+  <h2 class="modifyProfile__title u-font-size-lg">Modifier un profil</h2>
+  <form class="modifyProfile__form u-flex u-flex-column u-gap-md">
     <div
-      class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+      class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
     >
       <label for="id">Profil</label>
-      <select id="id" name="id" class="modifyProfile_form-group--id" required>
+      <select id="id" name="id" class="modifyProfile__form-group--id" required>
         {{options}}
       </select>
       <div
-        class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+        class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
       >
         <label for="name">Nom du profil</label>
         <input type="text" id="name" name="name" required />
       </div>
       <div
-        class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+        class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
       >
         <label for="min_age">Âge minimum</label>
         <input
@@ -29,7 +29,7 @@
         />
       </div>
       <div
-        class="modifyProfile__form-group flex-context flex-col gap-2xs fs-size-095"
+        class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
       >
         <label for="avatar">Avatar</label>
         <input type="text" id="avatar" name="avatar" />
@@ -40,7 +40,7 @@
       type="button"
       value="Modify"
       name="todo"
-      class="modifyProfile__submit fw-bold"
+      class="modifyProfile__submit u-font-weight-bold"
     />
   </form>
 </div>

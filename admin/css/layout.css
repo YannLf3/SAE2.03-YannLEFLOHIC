@@ -6,12 +6,12 @@ body {
   padding: var(--space-md);
 }
 
-.admin-log {
+.admin__log {
   width: 100%;
   padding: var(--space-lg);
 }
 
-.admin-form {
+.admin__form {
   width: 100%;
   max-width: 30rem;
   margin: var(--space-lg) auto;
@@ -19,8 +19,25 @@ body {
   min-width: 0;
 }
 
+/* Layout utilities avec u- pour suivre BEM  et être plus compréhensible*/
+.u-flex {
+  display: flex;
+}
+
+.u-flex-column {
+  flex-direction: column;
+}
+
+.u-gap-md {
+  gap: var(--space-md);
+}
+
+.u-gap-2xs {
+  gap: var(--space-2xs);
+}
+
 /* Desktop layout - 3 columns */
-@media (min-width: 64em) {
+@media (min-width: 64rem) {
   body {
     flex-wrap: wrap;
     flex-direction: row;
@@ -30,30 +47,14 @@ body {
     padding: var(--space-lg);
   }
 
-  .admin-log {
+  .admin__log {
     width: 100%;
     padding: 0;
     margin-bottom: var(--space-lg);
   }
 
-  .admin-form {
+  .admin__form {
     flex: 0 1 calc(33.333% - var(--space-lg));
     margin: 0;
   }
-}
-
-.flex-context label {
-  display: flex;
-}
-
-.flex-col label {
-  flex-direction: column;
-}
-
-.gap-md label {
-  gap: var(--space-md);
-}
-
-.gap-2xs label {
-  gap: var(--space-2xs);
 }

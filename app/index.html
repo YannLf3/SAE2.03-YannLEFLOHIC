@@ -15,13 +15,13 @@
       <div id="error"></div>
       <div id="featured-movies"></div>
       <div class="movie">
-        <div id="movie-list" class="movie__list grid-context gap-m">
+        <div id="movie-list" class="movie__list u-grid u-gap-md">
           <!-- Les cartes de films movie-card -->
         </div>
       </div>
       <div
         id="movie-detail"
-        class="movie__cards-detail flex-context flex-column align-center gap-m"
+        class="movie__cards-detail u-flex u-flex-column u-align-center u-gap-md"
       ></div>
     </section>
 
@@ -234,8 +234,12 @@
         let navbar = document.querySelector(".navbar");
         let navbarHeight = navbar ? navbar.offsetHeight : 0;
 
-        document.getElementById("movie-detail").classList.add("active");
-        document.getElementById("movie-list").classList.add("hidden");
+        document
+          .getElementById("movie-detail")
+          .classList.add("movie__cards-detail--active");
+        document
+          .getElementById("movie-list")
+          .classList.add("movie__list--hidden");
         document.documentElement.style.setProperty(
           "--navbar-height",
           `${navbarHeight}px`, //re vérifier avec prof de css si c'est bien ça qu'il m'avait dit de faire
@@ -262,8 +266,12 @@
         movieDetail.innerHTML = "";
         let navbar = document.querySelector(".navbar");
 
-        document.getElementById("movie-detail").classList.remove("active");
-        document.getElementById("movie-list").classList.remove("hidden");
+        document
+          .getElementById("movie-detail")
+          .classList.remove("movie__cards-detail--active");
+        document
+          .getElementById("movie-list")
+          .classList.remove("movie__list--hidden");
         document.documentElement.style.setProperty("--navbar-height", "0px");
         navbar?.classList.remove("navbar--fixed");
       };
