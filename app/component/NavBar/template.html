@@ -2,7 +2,14 @@
   <ul class="navbar__list">
     <li class="navbar__item" onclick="{{hAbout}}">Accueil</li>
     <li class="navbar__item" onclick="{{hFavorites}}">Favoris</li>
+    <li class="navbar__item" onclick="{{hStats}}">Statistiques</li>
   </ul>
+  <input
+    type="text"
+    id="navbar-search"
+    class="navbar__search"
+    placeholder="Recherche par film, âge, réalisateur, année"
+  />
   <div
     class="navbar__active-profile u-flex u-align-center"
     onclick="C.handlerSwitchProfile()"

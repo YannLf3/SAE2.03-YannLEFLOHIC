@@ -254,3 +254,93 @@ function getFeaturedMovies(){
 
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
+
+// Fonctions pour l'itération 12 des stats
+
+// Nombre total de profils
+function getTotalProfiles(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("SELECT COUNT(*) AS total FROM SAE203_Profile");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ)->total;
+}
+
+// Nombre total de films
+function getTotalMovies(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("SELECT COUNT(*) AS total FROM SAE203_Movie");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ)->total;
+}
+
+// Nombre moyen de films en favoris par profil
+function getAvgFavoritesPerProfile(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("SELECT ROUND(COUNT(*) / (SELECT COUNT(*) FROM SAE203_Profile), 1) AS avg_favorites FROM SAE203_Favorite");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ)->avg_favorites;
+}
+
+// Film le plus ajouté aux favoris
+function getMostFavoritedMovie(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("
+        SELECT m.name, COUNT(*) AS total
+        FROM SAE203_Favorite f
+        JOIN SAE203_Movie m ON f.id_movie = m.id
+        GROUP BY f.id_movie
+        ORDER BY total DESC
+        LIMIT 1
+    ");
+    $stmt->execute(); // limit en SQL pour ne récupérer que le film le plus ajouté aux favoris limit 1 : on ne récupère que la première ligne du résultat, qui correspond au film le plus ajouté aux favoris.
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    // Si aucun favori en base, on retourne un texte par défaut écriture pour éviter d'avoir une valeur null dans le front. et plus simple que de faire une condition dans le front pour vérifier si la valeur est null ou pas.
+    return $res ? $res->name : "Aucun";
+}
+
+// Catégorie la plus présente dans les favoris
+function getMostPopularCategory(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("
+        SELECT c.name, COUNT(*) AS total
+        FROM SAE203_Favorite f
+        JOIN SAE203_Movie m ON f.id_movie = m.id
+        JOIN SAE203_Category c ON m.id_category = c.id
+        GROUP BY c.id
+        ORDER BY total DESC
+        LIMIT 1
+    ");
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res ? $res->name : "Aucune";
+}
+
+// pour chercher les films à l'aide de la barre de recherche
+
+function searchMovies($query){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    // LIKE '%mot%' = contient "mot" n'importe où dans le titre, le réalisateur ou l'année de sortie
+    $sql = "SELECT m.id, m.name, m.image, m.mis_en_avant, c.name AS category_name
+            FROM SAE203_Movie m
+            JOIN SAE203_Category c ON m.id_category = c.id
+            WHERE m.name LIKE :query
+               OR m.director LIKE :query
+               OR m.year LIKE :query
+               OR m.min_age LIKE :query
+            ORDER BY c.name, m.name";
+    $stmt = $cnx->prepare($sql);
+    // On entoure la valeur de % pour chercher partout dans le titre, réalisateur et année
+    $search = "%" . $query . "%";
+    $stmt->bindParam(':query', $search);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function updateFeaturedStatus($id, $featured){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "UPDATE SAE203_Movie SET mis_en_avant = :featured WHERE id = :id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':featured', $featured);
+    return $stmt->execute();
+}

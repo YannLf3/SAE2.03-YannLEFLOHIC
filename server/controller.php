@@ -230,3 +230,69 @@ function readFeaturedMoviesController(){
     }
     return $movies;
 }
+
+// Fonctions pour l'itération 12 des stats
+
+function readStatsController(){ // une seule fonction de contrôle pour toutes les stats, qui appelle les fonctions du modèle pour récupérer les différentes statistiques et les retourne dans un tableau associatif.
+    return [
+        'total_profiles'       => getTotalProfiles(),
+        'total_movies'         => getTotalMovies(),
+        'avg_favorites'        => getAvgFavoritesPerProfile(),
+        'most_favorited_movie' => getMostFavoritedMovie(),
+        'most_popular_category'=> getMostPopularCategory(),
+    ];
+}
+
+function searchMoviesController(){
+    $query = $_REQUEST['query'] ?? null;
+    if($query === null || $query === ''){
+        return false;
+    }
+    $movies = searchMovies($query);
+    
+    // On regroupe par catégorie comme dans getMoviesGroupedByCategory
+    // Tableau associatif final : clé = nom de la catégorie, valeur = liste simplifiée des films
+    $grouped = [];
+
+    $i = 0;
+    while ($i < count($movies)) {
+        // Film courant (objet récupéré de la requête SQL)
+        $movie = $movies[$i];
+
+        // Nom de la catégorie du film courant 
+        $cat = $movie->category_name;
+
+        // Si la catégorie n'existe pas encore dans $grouped, on l'initialise avec un tableau vide
+        if (!isset($grouped[$cat])) {
+            $grouped[$cat] = [];
+        }
+
+        // On ajoute une version simplifiée du film (seules les données nécessaires à l'affichage)
+        $grouped[$cat][] = [
+            'id'    => $movie->id,    // identifiant utilisé pour ouvrir la fiche détaillée
+            'name'  => $movie->name,  // titre affiché
+            'image' => $movie->image  // chemin/nom de l'image d'illustration
+        ];
+
+        $i++;
+    }
+
+    // On retourne la structure regroupée par catégorie prête pour le front-end
+    return $grouped;
+}
+
+function updateFeaturedStatusController(){
+    $id       = $_REQUEST['id'] ?? null;
+    $featured = $_REQUEST['featured'] ?? null;
+
+    if($id === null || $featured === null){
+        return false;
+    }
+
+    $ok = updateFeaturedStatus($id, $featured);
+    if($ok){
+        return "Le statut du film a été mis à jour avec succès.";
+    } else {
+        return "Une erreur est survenue.";
+    }
+}

@@ -120,4 +120,26 @@ DataMovie.requestFeaturedMovies = async function () {
   return data;
 };
 
+DataMovie.requestStats = async function () {
+  let answer = await fetch(HOST_URL + "/server/script.php?todo=readstats");
+  let data = await answer.json();
+  return data;
+};
+
+DataMovie.search = async function (query) {
+  let answer = await fetch(
+    HOST_URL + "/server/script.php?todo=searchmovies&query=" + query,
+  );
+  let data = await answer.json();
+
+  // On rajoute les données comme d'habitude
+  for (let cat in data) {
+    for (let i = 0; i < data[cat].length; i++) {
+      data[cat][i].titre = data[cat][i].name;
+      data[cat][i].image = HOST_URL + "/server/images/" + data[cat][i].image;
+    }
+  }
+  return data;
+};
+
 export { DataMovie };

@@ -1,0 +1,93 @@
+.stats {
+  padding: var(--space-m);
+  margin: var(--space-m);
+  border-radius: var(--radius-l);
+  background: var(--color-bg);
+  border: 0.06rem solid var(--color-gray);
+  box-shadow: 0 1rem 2rem var(--color-black);
+  backdrop-filter: blur(16px);
+
+  .stats__title {
+    text-align: center;
+    margin-bottom: var(--space-s);
+    font-size: 3.25rem;
+    font-weight: var(--font-weight-bold);
+    color: rgba(221, 218, 218, 0.46);
+  }
+
+  .stats__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-s);
+
+    .stats__card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      min-height: 8.5rem;
+      padding: var(--space-m);
+      border-radius: var(--radius-l);
+      background: rgba(255, 255, 255, 0.16);
+      border: 0.06rem solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 0.75rem 1.5rem rgba(15, 15, 30, 0.14);
+      text-align: center;
+      transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease;
+
+      &:hover {
+        transform: translate(-0.25rem);
+        background: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 1rem 2rem rgba(15, 15, 30, 0.2);
+      }
+
+      .stats__card-value {
+        font-size: 2rem;
+        font-weight: var(--font-weight-bold);
+        line-height: 1;
+        color: var(--color-white);
+        text-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
+
+        &:hover {
+          color: hsla(75, 84%, 48%, 0.8);
+        }
+      }
+
+      .stats__card-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.1rem;
+        text-transform: uppercase;
+        color: var(--color-white);
+      }
+    }
+  }
+
+  @media (width > 40rem) {
+    padding: var(--space-l);
+    margin: var(--space-l) auto;
+    max-width: 90rem;
+
+    .stats__title {
+      margin-bottom: var(--space-m);
+      font-size: 2.5rem;
+    }
+
+    .stats__grid {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      gap: var(--space-m);
+
+      .stats__card {
+        min-height: 9.5rem;
+        padding: var(--space-l);
+
+        .stats__card-value {
+          font-size: clamp(2rem, 4vw, 2.5rem);
+        }
+      }
+    }
+  }
+}

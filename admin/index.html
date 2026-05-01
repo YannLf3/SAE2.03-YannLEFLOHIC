@@ -8,6 +8,7 @@
   </head>
   <body>
     <section id="log" class="admin__log"></section>
+    <section id="featuredSearch"></section>
     <section id="movieForm" class="admin__form"></section>
     <section id="profileForm" class="admin__form"></section>
     <section id="modifyProfileForm" class="admin__form"></section>
@@ -20,6 +21,7 @@
       import { DataMovie } from "./data/dataMovie.js";
       import { DataProfile } from "./data/dataProfile.js";
       import { ModifyProfileForm } from "./component/ModifyProfileForm/script.js";
+      import { FeaturedSearch } from "./component/Featured/script.js";
 
       window.C = {};
 
@@ -51,6 +53,49 @@
         }
       };
 
+      C.handlerSearchFeatured = async function () {
+        let input = document.querySelector("#featured-search-input");
+        let query = input.value;
+
+        if (query === "") {
+          V.renderLog("Veuillez saisir un mot clé.");
+          return;
+        }
+
+        let results = await DataMovie.search(query);
+
+        if (!results || results.length === 0) {
+          V.renderLog("Aucun film ne correspond à votre recherche.");
+          return;
+        }
+
+        V.renderFeaturedSearch(results);
+
+        // Étape 1 : Récupérer toutes les checkboxes affichées
+        let checkboxes = document.querySelectorAll(
+          ".featured-search__card input[type='checkbox']",
+        );
+
+        // Étape 2 : Parcourir chaque checkbox une par une
+        for (let i = 0; i < checkboxes.length; i++) {
+          // Ajouter un écouteur : exécuter du code quand la checkbox change d'état
+          checkboxes[i].addEventListener("change", async function () {
+            // "change" est un événement qui se déclenche quand on coche ou décoche une checkbox
+            // Récupérer l'ID du film stocké dans l'attribut data-id
+            let id = this.dataset.id;
+
+            // Convertir l'état de la checkbox en nombre : 1 si cochée, 0 si décochée
+            let featured = this.checked ? 1 : 0; // ? 1: 0 est une syntaxe qui signifie "si this.checked est vrai, alors featured vaut 1, sinon il vaut 0"
+            // this.checked est une propriété qui vaut true si la checkbox est cochée, et false si elle ne l'est pas
+            // Appeler la fonction pour mettre à jour la base de données
+            let res = await DataMovie.updateFeatured(id, featured);
+
+            // Afficher le résultat (succès ou erreur) dans le log
+            V.renderLog(res);
+          });
+        }
+      };
+
       C.start = async function () {
         V.renderLog("Démarrage de l'application");
         let categories = await DataMovie.requestCategories();
@@ -58,6 +103,7 @@
         V.renderMovieForm("C.handlerAddMovie()", categories);
         V.renderProfileForm("C.handlerAddProfile()");
         V.renderModifyProfileForm("C.handlerModifyProfile()", profiles);
+        V.renderFeaturedSearch([]); // on affiche une page de recherche vide au départ, avant que l'utilisateur ait fait une recherche
       };
 
       window.V = {};
@@ -80,6 +126,17 @@
       V.renderModifyProfileForm = function (handler, profiles) {
         let content = document.querySelector("#modifyProfileForm");
         content.innerHTML = ModifyProfileForm.format(handler, profiles);
+      };
+
+      V.renderFeaturedSearch = function (movies) {
+        let container = document.querySelector("#featuredSearch");
+        container.innerHTML = FeaturedSearch.format(movies);
+
+        // On branche le bouton rechercher après affichage
+        let btn = document.querySelector("#featured-search-btn");
+        if (btn) {
+          btn.addEventListener("click", C.handlerSearchFeatured);
+        }
       };
 
       C.start();

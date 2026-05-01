@@ -28,4 +28,26 @@ DataMovie.requestCategories = async function () {
   return data;
 };
 
+// Copié depuis app/data/dataMovie.js — recherche films
+DataMovie.search = async function (query) {
+  let answer = await fetch(
+    HOST_URL + "/server/script.php?todo=searchmovies&query=" + query,
+  );
+  let data = await answer.json();
+  return data; // pas besoin d'enrichir les images ici, c'est l'admin
+};
+
+// Nouvelle fonction pour modifier le statut featured
+DataMovie.updateFeatured = async function (id, featured) {
+  let answer = await fetch(
+    HOST_URL +
+      "/server/script.php?todo=updatefeaturedstatus&id=" +
+      id +
+      "&featured=" +
+      featured,
+  );
+  let data = await answer.json();
+  return data;
+};
+
 export { DataMovie };

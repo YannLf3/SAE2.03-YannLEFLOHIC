@@ -37,6 +37,7 @@
       import { DataProfile } from "./data/dataProfile.js";
       import { DataFavorite, HOST_URL } from "./data/dataFavorite.js";
       import { FeaturedMovies } from "./component/FeaturedMovies/script.js";
+      import { Stats } from "./component/Stats/script.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -186,6 +187,45 @@
         V.clearMovieDetail();
       };
 
+      C.handlerStats = async function () {
+        let stats = await DataMovie.requestStats();
+        V.clearMovieDetail();
+        V.clearFeaturedMovies();
+        let movieList = document.querySelector("#movie-list");
+        movieList.innerHTML = Stats.format(stats);
+      };
+
+      C.handlerSearch = async function () {
+        // Récupère l'élément input de la barre de recherche
+        let input = document.querySelector("#navbar-search");
+        // Récupère le texte entré par l'utilisateur
+        let query = input.value;
+
+        // Si la barre est vide, affiche tous les films
+        if (query === "") {
+          C.handlerMovies();
+          return;
+        }
+
+        // Effectue la recherche avec le texte saisi
+        let searchResults = await DataMovie.search(query);
+
+        // Récupère les favoris du profil actif pour les afficher correctement
+        let favoriteIds = [];
+        if (C.activeProfileId) {
+          let favorites = await DataFavorite.read(C.activeProfileId);
+          // Crée une liste des IDs des favoris
+          for (let i = 0; i < favorites.length; i++) {
+            favoriteIds[i] = String(favorites[i].id);
+          }
+        }
+
+        // Affiche les résultats de recherche avec les favoris
+        V.renderMovies(searchResults, favoriteIds);
+        // Ferme le détail d'un film s'il était ouvert
+        V.clearMovieDetail();
+      };
+
       C.start = async function () {
         let profiles = await DataProfile.read(); // obligé de mettre async pour pouvoir mettre await sinon problème, ça ne lit pas et rien ne s'affiche
         V.renderProfileSelector(profiles);
@@ -206,8 +246,12 @@
         header.innerHTML = NavBar.format(
           hAbout,
           "C.handlerFavorites()",
+          "C.handlerStats()",
           C.activeProfileName,
         );
+        // On branche l'événement ici, après que la navbar est dans le DOM
+        let input = document.querySelector("#navbar-search");
+        input.addEventListener("keyup", C.handlerSearch);
       };
 
       V.renderMovies = function (filmsParCategorie, favoriteIds) {
@@ -280,6 +324,11 @@
         if (!movies || movies.length === 0) return; // ← rien à afficher
         let container = document.querySelector("#featured-movies");
         container.innerHTML = FeaturedMovies.format(movies, favoriteIds);
+      };
+
+      V.clearFeaturedMovies = function () {
+        let container = document.querySelector("#featured-movies");
+        container.innerHTML = "";
       };
 
       C.start(); // Démarre l'application
