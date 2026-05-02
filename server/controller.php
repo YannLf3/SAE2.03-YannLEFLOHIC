@@ -296,3 +296,12 @@ function updateFeaturedStatusController(){
         return "Une erreur est survenue.";
     }
 }
+
+function searchMoviesAdminController(){
+    $query = $_REQUEST['query'] ?? null;
+    if($query === null || $query === ''){
+        return false;
+    }
+    // On retourne le tableau directement, sans regrouper
+    return searchMovies($query);
+}

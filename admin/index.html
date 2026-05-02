@@ -64,7 +64,7 @@
 
         let results = await DataMovie.search(query);
 
-        if (!results || results.length === 0) {
+        if (!results || !Array.isArray(results) || results.length === 0) {
           V.renderLog("Aucun film ne correspond à votre recherche.");
           return;
         }

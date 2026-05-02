@@ -31,7 +31,7 @@ DataMovie.requestCategories = async function () {
 // Copié depuis app/data/dataMovie.js — recherche films
 DataMovie.search = async function (query) {
   let answer = await fetch(
-    HOST_URL + "/server/script.php?todo=searchmovies&query=" + query,
+    HOST_URL + "/server/script.php?todo=searchmoviesadmin&query=" + query,
   );
   let data = await answer.json();
   return data; // pas besoin d'enrichir les images ici, c'est l'admin
