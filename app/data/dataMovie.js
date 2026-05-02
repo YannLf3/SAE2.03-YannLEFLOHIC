@@ -142,4 +142,32 @@ DataMovie.search = async function (query) {
   return data;
 };
 
+DataMovie.addRating = async function (id_profile, id_movie, rating) {
+  let answer = await fetch(
+    HOST_URL +
+      "/server/script.php?todo=addrating" +
+      "&id_profile=" +
+      id_profile +
+      "&id_movie=" +
+      id_movie +
+      "&rating=" +
+      rating,
+  );
+  let data = await answer.json();
+  return data;
+};
+
+DataMovie.getMovieRating = async function (id_profile, id_movie) {
+  let answer = await fetch(
+    HOST_URL +
+      "/server/script.php?todo=getmovierating" +
+      "&id_profile=" +
+      id_profile +
+      "&id_movie=" +
+      id_movie,
+  );
+  let data = await answer.json();
+  return data;
+};
+
 export { DataMovie };

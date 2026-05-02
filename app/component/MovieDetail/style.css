@@ -183,5 +183,32 @@
         grid-row: 2;
       }
     }
+
+    .movie__detail__rating {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-top: var(--space-m);
+    }
+
+    .movie__detail__star {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .movie__detail__star:hover {
+      color: gold;
+    }
+
+    .movie__detail__star--disabled {
+      color: gold;
+      cursor: default;
+      pointer-events: none;
+    }
   }
 }

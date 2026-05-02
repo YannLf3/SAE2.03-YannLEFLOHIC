@@ -302,6 +302,41 @@ function searchMoviesAdminController(){
     if($query === null || $query === ''){
         return false;
     }
-    // On retourne le tableau directement, sans regrouper
     return searchMovies($query);
+}
+
+function addRatingController(){
+    $id_profile = $_REQUEST['id_profile'] ?? null;
+    $id_movie   = $_REQUEST['id_movie'] ?? null;
+    $rating     = $_REQUEST['rating'] ?? null;
+
+    if(!$id_profile || !$id_movie || !$rating){
+        return "Données manquantes.";
+    }
+
+    // Vérifie si le profil a déjà noté ce film
+    if(hasRated($id_profile, $id_movie)){
+        return "Vous avez déjà noté ce film.";
+    }
+
+    $ok = addRating($id_profile, $id_movie, $rating);
+    if($ok){
+        return "Votre note a été enregistrée. Merci pour votre contribution !";
+    } else {
+        return "Une erreur est survenue lors de l'enregistrement de votre note.";
+    }
+}
+
+function getMovieRatingController(){
+    $id_profile = $_REQUEST['id_profile'] ?? 0;
+    $id_movie   = $_REQUEST['id_movie'] ?? null;
+
+    if(!$id_movie){
+        return false;
+    }
+
+    return [
+        'average'   => getAverageRating($id_movie),
+        'has_rated' => hasRated($id_profile, $id_movie)
+    ];
 }

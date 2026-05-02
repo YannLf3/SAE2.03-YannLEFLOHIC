@@ -21,7 +21,29 @@ MovieDetail.format = function (movie) {
   );
   html = html.replaceAll("{{min_age}}", movie.min_age);
   html = html.replaceAll("{{trailer}}", movie.trailer);
+  html = html.replaceAll("{{average}}", "...");
+  html = html.replaceAll("{{stars}}", "");
   return html;
+};
+
+//  le fetch du templateStar
+let templateStarFile = await fetch("./component/MovieDetail/templateStar.html");
+let templateStar = await templateStarFile.text();
+
+MovieDetail.formatStars = function (id_movie, hasRated) {
+  let starsHtml = "";
+  for (let i = 1; i <= 5; i++) {
+    let star = templateStar;
+    star = star.replaceAll("{{value}}", i);
+    star = star.replaceAll("{{id_movie}}", id_movie);
+    // Si déjà noté, on désactive les étoiles
+    star = star.replaceAll(
+      "{{activeClass}}",
+      hasRated ? "movie__detail__star--disabled" : "",
+    );
+    starsHtml += star;
+  }
+  return starsHtml;
 };
 
 export { MovieDetail };

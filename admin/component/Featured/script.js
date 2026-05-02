@@ -11,17 +11,19 @@ FeaturedSearch.format = function (movies) {
   for (let i = 0; i < movies.length; i++) {
     let card = templateCard;
     card = card.replaceAll("{{id}}", movies[i].id);
+    card = card.replaceAll("{{titre}}", movies[i].titre);
+    card = card.replaceAll("{{image}}", movies[i].image);
     card = card.replaceAll("{{name}}", movies[i].name);
     card = card.replaceAll("{{category_name}}", movies[i].category_name);
     card = card.replaceAll(
       "{{checkedAttr}}",
-      movies[i].featured == 1 ? "checked" : "",
+      movies[i].mis_en_avant == 1 ? "checked" : "",
     );
     cardsHtml += card;
   }
 
   let html = template;
-  html = html.replaceAll("{{results}}", cardsHtml);
+  html = html.replaceAll("{{movies}}", cardsHtml);
   return html;
 };
 

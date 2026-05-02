@@ -64,33 +64,20 @@
 
         let results = await DataMovie.search(query);
 
-        if (!results || !Array.isArray(results) || results.length === 0) {
+        if (!results || results.length === 0) {
           V.renderLog("Aucun film ne correspond à votre recherche.");
           return;
         }
 
-        V.renderFeaturedSearch(results);
+        V.renderFeaturedResults(results);
 
-        // Étape 1 : Récupérer toutes les checkboxes affichées
-        let checkboxes = document.querySelectorAll(
-          ".featured-search__card input[type='checkbox']",
-        );
-
-        // Étape 2 : Parcourir chaque checkbox une par une
+        // On branche les checkboxes APRÈS l'affichage
+        let checkboxes = document.querySelectorAll(".featured-card__checkbox");
         for (let i = 0; i < checkboxes.length; i++) {
-          // Ajouter un écouteur : exécuter du code quand la checkbox change d'état
           checkboxes[i].addEventListener("change", async function () {
-            // "change" est un événement qui se déclenche quand on coche ou décoche une checkbox
-            // Récupérer l'ID du film stocké dans l'attribut data-id
             let id = this.dataset.id;
-
-            // Convertir l'état de la checkbox en nombre : 1 si cochée, 0 si décochée
-            let featured = this.checked ? 1 : 0; // ? 1: 0 est une syntaxe qui signifie "si this.checked est vrai, alors featured vaut 1, sinon il vaut 0"
-            // this.checked est une propriété qui vaut true si la checkbox est cochée, et false si elle ne l'est pas
-            // Appeler la fonction pour mettre à jour la base de données
+            let featured = this.checked ? 1 : 0;
             let res = await DataMovie.updateFeatured(id, featured);
-
-            // Afficher le résultat (succès ou erreur) dans le log
             V.renderLog(res);
           });
         }
@@ -103,7 +90,7 @@
         V.renderMovieForm("C.handlerAddMovie()", categories);
         V.renderProfileForm("C.handlerAddProfile()");
         V.renderModifyProfileForm("C.handlerModifyProfile()", profiles);
-        V.renderFeaturedSearch([]); // on affiche une page de recherche vide au départ, avant que l'utilisateur ait fait une recherche
+        V.renderFeaturedResults([]); // affiche le formulaire de recherche sans résultats
       };
 
       window.V = {};
@@ -128,11 +115,11 @@
         content.innerHTML = ModifyProfileForm.format(handler, profiles);
       };
 
-      V.renderFeaturedSearch = function (movies) {
+      V.renderFeaturedResults = function (movies) {
         let container = document.querySelector("#featuredSearch");
         container.innerHTML = FeaturedSearch.format(movies);
 
-        // On branche le bouton rechercher après affichage
+        // On branche le bouton après chaque affichage
         let btn = document.querySelector("#featured-search-btn");
         if (btn) {
           btn.addEventListener("click", C.handlerSearchFeatured);

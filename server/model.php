@@ -319,28 +319,55 @@ function getMostPopularCategory(){
 
 function searchMovies($query){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    // LIKE '%mot%' = contient "mot" n'importe où dans le titre, le réalisateur ou l'année de sortie
     $sql = "SELECT m.id, m.name, m.image, m.mis_en_avant, c.name AS category_name
             FROM SAE203_Movie m
             JOIN SAE203_Category c ON m.id_category = c.id
             WHERE m.name LIKE :query
-               OR m.director LIKE :query
-               OR m.year LIKE :query
-               OR m.min_age LIKE :query
             ORDER BY c.name, m.name";
     $stmt = $cnx->prepare($sql);
-    // On entoure la valeur de % pour chercher partout dans le titre, réalisateur et année
     $search = "%" . $query . "%";
     $stmt->bindParam(':query', $search);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
 
-function updateFeaturedStatus($id, $featured){
+function updateFeaturedStatus($id, $mis_en_avant){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "UPDATE SAE203_Movie SET mis_en_avant = :featured WHERE id = :id";
+    $sql = "UPDATE SAE203_Movie SET mis_en_avant = :mis_en_avant WHERE id = :id";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':featured', $featured);
+    $stmt->bindParam(':mis_en_avant', $mis_en_avant);
     return $stmt->execute();
+}
+
+function addRating($id_profile, $id_movie, $rating){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "INSERT INTO SAE203_Rating (id_profile, id_movie, rating)
+            VALUES (:id_profile, :id_movie, :rating)";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_profile', $id_profile);
+    $stmt->bindParam(':id_movie', $id_movie);
+    $stmt->bindParam(':rating', $rating);
+    return $stmt->execute();
+}
+
+function getAverageRating($id_movie){// nombre moyen de la note d'un film, arrondi à 1 chiffre après la virgule pour les avoir pour itération 19 : plus de stats
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT ROUND(AVG(rating), 1) AS average FROM SAE203_Rating WHERE id_movie = :id_movie";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_movie', $id_movie);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res->average ?? 0;
+}
+
+function hasRated($id_profile, $id_movie){// pour vérifier si un profil a déjà noté un film, afin d'empêcher les doublons de notes pour le même film par le même profil
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT COUNT(*) AS total FROM SAE203_Rating 
+            WHERE id_profile = :id_profile AND id_movie = :id_movie";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_profile', $id_profile);
+    $stmt->bindParam(':id_movie', $id_movie);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ)->total > 0;
 }
