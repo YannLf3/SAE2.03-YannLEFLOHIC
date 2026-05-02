@@ -340,3 +340,22 @@ function getMovieRatingController(){
         'has_rated' => hasRated($id_profile, $id_movie)
     ];
 }
+
+function getCommentsByMovieController(){
+    $id_movie = $_REQUEST['id_movie'] ?? null;
+    if(!$id_movie) return false;
+    return getCommentsByMovie($id_movie);
+}
+
+function addCommentController(){
+    $id_profile = $_REQUEST['id_profile'] ?? null;
+    $id_movie   = $_REQUEST['id_movie'] ?? null;
+    $content    = $_REQUEST['content'] ?? null;
+
+    if(!$id_profile || !$id_movie || !$content || trim($content) === ''){
+        return "Données manquantes.";
+    }
+
+    $ok = addComment($id_profile, $id_movie, $content);
+    return $ok ? "Votre commentaire a été ajouté." : "Une erreur est survenue.";
+}

@@ -133,6 +133,14 @@ if ( isset($_REQUEST['todo']) ){
         $data = getMovieRatingController();
         break;
 
+      case 'getcomments':
+        $data = getCommentsByMovieController();
+        break;
+      
+      case 'addcomment':
+        $data = addCommentController();
+        break;
+
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée
       echo json_encode('[error] Unknown todo value');
       http_response_code(400); // 400 == "Bad request"
