@@ -13,6 +13,7 @@
 @import "../component/ProfileSelector/style.css" layer(components);
 @import "../component/FeaturedMovies/style.css" layer(components);
 @import "../component/Stats/style.css" layer(components);
+@import "../component/Comment/style.css" layer(components);
 
 body {
   position: relative;

@@ -1,4 +1,4 @@
-let HOST_URL = "https://leflohic-sae203.mmi-limoges.fr";
+let HOST_URL = "https://mmi.unilim.fr/~le-flohic4/SAE2.03-YannLEFLOHIC";
 
 let DataComment = {};
 

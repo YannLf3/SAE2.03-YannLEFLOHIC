@@ -38,6 +38,8 @@
       import { DataFavorite, HOST_URL } from "./data/dataFavorite.js";
       import { FeaturedMovies } from "./component/FeaturedMovies/script.js";
       import { Stats } from "./component/Stats/script.js";
+      import { Comment } from "./component/Comment/script.js";
+      import { DataComment } from "./data/dataComment.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -95,8 +97,9 @@
           C.activeProfileId ?? 0,
           id,
         );
+        let comments = await DataComment.getByMovie(id);
 
-        V.renderMovieDetail(film, ratingData);
+        V.renderMovieDetail(film, ratingData, comments);
       };
 
       C.handlerSelectProfile = function (element) {
@@ -277,7 +280,7 @@
         overlay.innerHTML = "";
       };
 
-      V.renderMovieDetail = function (movie, ratingData) {
+      V.renderMovieDetail = function (movie, ratingData, comments) {
         let movieDetail = document.querySelector("#movie-detail");
         movieDetail.innerHTML = MovieDetail.format(movie);
         let navbar = document.querySelector(".navbar");
@@ -361,6 +364,49 @@
                 C.handlerMovieDetail(id_movie);
               });
             }
+          }
+        }
+        let commentsContainer = document.querySelector("#movie-comments");
+        if (commentsContainer) {
+          let isConnected = C.activeProfileId !== null;
+          commentsContainer.innerHTML = Comment.format(comments, isConnected);
+
+          // activer le bouton envoyer si connecté
+          let submitBtn = document.querySelector("#comment-submit");
+          if (submitBtn) {
+            submitBtn.addEventListener("click", async function () {
+              let input = document.querySelector("#comment-input");
+              let content = input.value;
+
+              // On suppose au départ que le message ne contient que des espaces.
+              let onlySpaces = true;
+              // On parcourt chaque caractère du message.
+              for (let i = 0; i < content.length; i++) {
+                // Si on trouve un caractère différent d'un espace,
+                // alors le message n'est pas composé uniquement d'espaces.
+                if (content[i] !== " ") {
+                  onlySpaces = false;
+                  break;
+                }
+              }
+
+              // On bloque l'envoi si le message est vide
+              // ou s'il contient seulement des espaces.
+              if (content === "" || onlySpaces) {
+                Notif.show("Le commentaire ne peut pas être vide.");
+                return;
+              }
+
+              let res = await DataComment.add(
+                C.activeProfileId,
+                movie.id,
+                content,
+              );
+              Notif.show(res);
+              // Recharge les commentaires
+              let newComments = await DataComment.getByMovie(movie.id);
+              commentsContainer.innerHTML = Comment.format(newComments, true);
+            });
           }
         }
       };
