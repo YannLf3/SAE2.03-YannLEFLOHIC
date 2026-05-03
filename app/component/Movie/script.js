@@ -1,5 +1,8 @@
 let templateFile = await fetch("./component/Movie/template.html");
+let templateNewFile = await fetch("./component/Movie/templateNew.html");
+
 let template = await templateFile.text();
+let templateNew = await templateNewFile.text();
 
 let Movie = {};
 Movie.template = template;
@@ -27,6 +30,10 @@ Movie.format = function (films, favoriteIds) {
     card = card.replaceAll("{{titre}}", films[i].titre);
     card = card.replaceAll("{{image}}", films[i].image);
     card = card.replaceAll("{{name}}", films[i].name);
+    card = card.replaceAll(
+      "{{newTag}}",
+      films[i].is_new == 1 ? templateNew : "",
+    );
 
     // ← ajouter ces deux lignes
     let isFavorite = false;

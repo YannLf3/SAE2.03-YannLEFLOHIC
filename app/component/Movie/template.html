@@ -1,7 +1,10 @@
 <div class="movie__card u-flex u-flex-column u-gap-xs">
   <div onclick="C.handlerMovieDetail('{{id}}')">
+    {{newTag}}
     <img class="movie__card-image" src="{{image}}" alt="Affiche de {{name}}" />
-    <h2 class="movie__card-title u-font-size-base u-font-sans u-font-weight-bold">
+    <h2
+      class="movie__card-title u-font-size-base u-font-sans u-font-weight-bold"
+    >
       {{titre}}
     </h2>
   </div>

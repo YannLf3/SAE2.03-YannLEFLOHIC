@@ -89,7 +89,7 @@ function getMoviesGroupedByCategory($age){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
 
     // On récupère chaque film avec le nom de sa catégorie
-    $sql = "SELECT m.id, m.name, m.image, c.name AS category_name 
+    $sql = "SELECT m.id, m.name, m.image, m.created_at, c.name AS category_name 
             FROM SAE203_Movie m
             JOIN SAE203_Category c ON m.id_category = c.id
             WHERE m.min_age <= :age
@@ -109,6 +109,8 @@ function getMoviesGroupedByCategory($age){
     // On parcourt tous les films pour les ranger par catégorie
     $i = 0;
     $moviesCount = count($movies);
+    // Calcul du seuil une seule fois
+    $limit = new DateTime('-7 days');
     while ($i < $moviesCount) {
         $movie = $movies[$i];
         // Nom de la catégorie du film courant
@@ -119,16 +121,22 @@ function getMoviesGroupedByCategory($age){
             $grouped[$cat] = [];
         }
 
-        //version simplifiee du film, prête à être envoyée
-        // au front : uniquement les informations utiles pour l'affichage en liste.
-        // Chaque entrée : une carte film dans une catégorie.
+        // Détermination sécurisée de la date du film
+        $movieDate = null;
+        try {
+            if (!empty($movie->created_at)) {
+                $movieDate = new DateTime($movie->created_at);
+            }
+        } catch (Exception $e) {
+            $movieDate = null;
+        }
+
+        // Représentation simplifiée du film, prête à être envoyée au front
         $grouped[$cat][] = [
-            // Identifiant unique du film, pr ouvrir fiche pop up.
-            'id'    => $movie->id,
-            // Titre affiché sur la carte ou dans la liste.
-            'name'  => $movie->name,
-            // Nom/chemin de l'image d'illustration du film.
-            'image' => $movie->image
+            'id'     => $movie->id,
+            'name'   => $movie->name,
+            'image'  => $movie->image,
+            'is_new' => ($movieDate && $movieDate >= $limit) ? 1 : 0
         ];
 
         $i++;

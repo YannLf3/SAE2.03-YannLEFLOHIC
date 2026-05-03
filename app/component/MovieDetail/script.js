@@ -1,5 +1,8 @@
 let templateFile = await fetch("./component/MovieDetail/template.html");
+let templateNewFile = await fetch("./component/Movie/templateNew.html");
+
 let template = await templateFile.text();
+let templateNew = await templateNewFile.text();
 
 let MovieDetail = {};
 MovieDetail.template = template;
@@ -23,6 +26,7 @@ MovieDetail.format = function (movie) {
   html = html.replaceAll("{{trailer}}", movie.trailer);
   html = html.replaceAll("{{average}}", "...");
   html = html.replaceAll("{{stars}}", "");
+  html = html.replaceAll("{{newTag}}", movie.is_new == 1 ? templateNew : "");
   return html;
 };
 
