@@ -1,84 +1,80 @@
-.moderation{
-    width: 100%;
-    max-width: 30rem;
-    margin: var(--space-lg) auto;
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: var(--space-lg);
-    border: 0.05rem solid var(--color-border);
-    border-radius: var(--radius-md);
-    background-color: var(--color-surface);
-    color: var(--color-surface-fg);
-    box-sizing: border-box;
+.moderation {
+  width: 100%;
+  max-width: 30rem;
+  margin: var(--space-lg) auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--space-lg);
+  border: 0.05rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-surface-fg);
+  box-sizing: border-box;
 }
 
-
-
-
-
 .moderation__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-m);
-    margin-top: var(--space-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  margin-top: var(--space-m);
 }
 
 .moderation__card {
-    padding: var(--space-m);
-    border-radius: var(--radius-m);
-    background: var(--color-surface, #1e1e1e);
-    border: 1px solid rgba(255,255,255,0.1);
+  padding: var(--space-m);
+  border-radius: var(--radius-m);
+  background: var(--color-surface, #1e1e1e);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .moderation__card-header {
-    display: flex;
-    gap: var(--space-s);
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: var(--space-xs);
-    font-size: 0.85rem;
-    opacity: 0.8;
+  display: flex;
+  gap: var(--space-s);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xs);
+  font-size: 0.85rem;
+  opacity: 0.8;
 }
 
 .moderation__card-content {
-    margin-bottom: var(--space-s);
+  margin-bottom: var(--space-s);
 }
 
 .moderation__card-status {
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.75rem;
 }
 
 .moderation__card-status--pending {
-    background: orange;
-    color: black;
+  background: orange;
+  color: black;
 }
 
 .moderation__card-status--approved {
-    background: green;
-    color: white;
+  background: green;
+  color: white;
 }
 
 .moderation__card-actions {
-    display: flex;
-    gap: var(--space-s);
+  display: flex;
+  gap: var(--space-s);
 }
 
 .moderation__btn {
-    padding: var(--space-xs) var(--space-m);
-    border-radius: var(--radius-m);
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
+  padding: var(--space-xs) var(--space-m);
+  border-radius: var(--radius-m);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .moderation__btn--approve {
-    background: green;
-    color: white;
+  background: green;
+  color: white;
 }
 
 .moderation__btn--delete {
-    background: red;
-    color: white;
+  background: red;
+  color: white;
 }
