@@ -10,6 +10,7 @@
 @import "../component/ProfileForm/style.css" layer(components);
 @import "../component/ModifyProfileForm/style.css" layer(components);
 @import "../component/Featured/style.css" layer(components);
+@import "../component/CommentModeration/style.css" layer(components);
 
 /* Style appliqué si l'utilisateur tape un nombre négatif */
 input[type="number"]:invalid {

@@ -377,7 +377,7 @@ function getCommentsByMovie($id_movie){
     $sql = "SELECT c.content, c.created_at, p.name AS profile_name
             FROM SAE203_Comment c
             JOIN SAE203_Profile p ON c.id_profile = p.id
-            WHERE c.id_movie = :id_movie
+            WHERE c.id_movie = :id_movie AND c.approved = 1
             ORDER BY c.created_at DESC";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id_movie', $id_movie);
@@ -393,5 +393,34 @@ function addComment($id_profile, $id_movie, $content){
     $stmt->bindParam(':id_profile', $id_profile);
     $stmt->bindParam(':id_movie', $id_movie);
     $stmt->bindParam(':content', $content);
+    return $stmt->execute();
+}
+
+function getPendingComments(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT c.id, c.content, c.created_at, c.approved,
+                   p.name AS profile_name, m.name AS movie_name
+            FROM SAE203_Comment c
+            JOIN SAE203_Profile p ON c.id_profile = p.id
+            JOIN SAE203_Movie m ON c.id_movie = m.id
+            ORDER BY c.created_at DESC";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function approveComment($id){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "UPDATE SAE203_Comment SET approved = 1 WHERE id = :id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    return $stmt->execute();
+}
+
+function deleteComment($id){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "DELETE FROM SAE203_Comment WHERE id = :id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
     return $stmt->execute();
 }

@@ -352,10 +352,30 @@ function addCommentController(){
     $id_movie   = $_REQUEST['id_movie'] ?? null;
     $content    = $_REQUEST['content'] ?? null;
 
-    if(!$id_profile || !$id_movie || !$content || trim($content) === ''){
+    if(!$id_profile || !$id_movie || !$content || trim($content) === ''){ //trim() enlève les espaces blancs autour d'un string 
         return "Données manquantes.";
     }
 
     $ok = addComment($id_profile, $id_movie, $content);
     return $ok ? "Votre commentaire a été ajouté." : "Une erreur est survenue.";
+}
+
+function getPendingCommentsController(){
+    $comments = getPendingComments();
+    if(!$comments) return [];
+    return $comments;
+}
+
+function approveCommentController(){
+    $id = $_REQUEST['id'] ?? null;
+    if(!$id) return "Données manquantes.";
+    $ok = approveComment($id);
+    return $ok ? "Le commentaire a été approuvé avec succès." : "Une erreur est survenue.";
+}
+
+function deleteCommentController(){
+    $id = $_REQUEST['id'] ?? null;
+    if(!$id) return "Données manquantes.";
+    $ok = deleteComment($id);
+    return $ok ? "Le commentaire a été supprimé." : "Une erreur est survenue.";
 }

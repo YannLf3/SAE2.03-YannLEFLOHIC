@@ -12,6 +12,7 @@
     <section id="movieForm" class="admin__form"></section>
     <section id="profileForm" class="admin__form"></section>
     <section id="modifyProfileForm" class="admin__form"></section>
+    <section id="commentModeration"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
@@ -22,6 +23,8 @@
       import { DataProfile } from "./data/dataProfile.js";
       import { ModifyProfileForm } from "./component/ModifyProfileForm/script.js";
       import { FeaturedSearch } from "./component/Featured/script.js";
+      import { CommentModeration } from "./component/CommentModeration/script.js";
+      import { DataComment } from "./data/dataComment.js";
 
       window.C = {};
 
@@ -83,6 +86,11 @@
         }
       };
 
+      C.handlerLoadComments = async function () {
+        let comments = await DataComment.getPending();
+        V.renderCommentModeration(comments);
+      };
+
       C.start = async function () {
         V.renderLog("Démarrage de l'application");
         let categories = await DataMovie.requestCategories();
@@ -91,6 +99,7 @@
         V.renderProfileForm("C.handlerAddProfile()");
         V.renderModifyProfileForm("C.handlerModifyProfile()", profiles);
         V.renderFeaturedResults([]); // affiche le formulaire de recherche sans résultats
+        C.handlerLoadComments();
       };
 
       window.V = {};
@@ -125,6 +134,33 @@
           btn.addEventListener("click", C.handlerSearchFeatured);
         }
       };
+
+      V.renderCommentModeration = function (comments) {
+          let container = document.querySelector("#commentModeration");
+          container.innerHTML = CommentModeration.format(comments);
+
+    // Brancher les boutons Approuver
+        let approveBtns = document.querySelectorAll(".moderation__btn--approve");
+        for (let i = 0; i < approveBtns.length; i++) {
+            approveBtns[i].addEventListener("click", async function () {
+              let id  = this.dataset.id;
+              let res = await DataComment.approve(id);
+              V.renderLog(res);
+              C.handlerLoadComments(); // recharge la liste
+          });
+      }
+
+    // Brancher les boutons Supprimer
+        let deleteBtns = document.querySelectorAll(".moderation__btn--delete");
+        for (let i = 0; i < deleteBtns.length; i++) {
+          deleteBtns[i].addEventListener("click", async function () {
+              let id  = this.dataset.id;
+              let res = await DataComment.delete(id);
+              V.renderLog(res);
+              C.handlerLoadComments(); // recharge la liste
+        });
+    }
+};
 
       C.start();
     </script>

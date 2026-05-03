@@ -105,41 +105,53 @@ if ( isset($_REQUEST['todo']) ){
       $data = removeFavoriteController();
       break;
 
-      case 'readfeaturedmovies':
-        $data = readFeaturedMoviesController();
-        break;
+    case 'readfeaturedmovies':
+      $data = readFeaturedMoviesController();
+      break;
 
-      case 'readstats':
-        $data = readStatsController();
-        break;
+    case 'readstats':
+      $data = readStatsController();
+      break;
 
-      case 'searchmovies':
-        $data = searchMoviesController();
-        break;
+    case 'searchmovies':
+      $data = searchMoviesController();
+      break;
 
-      case 'updatefeaturedstatus':
-        $data = updateFeaturedStatusController();
-        break;
+    case 'updatefeaturedstatus':
+      $data = updateFeaturedStatusController();
+      break;
 
-      case 'searchmoviesadmin':
-        $data = searchMoviesAdminController();
-        break;
+    case 'searchmoviesadmin':
+      $data = searchMoviesAdminController();
+      break;
 
-      case 'addrating':
-        $data = addRatingController();
-        break;
+    case 'addrating':
+      $data = addRatingController();
+      break;
       
-      case 'getmovierating':
-        $data = getMovieRatingController();
-        break;
+    case 'getmovierating':
+      $data = getMovieRatingController();
+      break;
 
-      case 'getcomments':
-        $data = getCommentsByMovieController();
-        break;
+    case 'getcomments':
+      $data = getCommentsByMovieController();
+      break;
       
-      case 'addcomment':
-        $data = addCommentController();
-        break;
+    case 'addcomment':
+      $data = addCommentController();
+      break;
+
+    case 'getpendingcomments':
+      $data = getPendingCommentsController();
+      break;
+      
+    case 'approvecomment':
+      $data = approveCommentController();
+      break;
+      
+    case 'deletecomment':
+      $data = deleteCommentController();
+      break;
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée
       echo json_encode('[error] Unknown todo value');
