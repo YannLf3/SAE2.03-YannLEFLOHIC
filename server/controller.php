@@ -342,7 +342,8 @@ function getMovieRatingController(){
 
     return [
         'average'   => getAverageRating($id_movie),
-        'has_rated' => hasRated($id_profile, $id_movie)
+        'has_rated' => hasRated($id_profile, $id_movie),
+        'user_rating' => getUserRating($id_profile, $id_movie)
     ];
 }
 
@@ -357,7 +358,7 @@ function addCommentController(){
     $id_movie   = $_REQUEST['id_movie'] ?? null;
     $content    = $_REQUEST['content'] ?? null;
 
-    if(!$id_profile || !$id_movie || !$content || trim($content) === ''){ //trim() enlève les espaces blancs autour d'un string 
+    if(!$id_profile || !$id_movie || !$content || trim($content) === ''){ //trim() enlève les espaces blancs autour d'un string https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/String/trim
         return "Données manquantes.";
     }
 

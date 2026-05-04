@@ -17,11 +17,11 @@
     color: var(--color-accent);
     overflow-y: scroll;
 
-    .last {
+    .log__item--last {
       animation: fondu-en-entree 1s ease-in-out;
     }
 
-    .clignotant {
+    .log__item--blinking {
       animation: clignotement 2.5s infinite;
     }
   }

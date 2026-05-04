@@ -11,13 +11,13 @@
     color: var(--color-title);
   }
 
-  .carousel {
+  .featured__carousel {
     max-width: min-content;
     margin: 0 auto;
     overflow-x: auto;
     position: relative;
 
-    .carousel__inner {
+    .featured__carousel-inner {
       display: flex;
       width: 100%;
       gap: var(--space-s);
@@ -118,7 +118,7 @@
       font-size: 1.75rem;
     }
 
-    .carousel__inner {
+    .featured__carousel-inner {
       gap: var(--space-m);
 
       .movie__card {
@@ -141,7 +141,7 @@
       font-size: 2rem;
     }
 
-    .carousel__inner {
+    .featured__carousel-inner {
       .movie__card {
         width: 16rem;
         min-height: 22rem;

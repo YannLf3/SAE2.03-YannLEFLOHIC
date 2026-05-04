@@ -3,7 +3,7 @@ let template = await templateFile.text();
 
 let templateLi = "<li>[{{time}}] {{txt}}</li>";
 let templateLiLast =
-  "<li class='last'>[{{time}}] {{txt}}<span class='clignotant'> #</span></li>";
+  "<li class='log__item--last'>[{{time}}] {{txt}}<span class='log__item--blinking'> #</span></li>";
 
 let Log = {};
 

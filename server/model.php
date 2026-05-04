@@ -403,6 +403,29 @@ function hasRated($id_profile, $id_movie){// pour vérifier si un profil a déj�
     return $stmt->fetch(PDO::FETCH_OBJ)->total > 0;
 }
 
+//obligé de rajouter cette fonctiuon si on veut que qd on cliqye sur les étoiles ca colorie que le nb d'étoiles que l'on a coché
+function getUserRating($id_profile, $id_movie){
+    if(!$id_profile || !$id_movie){
+        return null;
+    }
+
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT rating FROM SAE203_Rating
+            WHERE id_profile = :id_profile AND id_movie = :id_movie
+            LIMIT 1";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_profile', $id_profile);
+    $stmt->bindParam(':id_movie', $id_movie);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+
+    if(!$res){
+        return null;
+    }
+
+    return (int)$res->rating;
+}
+
 function getCommentsByMovie($id_movie){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     $sql = "SELECT c.content, c.created_at, p.name AS profile_name

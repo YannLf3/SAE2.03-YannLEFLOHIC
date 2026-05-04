@@ -23,7 +23,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--color-primary);
+      border-color: var(--color-accent);
       box-shadow: 0 0 0 0.35rem rgba(0, 123, 255, 0.25);
     }
 

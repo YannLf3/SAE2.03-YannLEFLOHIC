@@ -62,6 +62,7 @@
 }
 
 .moderation__btn {
+  margin: auto;
   padding: var(--space-xs) var(--space-m);
   border-radius: var(--radius-m);
   border: none;

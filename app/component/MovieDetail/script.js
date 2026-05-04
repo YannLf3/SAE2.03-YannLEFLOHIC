@@ -34,16 +34,22 @@ MovieDetail.format = function (movie) {
 let templateStarFile = await fetch("./component/MovieDetail/templateStar.html");
 let templateStar = await templateStarFile.text();
 
-MovieDetail.formatStars = function (id_movie, hasRated) {
+MovieDetail.formatStars = function (id_movie, hasRated, userRating = 0) {
   let starsHtml = "";
   for (let i = 1; i <= 5; i++) {
     let star = templateStar;
     star = star.replaceAll("{{value}}", i);
     star = star.replaceAll("{{id_movie}}", id_movie);
-    // Si déjà noté, on désactive les étoiles
+    // Si deja note, on desactive les etoiles
     star = star.replaceAll(
       "{{activeClass}}",
-      hasRated ? "movie__detail__star--disabled" : "",
+      hasRated ? "movie__detail-star--disabled" : "",
+    );
+    // En mode lecture seule, on colore uniquement jusqu'a la note enregistree.
+    star = star.replaceAll(
+      "{{filledClass}}",
+      // Colore uniquement les etoiles jusqu'a la note de l'utilisateur.
+      hasRated && i <= Number(userRating) ? "movie__detail-star--filled" : "",
     );
     starsHtml += star;
   }

@@ -11,17 +11,19 @@ DataComment.getPending = async function () {
 };
 
 DataComment.approve = async function (id) {
-  let answer = await fetch(
-    HOST_URL + "/server/script.php?todo=approvecomment&id=" + id,
-  );
+  let answer = await fetch(HOST_URL + "/server/script.php", {
+    method: "POST",
+    body: new URLSearchParams({ todo: "approvecomment", id: id }),
+  });
   let data = await answer.json();
   return data;
 };
 
 DataComment.delete = async function (id) {
-  let answer = await fetch(
-    HOST_URL + "/server/script.php?todo=deletecomment&id=" + id,
-  );
+  let answer = await fetch(HOST_URL + "/server/script.php", {
+    method: "POST",
+    body: new URLSearchParams({ todo: "deletecomment", id: id }),
+  });
   let data = await answer.json();
   return data;
 };

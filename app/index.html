@@ -299,23 +299,24 @@
         navbar?.classList.add("navbar--fixed");
 
         // Bouton fermer
-        let closeBtn = document.querySelector(".movie__detail__close");
-        closeBtn.addEventListener("click", V.clearMovieDetail);
+        let closeBtn = document.querySelector(".movie__detail-close");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", V.clearMovieDetail);
+        }
 
         // Fermer en cliquant en dehors de la popup
-        document
-          .getElementById("movie-detail")
-          .addEventListener("click", function (truc) {
+        let movieDetailOverlay = document.getElementById("movie-detail");
+        if (movieDetailOverlay) {
+          movieDetailOverlay.addEventListener("click", function (truc) {
             //pareil vérifier avec le prof de css voir si c'est qu'il voulait dire
             if (truc.target.id === "movie-detail") {
               V.clearMovieDetail();
             }
           });
+        }
 
         let starsContainer = document.querySelector("#rating-stars");
-        let averageEl = document.querySelector(
-          ".movie__detail__rating-average",
-        );
+        let averageEl = document.querySelector(".movie__detail-rating-average");
 
         // Vérifie que le conteneur des étoiles existe et que les données de notation sont présentes.
         if (starsContainer && ratingData) {
@@ -331,6 +332,7 @@
           }
           // Récupère l'information qui dit si le profil a déjà noté le film.
           let hasRated = ratingData.has_rated;
+          let userRating = ratingData.user_rating ?? 0;
 
           // Affiche le texte de la moyenne dans la zone prévue.
           averageEl.textContent = "Note moyenne : " + average + " / 5"; // textcontent est différent de innerHTML, il ne traite pas le contenu comme du HTML mais comme du texte brut, ce qui est plus simple pour afficher cette note moyenne
@@ -338,12 +340,13 @@
           starsContainer.innerHTML = MovieDetail.formatStars(
             movie.id,
             hasRated,
+            userRating,
           );
 
           // On branche les étoiles seulement si le film n'a pas encore été noté.
           if (!hasRated) {
             // Récupère toutes les étoiles affichées.
-            let stars = document.querySelectorAll(".movie__detail__star");
+            let stars = document.querySelectorAll(".movie__detail-star");
             // Parcourt chaque étoile une par une.
             for (let i = 0; i < stars.length; i++) {
               // Ajoute un clic sur chaque étoile.
@@ -441,4 +444,3 @@
     </script>
   </body>
 </html>
-<script type="module"></script>

@@ -75,7 +75,7 @@
   color: var(--color-title);
 }
 
-.movie__card-new {
+.movie-badge--new {
   display: inline-block;
   background: red;
   color: white;
