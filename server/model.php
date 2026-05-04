@@ -81,7 +81,27 @@ function getMovieDetails($id){
     $stmt->execute();
     // Récupère les résultats de la requête sous forme d'objets
     $res = $stmt->fetch(PDO::FETCH_OBJ);
-    return $res; // Retourne les détails du film avec le nom de la catégorie
+    
+    // Ajout du calcul de is_new (film nouveau si créé il y a moins de 7 jours)
+    if ($res) {
+        $movieDate = null;
+        // Tentative de conversion de la date created_at en objet DateTime.
+        // Si le format est invalide, une Exception est levée et on la capture pour éviter un crash.
+        try {
+            if (!empty($res->created_at)) {
+                $movieDate = new DateTime($res->created_at);
+            }
+        } catch (Exception) {
+            // Si erreur de format, on met null pour que is_new soit toujours à 0
+            $movieDate = null;
+        }
+        
+        // Calcul du seuil
+        $limit = new DateTime('-7 days');
+        $res->is_new = ($movieDate && $movieDate >= $limit) ? 1 : 0;
+    }
+    
+    return $res; // Retourne les détails du film avec le nom de la catégorie et is_new
 }
 
 function getMoviesGroupedByCategory($age){
@@ -123,11 +143,14 @@ function getMoviesGroupedByCategory($age){
 
         // Détermination sécurisée de la date du film
         $movieDate = null;
+        // Tentative de conversion de la date created_at en objet DateTime.
+        // Si le format est invalide, une Exception est levée et on la capture pour éviter un crash.
         try {
             if (!empty($movie->created_at)) {
                 $movieDate = new DateTime($movie->created_at);
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
+            // Si erreur de format, on met null pour que is_new soit toujours à 0
             $movieDate = null;
         }
 
