@@ -353,7 +353,10 @@ function searchMovies($query){
     $sql = "SELECT m.id, m.name, m.image, m.mis_en_avant, c.name AS category_name
             FROM SAE203_Movie m
             JOIN SAE203_Category c ON m.id_category = c.id
-            WHERE m.name LIKE :query
+            WHERE m.name LIKE :query 
+               OR m.director LIKE :query 
+               OR CAST(m.year AS CHAR) LIKE :query 
+               OR CAST(m.min_age AS CHAR) LIKE :query
             ORDER BY c.name, m.name";
     $stmt = $cnx->prepare($sql);
     $search = "%" . $query . "%";

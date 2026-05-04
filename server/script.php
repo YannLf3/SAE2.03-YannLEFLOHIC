@@ -154,8 +154,8 @@ if ( isset($_REQUEST['todo']) ){
       break;
 
     default: // il y a un paramètre todo mais sa valeur n'est pas reconnue/supportée
-      echo json_encode('[error] Unknown todo value');
       http_response_code(400); // 400 == "Bad request"
+      echo json_encode('[error] Unknown todo value');
       exit();
   }
 
@@ -169,8 +169,8 @@ if ( isset($_REQUEST['todo']) ){
    * et un code de réponse HTTP 500 (Internal error), puis termine l'exécution du script (exit()).
    */
   if ($data===false){
-    echo json_encode('[error] Controller returns false');
     http_response_code(500); // 500 == "Internal error"
+    echo json_encode('[error] Controller returns false');
     exit();
   }
 
@@ -179,8 +179,8 @@ if ( isset($_REQUEST['todo']) ){
    * par la fonction de contrôleur et encodées en JSON (json_encode).
    * On renvoie aussi un code de réponse HTTP 200 (OK) pour indiquer que la requête a été traitée avec succès.
    */
-  echo json_encode($data);
   http_response_code(200); // 200 == "OK"
+  echo json_encode($data);
   exit();
 
    
