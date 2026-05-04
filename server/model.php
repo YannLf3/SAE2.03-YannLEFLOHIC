@@ -455,3 +455,97 @@ function deleteComment($id){
     $stmt->bindParam(':id', $id);
     return $stmt->execute();
 }
+
+// Profil le plus actif (favoris + notes)
+// Cette fonction compte toutes les actions d'un profil dans les tables
+// des favoris et des notes, puis retourne le profil ayant le plus d'activité.
+//
+// Explication de la requête SQL : pour remplir le docBDD demain
+// - UNION ALL rassemble les profils présents dans SAE203_Favorite et SAE203_Rating.
+// - JOIN SAE203_Profile permet de récupérer le nom lisible du profil.
+// - COUNT(*) compte toutes les lignes d'activité.
+// - GROUP BY regroupe les actions par profil.
+// - ORDER BY total DESC trie du plus actif au moins actif.
+// - LIMIT 1 ne garde que le premier résultat.
+function getMostActiveProfile(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("
+        SELECT p.name, COUNT(*) AS total
+        FROM (
+            SELECT id_profile FROM SAE203_Favorite
+            UNION ALL
+            SELECT id_profile FROM SAE203_Rating
+        ) AS activity
+        JOIN SAE203_Profile p ON activity.id_profile = p.id
+        GROUP BY activity.id_profile
+        ORDER BY total DESC
+        LIMIT 1
+    ");
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res ? $res->name : "Aucun";
+}
+
+// Nombre de commentaires approuvés et en attente
+// Cette fonction donne un résumé simple de la modération des commentaires.
+//
+// Explication de la requête SQL :
+// - SUM(approved = 1) compte les lignes où approved vaut 1, donc les commentaires validés.
+// - SUM(approved = 0) compte les lignes où approved vaut 0, donc les commentaires en attente.
+// - Le résultat renvoie un seul enregistrement avec deux totaux.
+function getCommentsStats(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("
+        SELECT 
+            SUM(approved = 1) AS approved,
+            SUM(approved = 0) AS pending
+        FROM SAE203_Comment
+    ");
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return ($res->approved ?? 0) . " approuvés / " . ($res->pending ?? 0) . " en attente";
+}
+
+// Film le mieux noté
+// Cette fonction cherche le film qui a la meilleure moyenne de notes.
+//
+// Explication de la requête SQL :
+// - JOIN SAE203_Movie relie chaque note à son film.
+// - AVG(r.rating) calcule la moyenne des notes pour chaque film.
+// - ROUND(..., 1) arrondit la moyenne à un chiffre après la virgule.
+// - GROUP BY r.id_movie regroupe les notes par film.
+// - ORDER BY avg_rating DESC place le film le mieux noté en premier.
+// - LIMIT 1 renvoie seulement ce film.
+function getBestRatedMovie(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("
+        SELECT m.name, ROUND(AVG(r.rating), 1) AS avg_rating
+        FROM SAE203_Rating r
+        JOIN SAE203_Movie m ON r.id_movie = m.id
+        GROUP BY r.id_movie
+        ORDER BY avg_rating DESC
+        LIMIT 1
+    ");
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res ? $res->name . " (" . $res->avg_rating . "/5)" : "Aucune note";
+}
+
+// Film le plus récent
+// Cette fonction récupère le film créé le plus récemment dans la base.
+//
+// Explication de la requête SQL :
+// - ORDER BY created_at DESC classe les films du plus récent au plus ancien.
+// - DESC signifie ordre décroissant : la date la plus grande arrive en premier.
+// - LIMIT 1 garde uniquement le premier film de ce classement.
+function getMostRecentMovie(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("
+        SELECT name FROM SAE203_Movie
+        ORDER BY created_at DESC
+        LIMIT 1
+    ");
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res ? $res->name : "Aucun";
+}

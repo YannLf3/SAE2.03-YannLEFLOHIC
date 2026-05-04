@@ -17,6 +17,11 @@ Stats.format = function (data) {
     { value: data.avg_favorites, label: "Films favoris en moyenne par profil" },
     { value: data.most_favorited_movie, label: "Film le plus mis en favoris" },
     { value: data.most_popular_category, label: "Catégorie la plus populaire" },
+    //itération 19 en dessous, on rajoute juste tout est déjà en place
+    { value: data.most_active_profile, label: "Profil le plus actif" },
+    { value: data.comments_stats, label: "Commentaires" },
+    { value: data.best_rated_movie, label: "Film le mieux noté" },
+    { value: data.most_recent_movie, label: "Film le plus récent" },
   ];
 
   // Variable pour accumuler le HTML de toutes les cartes

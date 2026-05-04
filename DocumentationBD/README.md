@@ -17,7 +17,7 @@ Tableaux : Category, Movie
 ### Base finale (le-flohic4.sql)
 
 ```
-Tableaux : SAE203_Category, SAE203_Movie, SAE203_Profile, SAE203_Favorite
+Tables : SAE203_Category, SAE203_Movie, SAE203_Profile, SAE203_Favorite, SAE203_Comment, SAE203_Rating
 ```
 
 ---
@@ -153,6 +153,107 @@ CREATE TABLE `SAE203_Category` (
 
 ---
 
+### 6. Nouvelle table : SAE203_Comment
+
+**Raison :** Permettre aux profils de commenter les films et de modérer les commentaires avant affichage.
+
+**Structure :**
+
+```sql
+CREATE TABLE `SAE203_Comment` (
+  `id` int(11) NOT NULL,
+  `id_profile` int(11) NOT NULL,
+  `id_movie` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `approved` tinyint(1) NOT NULL DEFAULT 0
+);
+```
+
+**Justifications des choix :**
+
+- **id (INT PRIMARY KEY AUTO_INCREMENT)** : Identifiant unique de chaque commentaire
+- **id_profile / id_movie (INT NOT NULL)** : Liaison directe avec le profil auteur et le film commenté
+- **content (TEXT NOT NULL)** : Champ long adapté aux messages utilisateur
+- **created_at (DATETIME DEFAULT CURRENT_TIMESTAMP)** : Permet d'afficher les commentaires dans l'ordre chronologique
+- **approved (TINYINT(1) DEFAULT 0)** : Statut de modération, 0 = en attente, 1 = validé
+
+**Requêtes SQL utilisées :**
+
+- **Ajout :** `INSERT INTO SAE203_Comment (id_profile, id_movie, content) VALUES (:id_profile, :id_movie, :content)`
+- **Lecture par film :** `SELECT c.content, c.created_at, p.name AS profile_name FROM SAE203_Comment c JOIN SAE203_Profile p ON c.id_profile = p.id WHERE c.id_movie = :id_movie AND c.approved = 1 ORDER BY c.created_at DESC`
+- **Modération :** `UPDATE SAE203_Comment SET approved = 1 WHERE id = :id`
+- **Suppression :** `DELETE FROM SAE203_Comment WHERE id = :id`
+
+**Modifications sur la base :**
+
+- Ajout d'une table dédiée aux commentaires pour séparer les contenus saisis par les utilisateurs des tables métier
+- Utilisation d'un champ `approved` pour éviter d'afficher immédiatement tous les commentaires sans validation
+- Choix de `TEXT` pour ne pas limiter artificiellement la longueur des messages
+
+---
+
+### 7. Nouvelle table : SAE203_Rating
+
+**Raison :** Permettre à chaque profil de noter un film et exploiter ces notes dans les statistiques.
+
+**Structure :**
+
+```sql
+CREATE TABLE `SAE203_Rating` (
+  `id` int(11) NOT NULL,
+  `id_profile` int(11) NOT NULL,
+  `id_movie` int(11) NOT NULL,
+  `rating` int(11) NOT NULL
+);
+```
+
+**Justifications des choix :**
+
+- **id (INT PRIMARY KEY AUTO_INCREMENT)** : Identifiant technique de chaque note
+- **id_profile / id_movie (INT NOT NULL)** : Association d'une note à un profil et à un film
+- **rating (INT NOT NULL)** : Valeur numérique simple pour calculer des moyennes et des classements
+
+**Requêtes SQL utilisées :**
+
+- **Ajout :** `INSERT INTO SAE203_Rating (id_profile, id_movie, rating) VALUES (:id_profile, :id_movie, :rating)`
+- **Moyenne d'un film :** `SELECT ROUND(AVG(rating), 1) AS average FROM SAE203_Rating WHERE id_movie = :id_movie`
+- **Vérification des doublons :** `SELECT COUNT(*) AS total FROM SAE203_Rating WHERE id_profile = :id_profile AND id_movie = :id_movie`
+- **Film le mieux noté :** `SELECT m.name, ROUND(AVG(r.rating), 1) AS avg_rating FROM SAE203_Rating r JOIN SAE203_Movie m ON r.id_movie = m.id GROUP BY r.id_movie ORDER BY avg_rating DESC LIMIT 1`
+
+**Modifications sur la base :**
+
+- Ajout d'une table de notes distincte pour éviter de stocker plusieurs valeurs dans la table des films
+- La note est séparée du commentaire pour garder deux usages différents : évaluation chiffrée et avis textuel
+- La table permet aussi de calculer des statistiques globales sans modifier la structure de `SAE203_Movie`
+
+---
+
+### 8. Colonnes ajoutées à SAE203_Movie pour les contenus mis en avant et les nouveautés
+
+**Nouvelles colonnes :** `mis_en_avant`, `created_at`, `is_new`
+
+**Justification :**
+
+- **mis_en_avant (TINYINT(1))** : Sert à marquer les films affichés dans les sections spéciales de la page d'accueil
+- **created_at (DATETIME)** : Permet de déterminer si un film est récent
+- **is_new (INT)** : Colonne de travail utilisée dans l'application pour l'affichage des nouveautés
+
+**Requêtes SQL utilisées :**
+
+- **Lecture des films mis en avant :** `SELECT id, name, image, description FROM SAE203_Movie WHERE mis_en_avant = 1 ORDER BY name`
+- **Mise à jour du statut mis en avant :** `UPDATE SAE203_Movie SET mis_en_avant = :mis_en_avant WHERE id = :id`
+- **Recherche :** `SELECT m.id, m.name, m.image, m.mis_en_avant, c.name AS category_name FROM SAE203_Movie m JOIN SAE203_Category c ON m.id_category = c.id WHERE m.name LIKE :query ORDER BY c.name, m.name`
+- **Film le plus récent :** `SELECT name FROM SAE203_Movie ORDER BY created_at DESC LIMIT 1`
+
+**Modifications sur la base :**
+
+- Ajout d'un booléen pour distinguer les films mis en avant sans dupliquer les données
+- Utilisation de `created_at` pour calculer les films récents directement à partir de la date d'insertion
+- Conservation de `name`, `image` et `description` dans les requêtes pour limiter les colonnes lues au strict nécessaire
+
+---
+
 ## Cardinalités des relations
 
 ### 1. Relation Category ↔ Movie
@@ -163,8 +264,8 @@ Cardinalité : (1, n)
 
 **Explication :**
 
-- **1 côté Category** : Une catégorie correspond à exactement 1 ligne dans la table Category
-- **n côté Movie** : Un film peut être associé à une seule catégorie (1), mais une catégorie peut avoir plusieurs films (n)
+- **(1, 1) côté Movie vers Category** : Un film appartient à une seule catégorie
+- **(1, n) côté Category vers Movie** : Une catégorie peut regrouper plusieurs films
 - **Implémentation :** Clé étrangère `id_category` dans SAE203_Movie
 
 **Exemple :**
@@ -191,31 +292,103 @@ Cardinalité : (n, n)
 - Profil "Yannlf36" → peut avoir 8 films favoris
 - Film "Interstellar" → peut être dans les favoris de 3 profils différents
 
+### 3. Relation Profile ↔ Comment
+
+```
+Cardinalité : (1, n)
+```
+
+**Explication :**
+
+- **(1, 1) côté Comment vers Profile** : Un commentaire est rédigé par un seul profil
+- **(1, n) côté Profile vers Comment** : Un profil peut écrire plusieurs commentaires
+- **Implémentation :** Clé étrangère `id_profile` dans SAE203_Comment
+
+### 4. Relation Movie ↔ Comment
+
+```
+Cardinalité : (1, n)
+```
+
+**Explication :**
+
+- **(1, 1) côté Comment vers Movie** : Un commentaire concerne un seul film
+- **(1, n) côté Movie vers Comment** : Un film peut recevoir plusieurs commentaires
+- **Implémentation :** Clé étrangère `id_movie` dans SAE203_Comment
+
+### 5. Relation Profile ↔ Rating
+
+```
+Cardinalité : (1, n)
+```
+
+**Explication :**
+
+- **(1, 1) côté Rating vers Profile** : Une note est donnée par un seul profil
+- **(1, n) côté Profile vers Rating** : Un profil peut noter plusieurs films
+- **Implémentation :** Clé étrangère `id_profile` dans SAE203_Rating
+
+### 6. Relation Movie ↔ Rating
+
+```
+Cardinalité : (1, n)
+```
+
+**Explication :**
+
+- **(1, 1) côté Rating vers Movie** : Une note correspond à un seul film
+- **(1, n) côté Movie vers Rating** : Un film peut recevoir plusieurs notes
+- **Implémentation :** Clé étrangère `id_movie` dans SAE203_Rating
+
+### 7. Relation Profile ↔ Movie (via Favorite)
+
+```
+Cardinalité : (n, n)
+```
+
+**Explication rapide :**
+
+- Une table d'association est nécessaire car un profil peut aimer plusieurs films et un film peut être aimé par plusieurs profils
+- La clé primaire composée dans `SAE203_Favorite` empêche les doublons pour un même couple profil/film
+
 ---
 
 ## Types de données et longueurs
 
-| Table    | Colonne     | Type      | Longueur | Contraintes   | Justification                           |
-| -------- | ----------- | --------- | -------- | ------------- | --------------------------------------- |
-| Category | id          | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
-| Category | name        | VARCHAR   | 255      | NOT NULL      | Noms de catégories (Action, Comédie...) |
-| Movie    | id          | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
-| Movie    | name        | VARCHAR   | 255      | NOT NULL      | Titre du film                           |
-| Movie    | year        | INT       | 11       | DEFAULT NULL  | Année de sortie (1900-2100)             |
-| Movie    | length      | INT       | 11       | DEFAULT NULL  | Durée en minutes                        |
-| Movie    | description | TEXT      | -        | DEFAULT NULL  | Description longue du film              |
-| Movie    | director    | VARCHAR   | 255      | DEFAULT NULL  | Nom du réalisateur                      |
-| Movie    | id_category | INT       | 11       | FK            | Référence à Category                    |
-| Movie    | image       | VARCHAR   | 255      | DEFAULT NULL  | Chemin du fichier image                 |
-| Movie    | trailer     | VARCHAR   | 255      | DEFAULT NULL  | URL du trailer (YouTube)                |
-| Movie    | min_age     | INT       | 11       | DEFAULT NULL  | Âge minimum requis                      |
-| Profile  | id          | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
-| Profile  | name        | VARCHAR   | 255      | NOT NULL      | Nom du profil                           |
-| Profile  | avatar      | VARCHAR   | 255      | DEFAULT NULL  | Chemin du fichier avatar                |
-| Profile  | min_age     | INT       | 11       | DEFAULT 0     | Âge minimum du contrôle parental        |
-| Favorite | id_profile  | INT       | 11       | FK, PK        | Référence à Profile                     |
-| Favorite | id_movie    | INT       | 11       | FK, PK        | Référence à Movie                       |
-| Favorite | created_at  | TIMESTAMP | -        | DEFAULT NOW() | Date d'ajout en favoris                 |
+| Table    | Colonne      | Type      | Longueur | Contraintes   | Justification                           |
+| -------- | ------------ | --------- | -------- | ------------- | --------------------------------------- |
+| Category | id           | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
+| Category | name         | VARCHAR   | 255      | NOT NULL      | Noms de catégories (Action, Comédie...) |
+| Movie    | id           | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
+| Movie    | name         | VARCHAR   | 255      | NOT NULL      | Titre du film                           |
+| Movie    | year         | INT       | 11       | DEFAULT NULL  | Année de sortie (1900-2100)             |
+| Movie    | length       | INT       | 11       | DEFAULT NULL  | Durée en minutes                        |
+| Movie    | description  | TEXT      | -        | DEFAULT NULL  | Description longue du film              |
+| Movie    | director     | VARCHAR   | 255      | DEFAULT NULL  | Nom du réalisateur                      |
+| Movie    | id_category  | INT       | 11       | FK            | Référence à Category                    |
+| Movie    | image        | VARCHAR   | 255      | DEFAULT NULL  | Chemin du fichier image                 |
+| Movie    | trailer      | VARCHAR   | 255      | DEFAULT NULL  | URL du trailer (YouTube)                |
+| Movie    | min_age      | INT       | 11       | DEFAULT NULL  | Âge minimum requis                      |
+| Movie    | mis_en_avant | TINYINT   | 1        | DEFAULT 0     | Mise en avant sur la page d'accueil     |
+| Movie    | created_at   | DATETIME  | -        | DEFAULT NOW() | Date de création du film                |
+| Movie    | is_new       | INT       | 11       | DEFAULT 0     | Indicateur de nouveauté                 |
+| Profile  | id           | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
+| Profile  | name         | VARCHAR   | 255      | NOT NULL      | Nom du profil                           |
+| Profile  | avatar       | VARCHAR   | 255      | DEFAULT NULL  | Chemin du fichier avatar                |
+| Profile  | min_age      | INT       | 11       | DEFAULT 0     | Âge minimum du contrôle parental        |
+| Favorite | id_profile   | INT       | 11       | FK, PK        | Référence à Profile                     |
+| Favorite | id_movie     | INT       | 11       | FK, PK        | Référence à Movie                       |
+| Favorite | created_at   | TIMESTAMP | -        | DEFAULT NOW() | Date d'ajout en favoris                 |
+| Comment  | id           | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
+| Comment  | id_profile   | INT       | 11       | FK            | Référence au profil auteur              |
+| Comment  | id_movie     | INT       | 11       | FK            | Référence au film commenté              |
+| Comment  | content      | TEXT      | -        | NOT NULL      | Contenu du commentaire                  |
+| Comment  | created_at   | DATETIME  | -        | DEFAULT NOW() | Date du commentaire                     |
+| Comment  | approved     | TINYINT   | 1        | DEFAULT 0     | Validation de modération                |
+| Rating   | id           | INT       | 11       | PRIMARY KEY   | Identifiant unique                      |
+| Rating   | id_profile   | INT       | 11       | FK            | Référence au profil notant              |
+| Rating   | id_movie     | INT       | 11       | FK            | Référence au film noté                  |
+| Rating   | rating       | INT       | 11       | NOT NULL      | Note attribuée                          |
 
 ---
 
@@ -247,6 +420,34 @@ Cardinalité : (n, n)
   - Affichage des films favoris par profil
   - Contrôle parental basé sur l'âge du profil et `min_age` du film
 
+### Itération 3 : Commentaires et notes
+
+- **Objectif :** Ajouter les avis utilisateurs et la modération
+- **Modifications :**
+  - Création de `SAE203_Comment` pour stocker les commentaires
+  - Création de `SAE203_Rating` pour stocker les notes par profil et par film
+  - Ajout du champ `approved` pour filtrer les commentaires publiés
+- **Requêtes SQL principales :**
+  - Insertion commentaire : `INSERT INTO SAE203_Comment ...`
+  - Lecture commentaires validés : `SELECT c.content, c.created_at, p.name AS profile_name ... WHERE c.approved = 1`
+  - Validation commentaire : `UPDATE SAE203_Comment SET approved = 1 WHERE id = :id`
+  - Insertion note : `INSERT INTO SAE203_Rating ...`
+  - Moyenne d'un film : `SELECT ROUND(AVG(rating), 1) AS average ...`
+
+### Itération 4 : Films mis en avant, recherche et statistiques
+
+- **Objectif :** Améliorer la visibilité des films et produire des statistiques globales
+- **Modifications :**
+  - Ajout de `mis_en_avant` sur `SAE203_Movie`
+  - Exploitation de `created_at` pour identifier les nouveautés
+  - Ajout de requêtes de recherche par nom de film
+  - Ajout de requêtes statistiques sur les favoris, les notes et les commentaires
+- **Requêtes SQL principales :**
+  - Films mis en avant : `SELECT id, name, image, description FROM SAE203_Movie WHERE mis_en_avant = 1`
+  - Recherche : `SELECT m.id, m.name, m.image, m.mis_en_avant, c.name AS category_name FROM SAE203_Movie m JOIN SAE203_Category c ON m.id_category = c.id WHERE m.name LIKE :query`
+  - Film le plus récent : `SELECT name FROM SAE203_Movie ORDER BY created_at DESC LIMIT 1`
+  - Statistiques : `SELECT COUNT(*)`, `SELECT ROUND(COUNT(*) / (SELECT COUNT(*) FROM SAE203_Profile), 1)`, `SELECT ROUND(AVG(rating), 1)`
+
 ---
 
 ## Architecture globale
@@ -259,6 +460,10 @@ SAE203_Movie
 SAE203_Favorite
     ↓ (n)
 SAE203_Profile
+  ↓ (1,n)
+SAE203_Comment
+  ↓ (1,n)
+SAE203_Rating
 ```
 
 **Flux de données :**
@@ -278,7 +483,7 @@ SAE203_Profile
 
 - **Requêtes préparées (PDO)** : Toutes les requêtes utilisent des paramètres liés pour prévenir les injections SQL
 - **Types de données strictes** : Les paramètres sont typés (PDO::PARAM_INT pour les IDs)
-- **Clés étrangères** : Intégrité référentielle forcée au niveau base de données
+- **Clés étrangères** : Intégrité forcée au niveau base de données
 
 ### Performance
 
@@ -286,13 +491,6 @@ SAE203_Profile
 - **Clés étrangères** : Index sur les colonnes de jointure
 - **SELECT spécifiques** : Les requêtes ne retournent que les colonnes nécessaires
 - **Groupement par catégorie** : Fait côté application (PHP) pour plus de flexibilité
-
----
-
-## Fichier SQL de déploiement
-
-- **le-flohic4.sql** : Contient la structure complète et les données initiales
-- **SAE2_03.sql** : Archivé à titre de référence historique
 
 ---
 

@@ -240,6 +240,11 @@ function readStatsController(){ // une seule fonction de contrôle pour toutes l
         'avg_favorites'        => getAvgFavoritesPerProfile(),
         'most_favorited_movie' => getMostFavoritedMovie(),
         'most_popular_category'=> getMostPopularCategory(),
+        //itération 19 en dessous, on rajoute juste tout est déjà en place
+        'most_active_profile'   => getMostActiveProfile(),
+        'comments_stats'        => getCommentsStats(),
+        'best_rated_movie'      => getBestRatedMovie(),
+        'most_recent_movie'     => getMostRecentMovie(),
     ];
 }
 
