@@ -80,18 +80,25 @@
   align-items: center;
 
   .navbar__active-profile-switch {
-    font-size: 0.85rem;
-    opacity: 0.8;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.4rem 1rem;
-    border-radius: 0.35rem;
-    transition: all 0.2s ease;
-    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    opacity: 1;
+    color: #111111;
+    border: 2px solid #111111;
+    padding: 0.55rem 1.3rem;
+    border-radius: 999px;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+    background-color: var(--color-accent);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45);
   }
 
   &:hover .navbar__active-profile-switch {
-    opacity: 1;
-    border-color: var(--color-accent);
-    background-color: rgba(255, 199, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.45);
+    background-color: #ffd633;
   }
 }

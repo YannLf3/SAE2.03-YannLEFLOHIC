@@ -16,9 +16,9 @@
       type="checkbox"
       class="movie__card-favorite"
       id="favorite-{{id}}"
-      onclick="C.handlerAddFavorite('{{id}}')"
+      onclick="C.handlerAddFavorite(this, '{{id}}')"
       {{checkedAttr}}
     />
-    Favoris
+    <span class="movie__card-check-label">Favoris</span>
   </label>
 </div>

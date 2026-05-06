@@ -1,53 +1,13 @@
 .category__section {
-  margin-bottom: var(--space-xl);
-  padding: 0 var(--space-m);
+  margin-bottom: var(--space-l);
   width: 100%;
 
   .category__section-title {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--color-text);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0;
-    border-bottom: none;
-    border-left: 4px solid var(--color-accent);
-    padding-left: 1rem;
+    margin-bottom: var(--space-s);
+    padding-bottom: var(--space-xs);
   }
 
   .category__section-movies {
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-    gap: var(--space-2xs);
-
-    .movie__card {
-      display: flex;
-      flex-direction: column;
-      padding: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 0.5rem;
-      background-color: rgba(255, 255, 255, 0.03);
-      transition: all 0.3s ease;
-      cursor: pointer;
-
-      &:hover {
-        transform: translateY(-0.5rem);
-        border-color: var(--color-accent);
-        background-color: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 8px 16px rgba(255, 199, 0, 0.1);
-      }
-
-      .movie__card-image {
-        width: 100%;
-        aspect-ratio: 2 / 3;
-        object-fit: cover;
-        border-radius: 0.35rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .movie__card-title {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--color-text);
-      }
-    }
   }
 }

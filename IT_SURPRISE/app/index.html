@@ -124,26 +124,18 @@
       };
 
       // Gère l'ajout/suppression d'un film aux favoris
-      C.handlerAddFavorite = async function (id_movie) {
-        // Récupère la checkbox correspondant au film via son ID
-        // Note: On utilise des IDs uniques (favorite-123, favorite-456...) pour retrouver facilement chaque checkbox
-        // sinon erreur  cannot read property 'checked' of null car il ne trouve pas la checkbox à cocher ou décocher
-        let checkbox = document.getElementById("favorite-" + id_movie);
-
-        // Si la checkbox est cochée, le film est ajouté aux favoris
+      C.handlerAddFavorite = async function (checkbox, id_movie) {
+        // On se base sur l'élément cliqué pour éviter de lire un autre checkbox avec le même id.
         if (checkbox.checked) {
           let res = await DataFavorite.add(C.activeProfileId, id_movie);
-          // Affiche le message de confirmation
           Notif.show(res);
-        }
-        // Sinon, le film est supprimé des favoris
-        else {
+        } else {
           let res = await DataFavorite.remove(C.activeProfileId, id_movie);
-          // Affiche le message de confirmation
           Notif.show(res);
-          // Recharge la liste des films favoris pour mettre à jour l'affichage
-          C.handlerFavorites();
         }
+
+        // Recharge la vue courante pour resynchroniser l'état des favoris affichés.
+        C.handlerMovies();
       };
 
       C.handlerFavorites = async function () {
