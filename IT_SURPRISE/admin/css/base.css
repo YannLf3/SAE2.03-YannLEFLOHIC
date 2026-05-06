@@ -12,13 +12,37 @@
 @import "../component/Featured/style.css" layer(components);
 @import "../component/CommentModeration/style.css" layer(components);
 
-/* Style appliqué si l'utilisateur tape un nombre négatif */
+/* Styles de validation des inputs numériques */
 input[type="number"]:invalid {
-  border: 2px solid red;
-  background-color: #fff0f0;
+  border-color: #ff6b6b !important;
+  background-color: rgba(255, 107, 107, 0.1) !important;
 }
 
-/* Style appliqué quand la valeur est correcte (positive) */
 input[type="number"]:valid {
-  border: 2px solid green;
+  border-color: #4caf50 !important;
+  background-color: rgba(76, 175, 80, 0.05) !important;
+}
+
+/* Styles généraux */
+input[type="file"] {
+  padding: var(--space-sm);
+}
+
+select option {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Focus styles pour l'accessibilité */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

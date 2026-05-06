@@ -1,126 +1,188 @@
-/* === MOBILE FIRST === */
-
 .featured {
-  padding: var(--space-s);
-  margin: var(--space-s) 0;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 
+  /* On supprime le titre "À la une" — l'image parle d'elle-même */
   .featured__title {
-    margin-bottom: var(--space-m);
-    font-size: 1.5rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-title);
+    display: none;
   }
 
   .featured__carousel {
-    max-width: min-content;
-    margin: 0 auto;
-    overflow-x: auto;
     position: relative;
+    width: 100%;
+    overflow: hidden;
 
+    /*  Bande de slides  */
     .featured__carousel-inner {
       display: flex;
       width: 100%;
-      gap: var(--space-s);
       scroll-behavior: smooth;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      padding: var(--space-xs) var(--space-s) 0.5rem var(--space-s);
+      overflow-x: scroll;
 
-      /* Personnaliser la scrollbar - Pseudo-éléments webkit */
-      /* Ces pseudo-éléments ::-webkit-* permettent de styliser la scrollbar */
-      /* dans les navigateurs basés sur Webkit (Chrome, Safari, Edge) */
-
-      /* ::-webkit-scrollbar = la scrollbar entière (le conteneur) */
+      /* Scrollbar invisible */
+      scrollbar-width: none;
       &::-webkit-scrollbar {
-        height: 0.3rem; /* Hauteur/épaisseur de la scrollbar horizontale */
+        display: none;
+      }
+    }
+
+    /*  Flèches gauche / droite  */
+    .featured__nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.45);
+      color: var(--white-main);
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
+      &:hover {
+        background: var(--yellow-main);
+        border-color: var(--yellow-main);
+        color: #111;
       }
 
-      /* ::-webkit-scrollbar-track = le fond/piste de la scrollbar (la zone où glisse le curseur) */
-      &::-webkit-scrollbar-track {
-        background: transparent; /* Fond transparent pour ne pas voir la piste */
+      &.featured__nav--prev {
+        left: 1rem;
+      }
+      &.featured__nav--next {
+        right: 1rem;
+      }
+    }
+
+    /*  Chaque carte = une slide plein écran  */
+    .movie__card {
+      position: relative;
+      flex: 0 0 100%; /* une slide = 100% de la largeur */
+      width: 100%;
+      height: 70vh;
+      min-height: 26rem;
+      max-height: 56rem;
+
+      /* reset des styles "petite carte" */
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
+      gap: 0;
+      overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      background: #000;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+
+      /* Pas d'effet hover de translation sur les slides hero */
+      &:hover {
+        transform: none;
+        border-color: transparent;
+        box-shadow: none;
       }
 
-      /* ::-webkit-scrollbar-thumb = le curseur/slider de la scrollbar (la partie qu'on peut attraper) */
-      &::-webkit-scrollbar-thumb {
-        background: var(--color-gray); /* Couleur du curseur */
-        border-radius: var(--radius-m); /* Coins arrondis du curseur */
+      /*  Image en fond plein écran  */
+      .movie__card-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        border-radius: 0;
+        /* override de la hauteur fixe définie ailleurs */
+        aspect-ratio: unset;
       }
 
-      /* Styles pour les cartes Movie dans le carrousel */
-      .movie__card {
+      /*  Gradient sombre en bas   */
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent 25%,
+          rgba(0, 0, 0, 0.45) 55%,
+          rgba(0, 0, 0, 0.88) 100%
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /*  Zone cliquable (titre + badge NEW)  */
+      div:first-child {
+        padding: 0 2rem 0.75rem;
+        cursor: pointer;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        flex: 0 0 auto;
-        width: 12rem;
-        min-height: 16rem;
-        padding: var(--space-xs);
-        gap: var(--space-xs);
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-        border: 0.06rem solid var(--color-gray-light);
-        border-radius: 0.75rem;
-        background-color: var(--color-surface);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-
-        &:hover {
-          transform: translateY(-0.5rem) scale(1.05);
-          border-color: var(--color-accent);
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-        }
+        gap: 0.4rem;
       }
 
-      .movie__card-image {
-        height: 9rem;
+      /* ── Titre du film ── */
+      .movie__card-title {
+        position: relative;
+        z-index: 2;
+        font-size: clamp(1.6rem, 4.5vw, 3rem);
+        font-weight: 900;
+        color: var(--white-main);
+        margin: 0;
+        line-height: 1.1;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
       }
 
+      /* ── Badge "Nouveau" ── */
+      .movie-badge--new {
+        position: relative;
+        z-index: 2;
+        align-self: flex-start;
+      }
+
+      /* ── Bouton Favoris → stylé en CTA jaune "Voir" ── */
       .movie__card-check {
         position: relative;
-        display: inline-flex;
-        align-items: center;
-        cursor: pointer;
-        margin-top: auto;
+        z-index: 2;
+        padding: 0.5rem 2rem 2.5rem;
+        margin-top: 0;
 
-        /* hide native checkbox */
-        .movie__card-favorite {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          opacity: 0;
-          margin: 0;
-          cursor: pointer;
-        }
-
-        /* pill label */
         .movie__card-check-label {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0.45rem 1rem;
-          border-radius: 999px;
-          background: #ffd633;
-          color: #111111;
+          padding: 0.65rem 2rem;
+          font-size: 1rem;
           font-weight: 700;
-          box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
-          transition:
-            transform 0.18s ease,
-            box-shadow 0.18s ease,
-            background 0.18s ease;
-          user-select: none;
+          background: var(--yellow-main);
+          color: #111111;
+          border-radius: 0.4rem;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+          letter-spacing: 0.01em;
         }
 
         .movie__card-favorite:hover + .movie__card-check-label {
+          background: #ffe564;
           transform: translateY(-2px);
-          box-shadow: 0 8px 0 rgba(0, 0, 0, 0.18);
-          background: #ffe082;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
         }
 
         .movie__card-favorite:checked + .movie__card-check-label {
           background: #e6b200;
-          transform: translateY(2px);
-          box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+          transform: translateY(1px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
         }
 
         .movie__card-favorite:checked + .movie__card-check-label::after {
@@ -132,47 +194,23 @@
     }
   }
 
-  /* === DESKTOP === */
-  @media (width >40rem) {
-    padding: var(--space-l);
-    margin: var(--space-l) 0;
-
-    .featured__title {
-      margin-bottom: var(--space-m);
-      font-size: 1.75rem;
-    }
-
-    .featured__carousel-inner {
-      gap: var(--space-m);
+  /* ── Desktop : flèches plus grandes, texte plus spacieux ── */
+  @media (min-width: 40rem) {
+    .featured__carousel {
+      .featured__nav {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 2.4rem;
+      }
 
       .movie__card {
-        width: 15rem;
-        min-height: 20rem;
-      }
+        div:first-child {
+          padding: 0 3.5rem 0.75rem;
+        }
 
-      .movie__card-image {
-        height: 11.25rem;
-      }
-    }
-  }
-
-  @media (width >60rem) {
-    padding: var(--space-l);
-    margin: var(--space-l) auto;
-    max-width: 90rem;
-
-    .featured__title {
-      font-size: 2rem;
-    }
-
-    .featured__carousel-inner {
-      .movie__card {
-        width: 16rem;
-        min-height: 22rem;
-      }
-
-      .movie__card-image {
-        height: 12rem;
+        .movie__card-check {
+          padding: 0.5rem 3.5rem 3rem;
+        }
       }
     }
   }

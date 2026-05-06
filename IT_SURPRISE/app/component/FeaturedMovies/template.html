@@ -1,8 +1,51 @@
-<section class="featured u-align-center u-justify-center">
-  <h2 class="featured__title u-font-sans u-font-size-title u-font-weight-bold">
-    À la une
-  </h2>
+<section class="featured">
+  <!-- Conteneur principal pour la section des films mis en avant -->
   <div class="featured__carousel">
+    <!-- Bouton "précédent" : clique pour reculer le carrousel d'une largeur -->
+    <button
+      class="featured__nav featured__nav--prev"
+      onclick="
+        /* remonte jusqu'à l'élément .featured__carousel parent closest = inverse de querySelector */
+        this.closest('.featured__carousel')
+          /* sélectionne la zone intérieure qui contient les films */
+          .querySelector('.featured__carousel-inner')
+          /* fait défiler horizontalement la zone intérieure */
+          .scrollBy({
+            /* défile vers la gauche d'une largeur égale à la largeur du carrousel */
+            left: -this.closest('.featured__carousel').offsetWidth,
+            /* animation lisse */
+            behavior: 'smooth',
+          })
+      "
+      aria-label="Film précédent"
+    >
+      <!-- caractère flèche gauche -->
+      &#8249;
+    </button>
+
+    <!-- Zone déroulante contenant la liste des films -->
     <div class="featured__carousel-inner movie__list">{{movies}}</div>
+
+    <!-- Bouton "suivant" : clique pour avancer le carrousel d'une largeur -->
+    <button
+      class="featured__nav featured__nav--next"
+      onclick="
+        /* remonte jusqu'au conteneur .featured__carousel */
+        this.closest('.featured__carousel')
+          /* sélectionne la zone intérieure du carrousel */
+          .querySelector('.featured__carousel-inner')
+          /* fait défiler horizontalement la zone intérieure */
+          .scrollBy({
+            /* défile vers la droite d'une largeur égale à la largeur du carrousel */
+            left: this.closest('.featured__carousel').offsetWidth,
+            /* animation lisse */
+            behavior: 'smooth',
+          })
+      "
+      aria-label="Film suivant"
+    >
+      <!-- caractère flèche droite -->
+      &#8250;
+    </button>
   </div>
 </section>

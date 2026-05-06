@@ -1,20 +1,124 @@
-/* Utilities avec un u pr suivre BEM*/
+/* Typography utilities */
 .u-font-sans {
-  font-family: var(--ff-sans);
+  font-family: var(--font-sans);
 }
 
 .u-font-mono {
-  font-family: Courier, monospace;
+  font-family: "Courier New", monospace;
 }
 
 .u-font-size-lg {
-  font-size: var(--fs-size-13);
+  font-size: var(--font-size-l);
+}
+
+.u-font-size-m {
+  font-size: var(--font-size-m);
 }
 
 .u-font-size-sm {
-  font-size: var(--fs-size-095);
+  font-size: var(--font-size-s);
 }
 
 .u-font-weight-bold {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-700);
+}
+
+.u-font-weight-super {
+  font-weight: var(--font-weight-900);
+}
+
+/* Text alignment */
+.u-text-center {
+  text-align: center;
+}
+
+.u-text-left {
+  text-align: left;
+}
+
+.u-text-right {
+  text-align: right;
+}
+
+/* Display utilities */
+.u-flex {
+  display: flex;
+}
+
+.u-flex-column {
+  flex-direction: column;
+}
+
+.u-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.u-flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Spacing */
+.u-gap-xs {
+  gap: var(--space-xs);
+}
+
+.u-gap-sm {
+  gap: var(--space-sm);
+}
+
+.u-gap-md {
+  gap: var(--space-md);
+}
+
+.u-gap-lg {
+  gap: var(--space-lg);
+}
+
+.u-gap-xl {
+  gap: var(--space-xl);
+}
+
+.u-mt-xs {
+  margin-top: var(--space-xs);
+}
+
+.u-mt-sm {
+  margin-top: var(--space-sm);
+}
+
+.u-mt-md {
+  margin-top: var(--space-md);
+}
+
+.u-mt-lg {
+  margin-top: var(--space-lg);
+}
+
+.u-mb-xs {
+  margin-bottom: var(--space-xs);
+}
+
+.u-mb-sm {
+  margin-bottom: var(--space-sm);
+}
+
+.u-mb-md {
+  margin-bottom: var(--space-md);
+}
+
+.u-mb-lg {
+  margin-bottom: var(--space-lg);
+}
+
+/* Visibility */
+.u-hidden {
+  display: none;
+}
+
+.u-invisible {
+  visibility: hidden;
 }

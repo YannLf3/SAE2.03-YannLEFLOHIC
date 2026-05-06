@@ -1,18 +1,43 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <title>SAE2.03 ADMINISTRATEUR</title>
+    <title>SAE2.03 - Panneau Administrateur</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/base.css" />
   </head>
   <body>
+    <!-- Header -->
+    <header class="admin__header">
+      <h1 class="admin__header-title">🎬 IT_SURPRISE ADMIN</h1>
+      <p class="admin__header-subtitle">Panneau d'administration centralisé</p>
+    </header>
+
+    <!-- Log système (première chose, en haut) -->
     <section id="log" class="admin__log"></section>
-    <section id="featuredSearch"></section>
-    <section id="movieForm" class="admin__form"></section>
-    <section id="profileForm" class="admin__form"></section>
-    <section id="modifyProfileForm" class="admin__form"></section>
-    <section id="commentModeration"></section>
+
+    <!-- Container principal des formulaires -->
+    <div class="admin__container">
+      <!-- Section Films -->
+      <section class="admin__section">
+        <h2 class="admin__section-title">Gestion des films</h2>
+        <section id="movieForm" class="admin__form"></section>
+        <section id="featuredSearch" class="admin__form"></section>
+      </section>
+
+      <!-- Section Profils -->
+      <section class="admin__section">
+        <h2 class="admin__section-title">Gestion des profils</h2>
+        <section id="profileForm" class="admin__form"></section>
+        <section id="modifyProfileForm" class="admin__form"></section>
+      </section>
+
+      <!-- Section Modération -->
+      <section class="admin__section">
+        <h2 class="admin__section-title">Modération</h2>
+        <section id="commentModeration" class="admin__form"></section>
+      </section>
+    </div>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
@@ -50,7 +75,7 @@
           let id = form.querySelector("[name='id']").value;
           let name = form.querySelector("[name='name']").value;
           let avatar = form.querySelector("[name='avatar']").value;
-          let min_age = form.querySelector("[name='min_age']").value; // obligé de faire ce long bloc sinon erreur 500 sql qui recevait un formdata entierrr
+          let min_age = form.querySelector("[name='min_age']").value;
           let res = await DataProfile.modify(id, name, avatar, min_age);
           V.renderLog(res);
         }
@@ -92,13 +117,13 @@
       };
 
       C.start = async function () {
-        V.renderLog("Démarrage de l'application");
+        V.renderLog("✅ Application démarrée avec succès");
         let categories = await DataMovie.requestCategories();
         let profiles = await DataProfile.read();
         V.renderMovieForm("C.handlerAddMovie()", categories);
         V.renderProfileForm("C.handlerAddProfile()");
         V.renderModifyProfileForm("C.handlerModifyProfile()", profiles);
-        V.renderFeaturedResults([]); // affiche le formulaire de recherche sans résultats
+        V.renderFeaturedResults([]);
         C.handlerLoadComments();
       };
 
@@ -136,31 +161,33 @@
       };
 
       V.renderCommentModeration = function (comments) {
-          let container = document.querySelector("#commentModeration");
-          container.innerHTML = CommentModeration.format(comments);
+        let container = document.querySelector("#commentModeration");
+        container.innerHTML = CommentModeration.format(comments);
 
-    // Brancher les boutons Approuver
-        let approveBtns = document.querySelectorAll(".moderation__btn--approve");
+        // Brancher les boutons Approuver
+        let approveBtns = document.querySelectorAll(
+          ".moderation__btn--approve",
+        );
         for (let i = 0; i < approveBtns.length; i++) {
-            approveBtns[i].addEventListener("click", async function () {
-              let id  = this.dataset.id;
-              let res = await DataComment.approve(id);
-              V.renderLog(res);
-              C.handlerLoadComments(); // recharge la liste
+          approveBtns[i].addEventListener("click", async function () {
+            let id = this.dataset.id;
+            let res = await DataComment.approve(id);
+            V.renderLog(res);
+            C.handlerLoadComments();
           });
-      }
+        }
 
-    // Brancher les boutons Supprimer
+        // Brancher les boutons Supprimer
         let deleteBtns = document.querySelectorAll(".moderation__btn--delete");
         for (let i = 0; i < deleteBtns.length; i++) {
           deleteBtns[i].addEventListener("click", async function () {
-              let id  = this.dataset.id;
-              let res = await DataComment.delete(id);
-              V.renderLog(res);
-              C.handlerLoadComments(); // recharge la liste
-        });
-    }
-};
+            let id = this.dataset.id;
+            let res = await DataComment.delete(id);
+            V.renderLog(res);
+            C.handlerLoadComments();
+          });
+        }
+      };
 
       C.start();
     </script>

@@ -1,29 +1,64 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap");
 
 :root {
+  /* Couleurs du thème IT_SURPRISE */
   --yellow-main: rgb(255, 199, 0);
   --gray-light: rgb(169, 174, 180);
   --black-dark: rgb(30, 30, 30);
   --yellow-sub: rgb(253, 217, 19);
   --white-main: rgb(255, 255, 255);
 
+  /* Typographie */
   --font-sans: "Montserrat", Sans-serif;
+  --font-weight-500: 500;
+  --font-weight-700: 700;
   --font-weight-900: 900;
 
+  /* Tailles de police */
   --font-size-s: 0.813rem; /* 13px */
   --font-size-m: 1rem; /* 16px */
   --font-size-l: 1.125rem; /* 18px */
-  --font-size-xl: 3rem; /* 48px */
-  --font-weight-superbold: var(--font-weight-900);
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 2rem; /* 32px */
+  --font-size-3xl: 3rem; /* 48px */
 
-  --color-accent: var(--yellow-main);
-  --color-hover: var(--yellow-sub);
-  --color-gray-light: var(--gray-light);
-  --color-bg: var(--black-dark);
-  --color-text: var(--white-main);
-
+  /* Alias textuels pour cohérence */
   --font-subtitle: var(--font-size-s);
   --font-base: var(--font-size-m);
   --font-button: var(--font-size-l);
-  --font-title: var(--font-size-xl);
+  --font-title: var(--font-size-2xl);
+  --font-heading: var(--font-size-3xl);
+
+  /* Couleurs principales */
+  --color-accent: var(--yellow-main);
+  --color-hover: var(--yellow-sub);
+  --color-bg: var(--black-dark);
+  --color-text: var(--white-main);
+
+  /* Surfaces et contrastes */
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-elevated: rgba(255, 255, 255, 0.08);
+  --color-surface-hover: rgba(255, 255, 255, 0.12);
+  --color-border: rgba(255, 199, 0, 0.2);
+  --color-border-light: rgba(255, 255, 255, 0.1);
+
+  /* Textes */
+  --color-title: var(--white-main);
+  --color-text-primary: var(--white-main);
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-tertiary: rgba(255, 255, 255, 0.5);
+  --color-gray: rgba(255, 255, 255, 0.6);
+  --color-gray-dark: rgba(255, 255, 255, 0.4);
+
+  /* Espacements */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Rayons de bordure */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
 }
