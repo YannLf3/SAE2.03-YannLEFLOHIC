@@ -1,0 +1,19 @@
+<!-- TEMPLATE_CARD -->
+<!-- `this` désigne ici la carte cliquée, donc l'élément <div> courant. obligé car pb des guillemets -->
+<div
+  class="profile-card u-flex u-flex-column u-align-center"
+  data-id="{{id}}"
+  data-name="{{name}}"
+  data-min-age="{{min_age}}"
+  onclick="C.handlerSelectProfile(this)"
+>
+  <div
+    class="profile-card__avatar u-flex u-align-center u-justify-center u-font-size-title"
+  >
+    {{avatar}}
+  </div>
+  <p class="profile-card__name u-font-sans u-font-size-profile-name">{{name}}</p>
+</div>
+
+<!-- les data- sont là pour éviter le problème avec les guillemets, j'ai pas réussi autrement
+ voir avec prof (pour le moment gemini m'a recommandé ce système : implique une légère modif dans le handler du index) avec le this-->

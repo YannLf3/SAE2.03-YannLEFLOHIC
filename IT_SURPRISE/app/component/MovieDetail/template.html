@@ -1,0 +1,35 @@
+<div class="movie__detail">
+  <button class="movie__detail-close" aria-label="Fermer">&times;</button>
+  <div class="movie__detail-media">
+    <img
+      class="movie__detail-poster"
+      src="{{image}}"
+      alt="Poster de {{name}}"
+    />
+  </div>
+  <div class="movie__detail-content">
+    {{newTag}}
+    <p class="movie__detail-eyebrow">Fiche film</p>
+    <h2 class="movie__detail-title">{{name}}</h2>
+    <p class="movie__detail-meta movie__detail-meta--accent">
+      Genre: {{category}}
+    </p>
+    <p class="movie__detail-meta">Réalisateur: {{director}}</p>
+    <p class="movie__detail-meta">Année de sortie: {{releaseYear}}</p>
+    <p class="movie__detail-description">{{description}}</p>
+    <p class="movie__detail-meta">Âge minimal: {{min_age}}</p>
+    <div class="movie__detail-trailer">
+      <iframe
+        class="movie__detail-video"
+        src="{{trailer}}"
+        title="Trailer de {{name}}"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+  <div id="movie-comments"></div>
+  <div class="movie__detail-rating">
+    <p class="movie__detail-rating-average">Note moyenne : {{average}} / 5</p>
+    <div class="movie__detail-stars" id="rating-stars">{{stars}}</div>
+  </div>
+</div>

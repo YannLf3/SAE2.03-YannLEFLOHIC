@@ -1,0 +1,22 @@
+<nav class="navbar u-font-sans">
+  <section class="navbar__menu">
+    <h3 class="navbar__menu__title">Menu</h3>
+    <ul class="navbar__menu__list">
+      <li class="navbar__menu__item" onclick="{{hAbout}}">Accueil</li>
+      <li class="navbar__menu__item" onclick="{{hFavorites}}">Favoris</li>
+      <li class="navbar__menu__item" onclick="{{hStats}}">Statistiques</li>
+    </ul>
+  </section>
+  <input
+    type="text"
+    id="navbar-search"
+    class="navbar__search"
+    placeholder="Recherche par film, âge, réalisateur, année"
+  />
+  <div
+    class="navbar__active-profile u-flex u-align-center u-flex-column"
+    onclick="C.handlerSwitchProfile()"
+  >
+    <span class="navbar__active-profile-switch">{{activeProfileName}}</span>
+  </div>
+</nav>

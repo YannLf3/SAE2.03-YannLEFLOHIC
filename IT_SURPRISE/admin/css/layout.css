@@ -1,0 +1,60 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--space-md);
+}
+
+.admin__log {
+  width: 100%;
+  padding: var(--space-lg);
+}
+
+.admin__form {
+  width: 100%;
+  max-width: 30rem;
+  margin: var(--space-lg) auto;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Layout utilities avec u- pour suivre BEM  et être plus compréhensible*/
+.u-flex {
+  display: flex;
+}
+
+.u-flex-column {
+  flex-direction: column;
+}
+
+.u-gap-md {
+  gap: var(--space-md);
+}
+
+.u-gap-2xs {
+  gap: var(--space-2xs);
+}
+
+/* Desktop layout - 3 columns */
+@media (min-width: 64rem) {
+  body {
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+  }
+
+  .admin__log {
+    width: 100%;
+    padding: 0;
+    margin-bottom: var(--space-lg);
+  }
+
+  .admin__form {
+    flex: 0 1 calc(33.333% - var(--space-lg));
+    margin: 0;
+  }
+}

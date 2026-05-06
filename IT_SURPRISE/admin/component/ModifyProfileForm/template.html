@@ -1,0 +1,46 @@
+<div class="modifyProfile">
+  <h2 class="modifyProfile__title u-font-size-lg">Modifier un profil</h2>
+  <form class="modifyProfile__form u-flex u-flex-column u-gap-md">
+    <div
+      class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
+    >
+      <label for="id">Profil</label>
+      <select id="id" name="id" class="modifyProfile__form-group--id" required>
+        {{options}}
+      </select>
+      <div
+        class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
+      >
+        <label for="name">Nom du profil</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div
+        class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
+      >
+        <label for="min_age">Âge minimum</label>
+        <input
+          type="number"
+          min="0"
+          max="18"
+          step="1"
+          id="min_age"
+          name="min_age"
+          required
+        />
+      </div>
+      <div
+        class="modifyProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
+      >
+        <label for="avatar">Avatar</label>
+        <input type="text" id="avatar" name="avatar" />
+      </div>
+    </div>
+    <input
+      onclick="{{handler}}"
+      type="button"
+      value="Modify"
+      name="todo"
+      class="modifyProfile__submit u-font-weight-bold"
+    />
+  </form>
+</div>

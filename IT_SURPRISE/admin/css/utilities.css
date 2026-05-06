@@ -1,0 +1,20 @@
+/* Utilities avec un u pr suivre BEM*/
+.u-font-sans {
+  font-family: var(--ff-sans);
+}
+
+.u-font-mono {
+  font-family: Courier, monospace;
+}
+
+.u-font-size-lg {
+  font-size: var(--fs-size-13);
+}
+
+.u-font-size-sm {
+  font-size: var(--fs-size-095);
+}
+
+.u-font-weight-bold {
+  font-weight: var(--font-weight-bold);
+}

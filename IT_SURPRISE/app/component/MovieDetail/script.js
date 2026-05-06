@@ -1,0 +1,59 @@
+let templateFile = await fetch("./component/MovieDetail/template.html");
+let templateNewFile = await fetch("./component/Movie/templateNew.html");
+
+let template = await templateFile.text();
+let templateNew = await templateNewFile.text();
+
+let MovieDetail = {};
+MovieDetail.template = template;
+
+MovieDetail.format = function (movie) {
+  if (!movie) {
+    return "";
+  }
+
+  let html = MovieDetail.template;
+  html = html.replaceAll("{{name}}", movie.name);
+  html = html.replaceAll("{{image}}", movie.image);
+  html = html.replaceAll("{{description}}", movie.description);
+  html = html.replaceAll("{{category}}", movie.category);
+  html = html.replaceAll("{{director}}", movie.director);
+  html = html.replaceAll(
+    "{{releaseYear}}",
+    movie.releaseYear ?? movie.year ?? "",
+  );
+  html = html.replaceAll("{{min_age}}", movie.min_age);
+  html = html.replaceAll("{{trailer}}", movie.trailer);
+  html = html.replaceAll("{{average}}", "...");
+  html = html.replaceAll("{{stars}}", "");
+  html = html.replaceAll("{{newTag}}", movie.is_new == 1 ? templateNew : "");
+  return html;
+};
+
+//  le fetch du templateStar
+let templateStarFile = await fetch("./component/MovieDetail/templateStar.html");
+let templateStar = await templateStarFile.text();
+
+MovieDetail.formatStars = function (id_movie, hasRated, userRating = 0) {
+  let starsHtml = "";
+  for (let i = 1; i <= 5; i++) {
+    let star = templateStar;
+    star = star.replaceAll("{{value}}", i);
+    star = star.replaceAll("{{id_movie}}", id_movie);
+    // Si deja note, on desactive les etoiles
+    star = star.replaceAll(
+      "{{activeClass}}",
+      hasRated ? "movie__detail-star--disabled" : "",
+    );
+    // En mode lecture seule, on colore uniquement jusqu'a la note enregistree.
+    star = star.replaceAll(
+      "{{filledClass}}",
+      // Colore uniquement les etoiles jusqu'a la note de l'utilisateur.
+      hasRated && i <= Number(userRating) ? "movie__detail-star--filled" : "",
+    );
+    starsHtml += star;
+  }
+  return starsHtml;
+};
+
+export { MovieDetail };

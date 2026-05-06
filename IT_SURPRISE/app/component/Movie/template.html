@@ -1,0 +1,24 @@
+<div class="movie__card u-flex u-flex-column u-gap-xs">
+  <div onclick="C.handlerMovieDetail('{{id}}')">
+    {{newTag}}
+    <img class="movie__card-image" src="{{image}}" alt="Affiche de {{name}}" />
+    <h2
+      class="movie__card-title u-font-size-base u-font-sans u-font-weight-bold"
+    >
+      {{titre}}
+    </h2>
+  </div>
+  <label class="movie__card-check">
+    <!-- ID unique pour chaque checkbox (favorite-123, favorite-456...)
+         Permet au handler de retrouver facilement la checkbox correspondant au film
+          -->
+    <input
+      type="checkbox"
+      class="movie__card-favorite"
+      id="favorite-{{id}}"
+      onclick="C.handlerAddFavorite('{{id}}')"
+      {{checkedAttr}}
+    />
+    Favoris
+  </label>
+</div>

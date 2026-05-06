@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 APP</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/base.css" />
+  </head>
+
+  <body>
+    <div id="profile-selector"></div>
+    <header id="header"></header>
+
+    <section id="content">
+      <div id="error"></div>
+      <div id="featured-movies"></div>
+      <div class="movie">
+        <div id="movie-list" class="movie__list u-grid u-gap-md">
+          <!-- Les cartes de films movie-card -->
+        </div>
+      </div>
+      <div
+        id="movie-detail"
+        class="movie__cards-detail u-flex u-flex-column u-align-center u-gap-md"
+      ></div>
+    </section>
+
+    <script type="module">
+      import { NavBar } from "./component/NavBar/script.js";
+
+      import { MovieCategory } from "./component/MovieCategory/script.js";
+
+      import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { DataMovie } from "./data/dataMovie.js";
+      import { Notif } from "./component/Error/script.js";
+      import { ProfileSelector } from "./component/ProfileSelector/script.js";
+      import { DataProfile } from "./data/dataProfile.js";
+      import { DataFavorite, HOST_URL } from "./data/dataFavorite.js";
+      import { FeaturedMovies } from "./component/FeaturedMovies/script.js";
+      import { Stats } from "./component/Stats/script.js";
+      import { Comment } from "./component/Comment/script.js";
+      import { DataComment } from "./data/dataComment.js";
+
+      // Controleur
+      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
+      // Une fois l'application terminée, on pourrait remettre let C.
+      window.C = {};
+
+      C.activeProfileId = null;
+      C.activeProfileName = null;
+
+      C.handlerAbout = async function () {
+        await C.handlerMovies();
+      };
+
+      C.handlerMovies = async function () {
+        let age = Number(C.activeProfileMinAge) || 0; // Utilise l'âge minimum du profil actif ou 0 si aucun profil n'est actif, Number() sinon le site ne le détecte pas comme un nombre et ça foire pour les films
+        let filmsParCategorie =
+          await DataMovie.requestMoviesGroupedByCategory(age);
+        let featuredMovies = await DataMovie.requestFeaturedMovies(); // Récupère les films mis en avant
+        if (featuredMovies === false) {
+          Notif.show("Pas de films mis en avant disponibles pour le moment.");
+          return;
+        }
+        console.log("Age du profil:", age); //console log pour comprendre pourquoi le mess d'erreur pas affiché
+        console.log("Films par catégorie:", filmsParCategorie);
+        let isEmpty = Object.keys(filmsParCategorie).length === 0;
+        console.log("Aucun film ?", isEmpty);
+        if (isEmpty) {
+          console.log("Affichage message d'absence de film");
+          Notif.show("Aucun film disponible pour le moment.");
+        }
+
+        let favorites = [];
+        if (C.activeProfileId) {
+          favorites = await DataFavorite.read(C.activeProfileId);
+        }
+        let favoriteIds = [];
+        for (let i = 0; i < favorites.length; i++) {
+          favoriteIds[i] = String(favorites[i].id);
+        }
+
+        V.renderMovies(filmsParCategorie, favoriteIds);
+        V.clearMovieDetail();
+        V.renderFeaturedMovies(featuredMovies, favoriteIds); // Affiche les films mis en avant avec leurs états favoris
+      };
+
+      C.handlerMovieDetail = async function (id) {
+        let film = await DataMovie.requestMovieDetail(id);
+
+        if (!film) {
+          Notif.show("Impossible de charger les détails de ce film.");
+          return;
+        }
+        // Récupère la note moyenne et si le profil a déjà noté
+        let ratingData = await DataMovie.getMovieRating(
+          C.activeProfileId ?? 0,
+          id,
+        );
+        let comments = await DataComment.getByMovie(id);
+
+        V.renderMovieDetail(film, ratingData, comments);
+      };
+
+      C.handlerSelectProfile = function (element) {
+        // `element` est la carte cliquée, reçue via `this` depuis le template.
+        C.activeProfileId = element.dataset.id;
+        C.activeProfileName = element.dataset.name;
+        C.activeProfileMinAge = element.dataset.minAge; // Initialisation de l'âge minimum du profil actif
+
+        V.hideProfileSelector(); // on cache l'overlay
+        V.renderNavBar("C.handlerAbout()", C.activeProfileName); // navbar avec le nom du profil
+        C.handlerMovies(); // on charge les films
+      };
+
+      // Appelé quand on clique sur "Changer" dans la navbar
+      C.handlerSwitchProfile = async function () {
+        C.activeProfileId = null;
+        C.activeProfileName = null;
+        C.activeProfileMinAge = null; // Réinitialisation de l'âge minimum du profil actif
+
+        let profiles = await DataProfile.read();
+        V.renderProfileSelector(profiles); // on réaffiche l'overlay
+      };
+
+      // Gère l'ajout/suppression d'un film aux favoris
+      C.handlerAddFavorite = async function (id_movie) {
+        // Récupère la checkbox correspondant au film via son ID
+        // Note: On utilise des IDs uniques (favorite-123, favorite-456...) pour retrouver facilement chaque checkbox
+        // sinon erreur  cannot read property 'checked' of null car il ne trouve pas la checkbox à cocher ou décocher
+        let checkbox = document.getElementById("favorite-" + id_movie);
+
+        // Si la checkbox est cochée, le film est ajouté aux favoris
+        if (checkbox.checked) {
+          let res = await DataFavorite.add(C.activeProfileId, id_movie);
+          // Affiche le message de confirmation
+          Notif.show(res);
+        }
+        // Sinon, le film est supprimé des favoris
+        else {
+          let res = await DataFavorite.remove(C.activeProfileId, id_movie);
+          // Affiche le message de confirmation
+          Notif.show(res);
+          // Recharge la liste des films favoris pour mettre à jour l'affichage
+          C.handlerFavorites();
+        }
+      };
+
+      C.handlerFavorites = async function () {
+        // Récupère les favoris du profil actif
+        let favorites = await DataFavorite.read(C.activeProfileId);
+        console.log("Favoris récupérés:", favorites);
+
+        // Si aucun favori, affiche un message
+        if (favorites.length == 0) {
+          V.renderMovies({}, []);
+          Notif.show("Votre liste de favoris est vide.");
+          return;
+        }
+
+        // Normalise les données des favoris (ajoute les URLs d'images et le titre)
+        for (let i = 0; i < favorites.length; i++) {
+          favorites[i].titre = favorites[i].name;
+          favorites[i].image =
+            HOST_URL + "/server/images/" + favorites[i].image;
+          // Assure que la catégorie existe
+          if (!favorites[i].category) {
+            favorites[i].category = "Sans catégorie";
+          }
+        }
+
+        // Regroupe les favoris par catégorie
+        let moviesByCategory = {};
+        for (let i = 0; i < favorites.length; i++) {
+          let category = favorites[i].category;
+
+          // Initialise la catégorie si elle n'existe pas
+          if (!moviesByCategory[category]) {
+            moviesByCategory[category] = [];
+          }
+
+          // Ajoute le film à sa catégorie
+          let catCount = moviesByCategory[category].length;
+          moviesByCategory[category][catCount] = favorites[i];
+        }
+
+        // Crée la liste des IDs des favoris pour cocher les checkboxes
+        let favoriteIds = [];
+        for (let i = 0; i < favorites.length; i++) {
+          favoriteIds[i] = String(favorites[i].id);
+        }
+
+        // Affiche les favoris groupés par catégorie
+        V.renderMovies(moviesByCategory, favoriteIds);
+        V.clearMovieDetail();
+      };
+
+      C.handlerStats = async function () {
+        let stats = await DataMovie.requestStats();
+        V.clearMovieDetail();
+        V.clearFeaturedMovies();
+        let movieList = document.querySelector("#movie-list");
+        movieList.innerHTML = Stats.format(stats);
+      };
+
+      C.handlerSearch = async function () {
+        // Récupère l'élément input de la barre de recherche
+        let input = document.querySelector("#navbar-search");
+        // Récupère le texte entré par l'utilisateur
+        let query = input.value.trim();
+
+        // Si la barre est vide, affiche tous les films
+        if (query === "") {
+          C.handlerMovies();
+          return;
+        }
+
+        // Effectue la recherche avec le texte saisi
+        let searchResults = await DataMovie.search(query);
+
+        // Masque la section "A la une" pendant l'affichage des résultats de recherche
+        V.clearFeaturedMovies();
+
+        // Récupère les favoris du profil actif pour les afficher correctement
+        let favoriteIds = [];
+        if (C.activeProfileId) {
+          let favorites = await DataFavorite.read(C.activeProfileId);
+          // Crée une liste des IDs des favoris
+          for (let i = 0; i < favorites.length; i++) {
+            favoriteIds[i] = String(favorites[i].id);
+          }
+        }
+
+        // Affiche les résultats de recherche avec les favoris
+        V.renderMovies(searchResults, favoriteIds);
+        // Ferme le détail d'un film s'il était ouvert
+        V.clearMovieDetail();
+      };
+
+      C.start = async function () {
+        let profiles = await DataProfile.read(); // obligé de mettre async pour pouvoir mettre await sinon problème, ça ne lit pas et rien ne s'affiche
+        V.renderProfileSelector(profiles);
+      };
+
+      // Vue (contient tout ce qui est relatif à l'affichage)
+      window.V = {};
+
+      /**
+       * V.renderNavBar
+       *
+       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
+       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
+       * formaté par le composant NavBar.
+       */
+      V.renderNavBar = function (hAbout) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(
+          hAbout,
+          "C.handlerFavorites()",
+          "C.handlerStats()",
+          C.activeProfileName,
+        );
+        // On branche l'événement ici, après que la navbar est dans le DOM
+        let input = document.querySelector("#navbar-search");
+        input.addEventListener("keyup", C.handlerSearch);
+      };
+
+      V.renderMovies = function (filmsParCategorie, favoriteIds) {
+        let movieList = document.querySelector("#movie-list");
+        movieList.innerHTML = MovieCategory.format(
+          filmsParCategorie,
+          favoriteIds,
+        );
+      };
+
+      V.renderProfileSelector = function (profiles) {
+        let overlay = document.querySelector("#profile-selector");
+        overlay.innerHTML = ProfileSelector.format(profiles);
+      };
+
+      V.hideProfileSelector = function () {
+        let overlay = document.querySelector("#profile-selector");
+        overlay.innerHTML = "";
+      };
+
+      V.renderMovieDetail = function (movie, ratingData, comments) {
+        let movieDetail = document.querySelector("#movie-detail");
+        movieDetail.innerHTML = MovieDetail.format(movie);
+        let navbar = document.querySelector(".navbar");
+        let navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+        document
+          .getElementById("movie-detail")
+          .classList.add("movie__cards-detail--active");
+        document
+          .getElementById("movie-list")
+          .classList.add("movie__list--hidden");
+        document.documentElement.style.setProperty(
+          "--navbar-height",
+          `${navbarHeight}px`, //re vérifier avec prof de css si c'est bien ça qu'il m'avait dit de faire
+        );
+        navbar?.classList.add("navbar--fixed");
+
+        // Bouton fermer
+        let closeBtn = document.querySelector(".movie__detail-close");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", V.clearMovieDetail);
+        }
+
+        // Fermer en cliquant en dehors de la popup
+        let movieDetailOverlay = document.getElementById("movie-detail");
+        if (movieDetailOverlay) {
+          movieDetailOverlay.addEventListener("click", function (truc) {
+            //pareil vérifier avec le prof de css voir si c'est qu'il voulait dire
+            if (truc.target.id === "movie-detail") {
+              V.clearMovieDetail();
+            }
+          });
+        }
+
+        let starsContainer = document.querySelector("#rating-stars");
+        let averageEl = document.querySelector(".movie__detail-rating-average");
+
+        // Vérifie que le conteneur des étoiles existe et que les données de notation sont présentes.
+        if (starsContainer && ratingData) {
+          // Déclare la variable qui va contenir la moyenne affichée.
+          let average;
+          // Si le serveur renvoie une moyenne valide, on la récupère.
+          if (ratingData.average !== null && ratingData.average !== undefined) {
+            // On stocke la moyenne reçue.
+            average = ratingData.average;
+          } else {
+            // Sinon, on met 0 pour éviter une valeur vide.
+            average = 0;
+          }
+          // Récupère l'information qui dit si le profil a déjà noté le film.
+          let hasRated = ratingData.has_rated;
+          let userRating = ratingData.user_rating ?? 0;
+
+          // Affiche le texte de la moyenne dans la zone prévue.
+          averageEl.textContent = "Note moyenne : " + average + " / 5"; // textcontent est différent de innerHTML, il ne traite pas le contenu comme du HTML mais comme du texte brut, ce qui est plus simple pour afficher cette note moyenne
+          // Génère les étoiles de notation dans le conteneur.
+          starsContainer.innerHTML = MovieDetail.formatStars(
+            movie.id,
+            hasRated,
+            userRating,
+          );
+
+          // On branche les étoiles seulement si le film n'a pas encore été noté.
+          if (!hasRated) {
+            // Récupère toutes les étoiles affichées.
+            let stars = document.querySelectorAll(".movie__detail-star");
+            // Parcourt chaque étoile une par une.
+            for (let i = 0; i < stars.length; i++) {
+              // Ajoute un clic sur chaque étoile.
+              stars[i].addEventListener("click", async function () {
+                // Récupère la valeur de la note choisie.
+                let rating = this.dataset.value;
+                // Récupère l'identifiant du film concerné.
+                let id_movie = this.dataset.movie;
+                // Envoie la note au serveur.
+                let res = await DataMovie.addRating(
+                  C.activeProfileId,
+                  id_movie,
+                  rating,
+                );
+                // Affiche le message de retour du serveur.
+                Notif.show(res);
+                // Recharge le détail pour mettre à jour la note.
+                C.handlerMovieDetail(id_movie);
+              });
+            }
+          }
+        }
+        let commentsContainer = document.querySelector("#movie-comments");
+        if (commentsContainer) {
+          let isConnected = C.activeProfileId !== null;
+          commentsContainer.innerHTML = Comment.format(comments, isConnected);
+
+          // activer le bouton envoyer si connecté
+          let submitBtn = document.querySelector("#comment-submit");
+          if (submitBtn) {
+            submitBtn.addEventListener("click", async function () {
+              let input = document.querySelector("#comment-input");
+              let content = input.value;
+
+              // On suppose au départ que le message ne contient que des espaces.
+              let onlySpaces = true;
+              // On parcourt chaque caractère du message.
+              for (let i = 0; i < content.length; i++) {
+                // Si on trouve un caractère différent d'un espace,
+                // alors le message n'est pas composé uniquement d'espaces.
+                if (content[i] !== " ") {
+                  onlySpaces = false;
+                  break;
+                }
+              }
+
+              // On bloque l'envoi si le message est vide
+              // ou s'il contient seulement des espaces.
+              if (content === "" || onlySpaces) {
+                Notif.show("Le commentaire ne peut pas être vide.");
+                return;
+              }
+
+              let res = await DataComment.add(
+                C.activeProfileId,
+                movie.id,
+                content,
+              );
+              Notif.show(res);
+              // Recharge les commentaires
+              let newComments = await DataComment.getByMovie(movie.id);
+              commentsContainer.innerHTML = Comment.format(newComments, true);
+            });
+          }
+        }
+      };
+
+      V.clearMovieDetail = function () {
+        let movieDetail = document.querySelector("#movie-detail");
+        movieDetail.innerHTML = "";
+        let navbar = document.querySelector(".navbar");
+
+        document
+          .getElementById("movie-detail")
+          .classList.remove("movie__cards-detail--active");
+        document
+          .getElementById("movie-list")
+          .classList.remove("movie__list--hidden");
+        document.documentElement.style.setProperty("--navbar-height", "0px");
+        navbar?.classList.remove("navbar--fixed");
+      };
+
+      V.renderFeaturedMovies = function (movies, favoriteIds = []) {
+        if (!movies || movies.length === 0) return; // ← rien à afficher
+        let container = document.querySelector("#featured-movies");
+        container.innerHTML = FeaturedMovies.format(movies, favoriteIds);
+      };
+
+      V.clearFeaturedMovies = function () {
+        let container = document.querySelector("#featured-movies");
+        container.innerHTML = "";
+      };
+
+      C.start(); // Démarre l'application
+    </script>
+  </body>
+</html>

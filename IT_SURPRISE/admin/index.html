@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 ADMINISTRATEUR</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/base.css" />
+  </head>
+  <body>
+    <section id="log" class="admin__log"></section>
+    <section id="featuredSearch"></section>
+    <section id="movieForm" class="admin__form"></section>
+    <section id="profileForm" class="admin__form"></section>
+    <section id="modifyProfileForm" class="admin__form"></section>
+    <section id="commentModeration"></section>
+
+    <script type="module">
+      import { Log } from "./component/Log/script.js";
+
+      import { MovieForm } from "./component/MovieForm/script.js";
+      import { ProfileForm } from "./component/ProfileForm/script.js";
+      import { DataMovie } from "./data/dataMovie.js";
+      import { DataProfile } from "./data/dataProfile.js";
+      import { ModifyProfileForm } from "./component/ModifyProfileForm/script.js";
+      import { FeaturedSearch } from "./component/Featured/script.js";
+      import { CommentModeration } from "./component/CommentModeration/script.js";
+      import { DataComment } from "./data/dataComment.js";
+
+      window.C = {};
+
+      C.handlerAddMovie = async function () {
+        let form = document.querySelector(".addFilm__form");
+        if (form.reportValidity() == true) {
+          let fd = new FormData(form);
+          let res = await DataMovie.add(fd);
+          V.renderLog(res);
+        }
+      };
+
+      C.handlerAddProfile = async function () {
+        let form = document.querySelector(".addProfile__form");
+        let fd = new FormData(form);
+        let res = await DataProfile.add(fd);
+        V.renderLog(res);
+      };
+
+      C.handlerModifyProfile = async function () {
+        let form = document.querySelector(".modifyProfile__form");
+        if (form.reportValidity() == true) {
+          let id = form.querySelector("[name='id']").value;
+          let name = form.querySelector("[name='name']").value;
+          let avatar = form.querySelector("[name='avatar']").value;
+          let min_age = form.querySelector("[name='min_age']").value; // obligé de faire ce long bloc sinon erreur 500 sql qui recevait un formdata entierrr
+          let res = await DataProfile.modify(id, name, avatar, min_age);
+          V.renderLog(res);
+        }
+      };
+
+      C.handlerSearchFeatured = async function () {
+        let input = document.querySelector("#featured-search-input");
+        let query = input.value;
+
+        if (query === "") {
+          V.renderLog("Veuillez saisir un mot clé.");
+          return;
+        }
+
+        let results = await DataMovie.search(query);
+
+        if (!results || results.length === 0) {
+          V.renderLog("Aucun film ne correspond à votre recherche.");
+          return;
+        }
+
+        V.renderFeaturedResults(results);
+
+        // On branche les checkboxes APRÈS l'affichage
+        let checkboxes = document.querySelectorAll(".featured-card__checkbox");
+        for (let i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].addEventListener("change", async function () {
+            let id = this.dataset.id;
+            let featured = this.checked ? 1 : 0;
+            let res = await DataMovie.updateFeatured(id, featured);
+            V.renderLog(res);
+          });
+        }
+      };
+
+      C.handlerLoadComments = async function () {
+        let comments = await DataComment.getPending();
+        V.renderCommentModeration(comments);
+      };
+
+      C.start = async function () {
+        V.renderLog("Démarrage de l'application");
+        let categories = await DataMovie.requestCategories();
+        let profiles = await DataProfile.read();
+        V.renderMovieForm("C.handlerAddMovie()", categories);
+        V.renderProfileForm("C.handlerAddProfile()");
+        V.renderModifyProfileForm("C.handlerModifyProfile()", profiles);
+        V.renderFeaturedResults([]); // affiche le formulaire de recherche sans résultats
+        C.handlerLoadComments();
+      };
+
+      window.V = {};
+
+      V.renderLog = function (txt) {
+        let content = document.querySelector("#log");
+        content.innerHTML = Log.format(txt);
+      };
+
+      V.renderMovieForm = function (handler, categories) {
+        let content = document.querySelector("#movieForm");
+        content.innerHTML = MovieForm.format(handler, categories);
+      };
+
+      V.renderProfileForm = function (handler) {
+        let content = document.querySelector("#profileForm");
+        content.innerHTML = ProfileForm.format(handler);
+      };
+
+      V.renderModifyProfileForm = function (handler, profiles) {
+        let content = document.querySelector("#modifyProfileForm");
+        content.innerHTML = ModifyProfileForm.format(handler, profiles);
+      };
+
+      V.renderFeaturedResults = function (movies) {
+        let container = document.querySelector("#featuredSearch");
+        container.innerHTML = FeaturedSearch.format(movies);
+
+        // On branche le bouton après chaque affichage
+        let btn = document.querySelector("#featured-search-btn");
+        if (btn) {
+          btn.addEventListener("click", C.handlerSearchFeatured);
+        }
+      };
+
+      V.renderCommentModeration = function (comments) {
+          let container = document.querySelector("#commentModeration");
+          container.innerHTML = CommentModeration.format(comments);
+
+    // Brancher les boutons Approuver
+        let approveBtns = document.querySelectorAll(".moderation__btn--approve");
+        for (let i = 0; i < approveBtns.length; i++) {
+            approveBtns[i].addEventListener("click", async function () {
+              let id  = this.dataset.id;
+              let res = await DataComment.approve(id);
+              V.renderLog(res);
+              C.handlerLoadComments(); // recharge la liste
+          });
+      }
+
+    // Brancher les boutons Supprimer
+        let deleteBtns = document.querySelectorAll(".moderation__btn--delete");
+        for (let i = 0; i < deleteBtns.length; i++) {
+          deleteBtns[i].addEventListener("click", async function () {
+              let id  = this.dataset.id;
+              let res = await DataComment.delete(id);
+              V.renderLog(res);
+              C.handlerLoadComments(); // recharge la liste
+        });
+    }
+};
+
+      C.start();
+    </script>
+  </body>
+</html>

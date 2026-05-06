@@ -1,0 +1,16 @@
+/* Utilities avec un u pr suivre BEM*/
+.u-font-sans {
+  font-family: var(--font-sans);
+}
+
+.u-font-size-base {
+  font-size: var(--font-base);
+}
+
+.u-font-weight-bold {
+  font-weight: var(--font-weight-superbold);
+}
+
+.u-font-size-title {
+  font-size: var(--font-title);
+}

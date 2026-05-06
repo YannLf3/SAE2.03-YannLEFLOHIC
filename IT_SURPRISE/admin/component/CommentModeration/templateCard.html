@@ -1,0 +1,17 @@
+<div class="moderation__card" data-id="{{id}}">
+    <div class="moderation__card-header">
+      <span class="moderation__card-author">{{profile_name}}</span>
+      <span class="moderation__card-movie">{{movie_name}}</span>
+      <span class="moderation__card-date">{{created_at}}</span>
+      <span class="moderation__card-status {{statusClass}}">{{status}}</span>
+    </div>
+    <p class="moderation__card-content">{{content}}</p>
+    <div class="moderation__card-actions">
+      <button type="button" class="moderation__btn moderation__btn--approve" data-id="{{id}}">
+        ✓ Approuver
+      </button>
+      <button type="button" class="moderation__btn moderation__btn--delete" data-id="{{id}}">
+        ✕ Supprimer
+      </button>
+    </div>
+  </div>

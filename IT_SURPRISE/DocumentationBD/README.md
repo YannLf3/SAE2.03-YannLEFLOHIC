@@ -420,7 +420,7 @@ Cardinalité : (n, n)
   - Affichage des films favoris par profil
   - Contrôle parental basé sur l'âge du profil et `min_age` du film
 
-### Itération : Commentaires et notes
+### Itération 3 : Commentaires et notes
 
 - **Objectif :** Ajouter les avis utilisateurs et la modération
 - **Modifications :**
@@ -434,7 +434,7 @@ Cardinalité : (n, n)
   - Insertion note : `INSERT INTO SAE203_Rating ...`
   - Moyenne d'un film : `SELECT ROUND(AVG(rating), 1) AS average ...`
 
-### Itération : Films mis en avant, recherche et statistiques
+### Itération 4 : Films mis en avant, recherche et statistiques
 
 - **Objectif :** Améliorer la visibilité des films et produire des statistiques globales
 - **Modifications :**

@@ -1,0 +1,36 @@
+<div class="addProfile">
+  <h2 class="addProfile__title u-font-size-lg">Ajouter un profil</h2>
+  <form class="addProfile__form u-flex u-flex-column u-gap-md">
+    <div
+      class="addProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
+    >
+      <label for="name">Nom du profil</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+    <div
+      class="addProfile__form-group u-flex u-flex-column u-gap-2xs u-font-size-sm"
+    >
+      <label for="avatar">Avatar (URL, facultatif)</label>
+      <input type="text" id="avatar" name="avatar" />
+    </div>
+    <div
+      class="addProfile__form-group--age u-flex u-flex-column u-gap-2xs u-font-size-sm"
+    >
+      <label for="min_age" class="addProfile__form-group--age-label"
+        >Restriction d'âge</label
+      >
+      <select id="min_age" name="min_age" required>
+        <option value="0">0 — Tous publics</option>
+        <option value="12">12 ans</option>
+        <option value="16">16 ans</option>
+        <option value="18">18 ans</option>
+      </select>
+    </div>
+    <input
+      onclick="{{handler}}"
+      type="button"
+      value="Ajouter le profil"
+      class="addProfile__submit u-font-weight-bold"
+    />
+  </form>
+</div>
