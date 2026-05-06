@@ -33,14 +33,14 @@
 .moderation__card {
   padding: var(--space-md);
   border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(var(--color-black-rgb), 0.3);
   border: 1px solid var(--color-border-light);
   transition: all 0.2s ease;
 }
 
 .moderation__card:hover {
   border-color: var(--color-border);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(var(--color-black-rgb), 0.5);
 }
 
 .moderation__card-header {
@@ -72,21 +72,21 @@
 }
 
 .moderation__card-status--pending {
-  background: rgba(255, 193, 7, 0.2);
-  color: #ffc107;
-  border: 1px solid #ffc107;
+  background: rgba(var(--color-warning-rgb), 0.2);
+  color: rgb(var(--color-warning-rgb));
+  border: 1px solid rgb(var(--color-warning-rgb));
 }
 
 .moderation__card-status--approved {
-  background: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
-  border: 1px solid #4caf50;
+  background: rgba(var(--color-success-rgb), 0.2);
+  color: rgb(var(--color-success-rgb));
+  border: 1px solid rgb(var(--color-success-rgb));
 }
 
 .moderation__card-status--rejected {
-  background: rgba(244, 67, 54, 0.2);
-  color: #f44336;
-  border: 1px solid #f44336;
+  background: rgba(var(--color-error-rgb), 0.2);
+  color: rgb(var(--color-error-rgb));
+  border: 1px solid rgb(var(--color-error-rgb));
 }
 
 .moderation__card-actions {
@@ -110,24 +110,24 @@
 }
 
 .moderation__btn--approve {
-  background: #4caf50;
-  border-color: #4caf50;
-  color: white;
+  background: rgb(var(--color-success-rgb));
+  border-color: rgb(var(--color-success-rgb));
+  color: var(--white-main);
 }
 
 .moderation__btn--approve:hover {
-  background: rgba(76, 175, 80, 0.8);
+  background: rgba(var(--color-success-rgb), 0.8);
   transform: translateY(-2px);
 }
 
 .moderation__btn--delete {
-  background: #f44336;
-  border-color: #f44336;
-  color: white;
+  background: rgb(var(--color-error-rgb));
+  border-color: rgb(var(--color-error-rgb));
+  color: var(--white-main);
 }
 
 .moderation__btn--delete:hover {
-  background: rgba(244, 67, 54, 0.8);
+  background: rgba(var(--color-error-rgb), 0.8);
   transform: translateY(-2px);
 }
 

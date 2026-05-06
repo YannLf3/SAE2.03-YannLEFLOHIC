@@ -43,7 +43,7 @@
 
 .log__item {
   padding: var(--space-sm) var(--space-md);
-  background: rgba(255, 199, 0, 0.05);
+  background: rgba(var(--color-accent-rgb), 0.05);
   border-left: 2px solid var(--color-accent);
   border-radius: 0.25rem;
   word-break: break-word;
@@ -59,21 +59,21 @@
 }
 
 .log__item--success {
-  border-left-color: #4ade80;
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.05);
+  border-left-color: rgb(var(--color-success-rgb));
+  color: rgb(var(--color-success-rgb));
+  background: rgba(var(--color-success-rgb), 0.05);
 }
 
 .log__item--error {
-  border-left-color: #ff6b6b;
-  color: #ff6b6b;
-  background: rgba(255, 107, 107, 0.05);
+  border-left-color: rgb(var(--color-error-rgb));
+  color: rgb(var(--color-error-rgb));
+  background: rgba(var(--color-error-rgb), 0.05);
 }
 
 .log__item--warning {
   border-left-color: var(--color-accent);
   color: var(--color-accent);
-  background: rgba(255, 199, 0, 0.05);
+  background: rgba(var(--color-accent-rgb), 0.05);
 }
 
 @keyframes fondu-en-entree {

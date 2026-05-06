@@ -10,7 +10,7 @@
   padding: 1.5rem 1.5rem;
   color: var(--color-text);
   background-color: var(--color-bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(var(--color-text-rgb), 0.1);
 
   .navbar__start {
     display: flex;
@@ -53,8 +53,8 @@
       font-weight: 700;
       letter-spacing: 0.01em;
       opacity: 1;
-      color: #111111;
-      border: 2px solid #111111;
+      color: var(--color-ink);
+      border: 2px solid var(--color-ink);
       padding: 0.55rem 1.3rem;
       border-radius: 999px;
       transition:
@@ -62,13 +62,13 @@
         box-shadow 0.2s ease,
         background-color 0.2s ease;
       background-color: var(--color-accent);
-      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45);
+      box-shadow: 0 5px 0 rgba(var(--color-black-rgb), 0.45);
     }
 
     &:hover .navbar__active-profile-switch {
       transform: translateY(-2px);
-      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.45);
-      background-color: #ffd633;
+      box-shadow: 0 8px 0 rgba(var(--color-black-rgb), 0.45);
+      background-color: var(--color-accent-hover);
     }
   }
   .navbar__menu {
@@ -83,11 +83,11 @@
     margin: 0;
     padding: 0.55rem 1.35rem;
     cursor: pointer;
-    color: #111111;
+    color: var(--color-ink);
     background-color: var(--color-accent);
-    border: 2px solid #111111;
+    border: 2px solid var(--color-ink);
     border-radius: 999px;
-    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: 0 5px 0 rgba(var(--color-black-rgb), 0.45);
     font-weight: 700;
     font-size: 0.95rem;
     transition:
@@ -97,8 +97,8 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.45);
-      background-color: #ffd633;
+      box-shadow: 0 8px 0 rgba(var(--color-black-rgb), 0.45);
+      background-color: var(--color-accent-hover);
     }
   }
 
@@ -112,7 +112,7 @@
     z-index: 30;
     background-color: var(--color-hover);
     border-radius: 0.9rem;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
     transition: max-height 0.3s ease-out;
   }
 
@@ -132,8 +132,8 @@
     width: 100%;
 
     &:hover {
-      color: #111111;
-      background-color: rgba(255, 200, 0, 0.87);
+      color: var(--color-ink);
+      background-color: rgba(var(--color-accent-rgb), 0.87);
     }
   }
 
@@ -141,9 +141,9 @@
     order: 4;
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     border-radius: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(var(--color-text-rgb), 0.05);
     color: var(--color-text);
     font-size: 0.95rem;
     transition:
@@ -152,19 +152,19 @@
       background-color 0.2s ease-out;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(var(--color-text-rgb), 0.5);
     }
 
     &:focus {
       outline: none;
       border-color: var(--color-accent);
-      background-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 0 3px rgba(255, 199, 0, 0.1);
+      background-color: rgba(var(--color-text-rgb), 0.08);
+      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.1);
     }
 
     &:hover {
       border-color: var(--color-accent);
-      background-color: rgba(255, 255, 255, 0.08);
+      background-color: rgba(var(--color-text-rgb), 0.08);
     }
   }
 
@@ -238,8 +238,8 @@
   left: 0;
   background: linear-gradient(
     180deg,
-    rgba(30, 30, 30, 0.95) 0%,
-    rgba(30, 30, 30, 0.7) 100%
+    rgba(var(--color-bg-rgb), 0.95) 0%,
+    rgba(var(--color-bg-rgb), 0.7) 100%
   );
   backdrop-filter: blur(10px);
 }

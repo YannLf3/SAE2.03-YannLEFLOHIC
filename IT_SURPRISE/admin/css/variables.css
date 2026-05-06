@@ -7,6 +7,15 @@
   --black-dark: rgb(30, 30, 30);
   --yellow-sub: rgb(253, 217, 19);
   --white-main: rgb(255, 255, 255);
+  --color-accent-rgb: 255, 199, 0;
+  --color-hover-rgb: 253, 217, 19;
+  --color-bg-rgb: 30, 30, 30;
+  --color-text-rgb: 255, 255, 255;
+  --color-black-rgb: 0, 0, 0;
+  --color-success-rgb: 76, 175, 80;
+  --color-warning-rgb: 255, 193, 7;
+  --color-error-rgb: 244, 67, 54;
+  --color-ink: #111111;
 
   /* Typographie */
   --font-sans: "Montserrat", Sans-serif;
@@ -41,6 +50,12 @@
   --color-surface-hover: rgba(255, 255, 255, 0.12);
   --color-border: rgba(255, 199, 0, 0.2);
   --color-border-light: rgba(255, 255, 255, 0.1);
+  --color-surface-dark: rgba(var(--color-black-rgb), 0.3);
+  --color-surface-dark-hover: rgba(var(--color-black-rgb), 0.5);
+  --color-overlay: rgba(var(--color-black-rgb), 0.95);
+  --color-overlay-soft: rgba(var(--color-black-rgb), 0.45);
+  --color-accent-bright: rgb(255, 230, 100);
+  --color-accent-pressed: rgb(230, 178, 0);
 
   /* Textes */
   --color-title: var(--white-main);

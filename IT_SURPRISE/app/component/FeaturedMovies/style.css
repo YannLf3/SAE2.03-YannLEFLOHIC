@@ -39,8 +39,8 @@
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      background: rgba(0, 0, 0, 0.45);
+      border: 2px solid rgba(var(--color-text-rgb), 0.3);
+      background: rgba(var(--color-black-rgb), 0.45);
       color: var(--white-main);
       font-size: 2rem;
       line-height: 1;
@@ -56,7 +56,7 @@
       &:hover {
         background: var(--yellow-main);
         border-color: var(--yellow-main);
-        color: #111;
+        color: var(--color-ink);
       }
 
       &.featured__nav--prev {
@@ -88,7 +88,7 @@
       flex-direction: column;
       justify-content: flex-end;
 
-      background: #000;
+      background: rgb(var(--color-black-rgb));
       scroll-snap-align: start;
       scroll-snap-stop: always;
 
@@ -120,8 +120,8 @@
         background: linear-gradient(
           to bottom,
           transparent 25%,
-          rgba(0, 0, 0, 0.45) 55%,
-          rgba(0, 0, 0, 0.88) 100%
+          rgba(var(--color-black-rgb), 0.45) 55%,
+          rgba(var(--color-black-rgb), 0.88) 100%
         );
         pointer-events: none;
         z-index: 1;
@@ -145,7 +145,7 @@
         color: var(--white-main);
         margin: 0;
         line-height: 1.1;
-        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 2px 12px rgba(var(--color-black-rgb), 0.9);
       }
 
       /* ── Badge "Nouveau" ── */
@@ -167,22 +167,22 @@
           font-size: 1rem;
           font-weight: 700;
           background: var(--yellow-main);
-          color: #111111;
+          color: var(--color-ink);
           border-radius: 0.4rem;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+          box-shadow: 0 4px 16px rgba(var(--color-black-rgb), 0.45);
           letter-spacing: 0.01em;
         }
 
         .movie__card-favorite:hover + .movie__card-check-label {
-          background: #ffe564;
+          background: var(--color-accent-bright);
           transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+          box-shadow: 0 8px 20px rgba(var(--color-black-rgb), 0.45);
         }
 
         .movie__card-favorite:checked + .movie__card-check-label {
-          background: #e6b200;
+          background: var(--color-accent-pressed);
           transform: translateY(1px);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+          box-shadow: 0 2px 8px rgba(var(--color-black-rgb), 0.35);
         }
 
         .movie__card-favorite:checked + .movie__card-check-label::after {

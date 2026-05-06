@@ -39,7 +39,6 @@
         align-items: center;
         cursor: pointer;
 
-        /* hide native checkbox */
         .movie__card-favorite {
           position: absolute;
           inset: 0;
@@ -50,17 +49,16 @@
           cursor: pointer;
         }
 
-        /* pill label */
         .movie__card-check-label {
           display: inline-flex;
           align-items: center;
           justify-content: center;
           padding: 0.45rem 1rem;
           border-radius: 999px;
-          background: #ffd633;
-          color: #111111;
+          background: var(--color-accent-hover);
+          color: var(--color-ink);
           font-weight: 700;
-          box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
+          box-shadow: 0 5px 0 rgba(var(--color-black-rgb), 0.18);
           transition:
             transform 0.18s ease,
             box-shadow 0.18s ease,
@@ -68,38 +66,18 @@
           user-select: none;
         }
 
-        /*
-          Au survol de l'élément interactif `.movie__card-favorite`,
-          cibler le label immédiatement suivant (`+ .movie__card-check-label`).
-          Effet visuel : "soulever" le label (translateY négatif),
-          augmenter l'ombre pour donner de la profondeur,
-          et éclaircir légèrement le fond pour indiquer l'état hover.
-        */
         .movie__card-favorite:hover + .movie__card-check-label {
           transform: translateY(-2px);
-          box-shadow: 0 8px 0 rgba(0, 0, 0, 0.18);
-          background: #ffe082;
+          box-shadow: 0 8px 0 rgba(var(--color-black-rgb), 0.18);
+          background: var(--color-accent-highlight);
         }
 
-        /*
-          Quand l'input `.movie__card-favorite` est coché (`:checked`),
-          appliquer au label un style d'état actif :
-          fond plus saturé, déplacement vers le bas pour effet "pressé",
-          et ombre plus courte pour renforcer l'illusion d'appui.
-        */
         .movie__card-favorite:checked + .movie__card-check-label {
-          background: #e6b200;
+          background: var(--color-accent-pressed);
           transform: translateY(2px);
-          box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+          box-shadow: 0 3px 0 rgba(var(--color-black-rgb), 0.18);
         }
 
-        /*
-          Ajouter une coche visuelle après le texte du label quand l'input
-          est coché. Ce pseudo-élément est décoratif —
-          il affiche une coche "✓" à droite du texte "Favoris" pour indiquer l'état actif.
-          ::after est utilisé pour ajouter du contenu après le texte du label,
-          et il est conditionné par l'état :checked de l'input.
-        */
         .movie__card-favorite:checked + .movie__card-check-label::after {
           content: " ✓";
           margin-left: 0.35rem;
@@ -142,8 +120,8 @@
 
 .movie-badge--new {
   display: inline-block;
-  background: red;
-  color: white;
+  background: rgb(var(--color-error-rgb));
+  color: var(--white-main);
   font-size: 0.7rem;
   font-weight: bold;
   padding: 2px 6px;
